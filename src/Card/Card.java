@@ -1,34 +1,45 @@
 package Card;
 
+import Account.SberPayCardAccount;
+import Account.SberSavingsAccount;
+import Bank.Sberbank;
+import ClientProfile.SberPhysicalPersonProfile;
 import java.util.Currency;
-
 public class Card {
 
-    private float deposit;
+    private Sberbank bank;
+
+    private SberPhysicalPersonProfile cardHolder;
+
+    private SberPayCardAccount payCardAccount;
+
     private String numberCard;
-    private String paySystems;
-    private int countTransactions = 0;
-    private String[] transactions = new String[50];
 
-    // новая переменная экземпляра "Валюта"
-    private char currency; // "₽";
+    private String statusCard;
 
 
-    // сеттер и геттер для валюты
-    public char getCurrency() {
-        return currency;
+    public Sberbank getBank() {
+        return bank;
     }
 
-    public void setCurrency(char currency) {
-        this.currency = currency;
+    public void setBank(Sberbank bank) {
+        this.bank = bank;
     }
 
-    public float getDeposit() {
-        return deposit;
+    public SberPhysicalPersonProfile getCardHolder() {
+        return cardHolder;
     }
 
-    public void setDeposit(float deposit) {
-        this.deposit = deposit;
+    public void setCardHolder(SberPhysicalPersonProfile cardHolder) {
+        this.cardHolder = cardHolder;
+    }
+
+    public SberPayCardAccount getPayCardAccount() {
+        return payCardAccount;
+    }
+
+    public void setPayCardAccount(SberPayCardAccount payCardAccount) {
+        this.payCardAccount = payCardAccount;
     }
 
     public String getNumberCard() {
@@ -36,33 +47,72 @@ public class Card {
     }
 
     public void setNumberCard(String numberCard) {
-        this.numberCard = numberCard;
+        String number = numberCard.replace(" ", "");
+        String regex = "[0-9]+";
+        if (number.length() == 16 && number.matches(regex)) this.numberCard = numberCard;
+        else System.out.println("Недопустимый номер карты");
     }
 
-    public String getPaySystems() {
-        return paySystems;
-    }
-    public void setPaySystems(String paySystems) {
-        this.paySystems = paySystems;
+    public String getStatusCard() {
+        return statusCard;
     }
 
-    public int getCountTransactions() {
-        return countTransactions;
+    public void setStatusCard(String statusCard) {
+        this.statusCard = statusCard;
     }
 
-    public String[] getTransactions() {
-        return transactions;
+    // Оплата картой
+    public void payByCard(float sumPay, String byProductOrService) {
+
     }
 
-    public void setTransactions(String transactions) {
-        this.transactions[countTransactions++] = transactions;
+    // Оплата картой за рубежом
+    public void payByCard(float sumPay, String byProductOrService, String country) {
+
     }
 
-    public void setCountTransactions(int countTransactions) {
-        this.countTransactions = countTransactions;
+    // Перевести с карты на карту
+    public void transferCard2Card(SberVisaGold toCard, float sumTransfer) {
+
     }
 
+    // Перевести с карты на счет
+    public void transferCard2Account(SberSavingsAccount toAccount, float sumTransfer) {
 
+    }
+
+    // внести наличные на карту
+    public void depositingCash2Card(float sumDepositing) {
+        // TODO: инициализировать транзакцию пополнения
+
+        // TODO: запрсоить разрешение банка на проведение операции с проверкой статуса карты
+
+        // TODO: если разрешение получено, то выполняем пополнение
+
+        // TODO: внести в транзакцию статус пополнения
+
+        // TODO: внести в транзакцию баланс карты после пополнения
+
+        // TODO: добавить и привязать тразакцию пополнения к счету карты зачисления
+
+    }
+
+    // Пополнить карту с карты
+    public void depositingCardFromCard(SberVisaGold fromCard, float sumDepositing) {
+
+    }
+
+    // Пополнить карту со счета
+    public void depositingCardFromAccount(SberSavingsAccount fromAccount, float sumDepositing) {
+
+    }
+
+    // Вывести транзакции по счету карты
+    public void displayCardTransactions () {
+
+    }
+
+/*
     public void pay(float sumPay) {
         // списать cумму покупки с карты
         boolean payStatus;
@@ -76,9 +126,8 @@ public class Card {
             } else check++;
         } while (!payStatus && check < 3);
 
-        /*
          TODO: перевести сумму на счет магазина
-         */
+
     }
 
     public void transfer(float sumTransfer) {
@@ -143,8 +192,8 @@ public class Card {
                  } else check++;
              } while (!payStatus && check <3);
          }
+*/
 
-         // создаем конфликт двух веток
 }
 
 
