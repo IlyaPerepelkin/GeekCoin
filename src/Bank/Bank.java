@@ -1,5 +1,6 @@
 package Bank;
 
+import Card.Card;
 import ClientProfile.SberPhysicalPersonProfile;
 
 public class Bank {
@@ -39,12 +40,11 @@ public class Bank {
         clientProfiles[countClientProfiles++] = clientProfile;
     }
 
-
     // Сгенирировать номер карты 3546 0957 9843 7845
     public String generateNumberCard() {
         byte lengthNumberCard = 20;
         StringBuffer numberCardBuffer = new StringBuffer();
-        for (byte i = 1, i < lengthNumberCard, i++) {     // i = 1, чтобы не было пробела в начале, потому что при делении 0 на 5 будет 0
+        for (byte i = 1; i < lengthNumberCard; i++) {     // i = 1, чтобы не было пробела в начале, потому что при делении 0 на 5 будет 0
             if (i % 5 !=0) numberCardBuffer.append((byte) Math.random() * 10);
             else numberCardBuffer.append(' ');
         }
@@ -55,10 +55,35 @@ public class Bank {
     public String generateNumberAccount() {
         byte lengthNumberAccount = 20;
         StringBuffer numberAccountBuffer = new StringBuffer();
-        for (byte i = 0, i < lengthNumberAccount, i++) {
+        for (byte i = 0; i < lengthNumberAccount; i++) {
             numberAccountBuffer.append((byte) Math.random() * 10);
         }
         return numberAccountBuffer.toString();
     }
+
+    //  Провести авторизацию и выдать разрешение на проведенеи операции
+    public String authorization(Card card) {
+        // TODO: Сгенерировать код авторизации
+        String authorizationCode = generateAuthorizationCode();
+
+        String authorizationMessage;
+        // TODO: проверить статус карты
+        boolean statusCard = card.getStatusCard().equalsIgnoreCase("Активна") ? true : false;
+        if (statusCard) authorizationMessage = "Success: Карта активна";
+        else authorizationMessage = "Failed: Карта заблокирована";
+
+        // TODO: вернуть код и сообщение о статсу авторизации
+        return authorizationCode + "@" + authorizationMessage;
+    }
+
+    private String generateAuthorizationCode() {
+        byte lengthAuthorizationCode = 6;
+        StringBuffer authorizationCodeBuffer = new StringBuffer();
+        for (byte i = 0; i < lengthAuthorizationCode; i++) {
+            authorizationCodeBuffer.append((byte) Math.random() * 10);
+        }
+        return authorizationCodeBuffer.toString();
+    }
+
 
 }

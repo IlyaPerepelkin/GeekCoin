@@ -111,4 +111,15 @@ public class Account {
     public void setCountDepositingTransactions(int countDepositingTransactions) {
         this.countDepositingTransactions = countDepositingTransactions;
     }
+
+    // пополнить баланс
+    public boolean topUp(float sum) {
+        balance = balance + sum;
+        return true;
+    }
+
+    // добавить транзакцию о пополнении
+    public void addDepositingTransaction(DepositingTransaction depositingTransaction) {
+        depositingTransactions[countDepositingTransactions++] = depositingTransaction;
+    }
 }

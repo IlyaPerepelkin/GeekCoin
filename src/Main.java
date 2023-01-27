@@ -35,6 +35,6 @@ public class Main {
         SberVisaGold friendSberVisaGold1 = friend.openCard(sberbank, new SberVisaGold(), "RUB");
 
         I.depositingCash2Card(mySberVisaGold1, 7600.50f);
-        
+
     }
 }
