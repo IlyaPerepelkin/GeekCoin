@@ -36,5 +36,7 @@ public class Main {
 
         I.depositingCash2Card(mySberVisaGold1, 7600.50f);
 
+        I.payBayCard(mySberVisaGold1, 100.05f, "ЖКХ");
+
     }
 }

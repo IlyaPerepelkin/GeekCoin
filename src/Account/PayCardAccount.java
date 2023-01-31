@@ -60,4 +60,23 @@ public class PayCardAccount extends Account {
     public void addCard(SberVisaGold card) {
         cards[countCards++] = card;
     }
+
+    public boolean blockSum(float sum) {
+        // сохранить сумму на счете как зарезервированную
+        blockedSum += sum;
+        // и списать зарезервированную сумму со счета, чтобы ее нельзя было использовать одновременно при совершении других операций
+        withdrawal(sum);
+        return true;
+    }
+
+    // Списать зарезервированную сумму со счета карты
+    public boolean writeOffBlockedSum(float sum) {
+        blockedSum -= sum;
+        return true;
+    }
+
+    // Добавить транзакцию об оплате
+    public void addPayTransaction(PayTransaction payTransaction) {
+        payTransactions[countPayTransactions++] = payTransaction;
+    }
 }

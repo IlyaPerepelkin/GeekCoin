@@ -2,6 +2,7 @@ package Bank;
 
 import Card.Card;
 import ClientProfile.SberPhysicalPersonProfile;
+import Card.SberVisaGold;
 
 public class Bank {
     private String bankName;
@@ -35,6 +36,7 @@ public class Bank {
         this.countClientProfiles = countClientProfiles;
     }
 
+
     // Добавить профиль клиента
     public void addClientProfile(SberPhysicalPersonProfile clientProfile) {
         clientProfiles[countClientProfiles++] = clientProfile;
@@ -62,17 +64,33 @@ public class Bank {
     }
 
     //  Провести авторизацию и выдать разрешение на проведенеи операции
-    public String authorization(Card card) {
-        // TODO: Сгенерировать код авторизации
+    public String authorization(SberVisaGold card, String typeOperation, float sum, float commission) {
+        // Сгенерировать код авторизации
         String authorizationCode = generateAuthorizationCode();
 
         String authorizationMessage;
-        // TODO: проверить статус карты
+        // проверить статус карты
         boolean statusCard = card.getStatusCard().equalsIgnoreCase("Активна") ? true : false;
-        if (statusCard) authorizationMessage = "Success: Карта активна";
-        else authorizationMessage = "Failed: Карта заблокирована";
+        if (statusCard) {
+            authorizationMessage = "Success: Карта активна";
 
-        // TODO: вернуть код и сообщение о статсу авторизации
+            // если тип операции покупка или перевод, то проверяем баланс и блокируем сумму покупки или перевода с комиссией
+            if (typeOperation.contains("Покупка") || typeOperation.contains("Перевод")) {
+                // проверяем баланс и хватит ли нам денег с учетом комиссии
+                boolean checkBalance = card.getPayCardAccount().checkBalance(sum + commission);
+                if (checkBalance) {
+                    // проверяем не превышен ли лимит по оплатам и переводам в сутки
+                    boolean exceededLimitPaymentsTransfersDay = card.getCardHolder().exceededLimitPaymentsTransfersDay(sum, card.getPayCardAccount().getCurrencyCode());
+                    if (!exceededLimitPaymentsTransfersDay) {
+                        // блокируем сумму операции и комиссию на балансе счета карты
+                        boolean reserveAmountStatus = card.getPayCardAccount().blockSum(sum + commission);
+                        authorizationMessage = reserveAmountStatus ? "Success: Авторизация прошла успешно" : "Failed: Сбой авторизации";
+                    } else authorizationMessage = "Failed: Превышен лимит по оплатам и переводам в сутки";
+                } else authorizationMessage = "Failed: Недостаточно средств, пополните карту";
+            }
+        } else authorizationMessage = "Failed: Карта заблокирована";
+
+        // вернуть код и сообщение о статсу авторизации
         return authorizationCode + "@" + authorizationMessage;
     }
 
@@ -85,5 +103,9 @@ public class Bank {
         return authorizationCodeBuffer.toString();
     }
 
-
+    // Рассчитать комиссию при оплате
+    public float getCommission(SberPhysicalPersonProfile cardHolder, float sumPay, String buyProductOrService) {
+        float commission = buyProductOrService.equalsIgnoreCase("ЖКХ") ? (sumPay/100) * cardHolder.getPercentOfCommissionForPayHousingCommunalServices() : 0;
+        return commission;
+    }
 }

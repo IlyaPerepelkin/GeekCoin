@@ -5,6 +5,7 @@ import Account.SberSavingsAccount;
 import Bank.Sberbank;
 import ClientProfile.SberPhysicalPersonProfile;
 import Transaction.DepositingTransaction;
+import Transaction.PayTransaction;
 
 import java.time.LocalDateTime;
 import java.util.Currency;
@@ -65,8 +66,56 @@ public class Card {
     }
 
     // Оплата картой
-    public void payByCard(float sumPay, String byProductOrService) {
+    public void payByCard(float sumPay, String buyProductOrService) {
+        // инициализировать транзакцию оплаты
+        PayTransaction payTransaction = new PayTransaction();
+        payTransaction.setLocalDateTime(LocalDateTime.now());
+        payTransaction.setFromCard((SberVisaGold) this);
+        payTransaction.setSum(sumPay);
+        payTransaction.setCurrencySymbol(payCardAccount.getCurrencySymbol());
+        payTransaction.setTypeOperation("Покупка");
+        payTransaction.setBuyProductOrService(buyProductOrService);
 
+        // рассчитать коммисию при оплате
+        float commission = bank.getCommission(cardHolder, sumPay, buyProductOrService);
+
+        // внести в транзакции данные о комиссии
+        payTransaction.setCommission(commission);
+
+        // запросить разрешение банка на проведение операции с блокированием суммы оплаты и комиссии
+        String authorization = bank.authorization((SberVisaGold) this, payTransaction.getTypeOperation(), sumPay, commission);
+        // извлекаем массив строк разделяя их символом "@"
+        String[] authorizationData = authorization.split("@");
+        // извлекаем код авторизации
+        String authorizationCode = authorizationData[0];
+        payTransaction.setAuthorizationCode(authorizationCode);
+        // извлекаем сообщение авторизации
+        String authorizationMessage = authorizationData[1]; // "Success: Авторизация прошла успешно"
+        // извлекаем статус из сообщения авторизации
+        String authorizationStatus = authorizationMessage.substring(0, authorizationMessage.indexOf(":"));
+        // если разрешение получено, то выполняем списание зарезервированной суммы и комиссии со счета карты
+        if (authorizationMessage.equalsIgnoreCase("Success")) {
+            boolean writeOffBlockedSum = payCardAccount.writeOffBlockedSum(sumPay + commission);
+            if (writeOffBlockedSum) {
+                // внести в транзакцию статус оплаты
+                payTransaction.setStatusOperation("Оплата прошла успешно");
+
+                // TODO: перевести сумму на счет магазина, а комиссию на счет банка
+
+                // прибавить сумму оплаты к общей сумме совершенных оплат и переводов за сутки, чтобы контролировать лимиты
+                getCardHolder().updateTotalPaymentsTransfersDay(sumPay, payCardAccount.getCurrencyCode());
+            } else payTransaction.setStatusOperation("Оплата не прошла");
+        } else {
+            // иначе выводим сообщение о статусе авторизации, чтобы понимать что пошло не так
+            String authorizationStatusMessage = authorizationMessage.substring(authorizationMessage.indexOf(":") + 2);
+            payTransaction.setStatusOperation(authorizationStatusMessage);
+        }
+
+        // внести в транзакцию баланс счета карты после оплаты
+        payTransaction.setBalance(getPayCardAccount().getBalance());
+
+        // добавить и привязать транзакцию оплаты к счету карты
+        payCardAccount.addPayTransaction(payTransaction);
     }
 
     // Оплата картой за рубежом
@@ -95,7 +144,7 @@ public class Card {
         depositingTransaction.setTypeOperation("Внесение наличных");
 
         // запрсоить разрешение банка на проведение операции с проверкой статуса карты
-        String authorization = bank.authorization(this);
+        String authorization = bank.authorization((SberVisaGold) this, depositingTransaction.getTypeOperation(), sumDepositing, 0);
         // извлекаем массив строк разделяя их символом @
         String[] authorizationData = authorization.split("@");
         // извлекаем код авторазации
@@ -146,15 +195,15 @@ public class Card {
     public void pay(float sumPay) {
         // списать cумму покупки с карты
         boolean payStatus;
-        byte check = 0;
+        byte errorTransaction = 0;
         do {
             payStatus = withdrawal(sumPay);
             if (payStatus) { // payStatus == true
                 String transactions = paySystems + " " + numberCard + ": " + "Покупка " + sumPay + currency + " Остаток на карте " + deposit + currency;
                 setTransactions(transactions);
-                System.out.println(transactions);
-            } else check++;
-        } while (!payStatus && check < 3);
+                // System.out.println(transactions);
+            } else errorTransaction++;
+        } while (!payStatus && errorTransaction < 3);
 
          TODO: перевести сумму на счет магазина
 
