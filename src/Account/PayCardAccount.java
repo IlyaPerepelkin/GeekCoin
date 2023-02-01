@@ -3,6 +3,8 @@ package Account;
 import Card.SberVisaGold;
 import Transaction.PayTransaction;
 
+import java.util.Arrays;
+
 public class PayCardAccount extends Account {
 
     private SberVisaGold [] cards = new SberVisaGold[2];
@@ -78,5 +80,53 @@ public class PayCardAccount extends Account {
     // Добавить транзакцию об оплате
     public void addPayTransaction(PayTransaction payTransaction) {
         payTransactions[countPayTransactions++] = payTransaction;
+    }
+
+    @Override
+    // Вывести транзакции по счету
+    public void displayAccountTransactions() {
+        // сформировать общий массив транзакций по платежному счету в человекочитаемом формате
+        String[] allPayCardAccountTransactions = getAllPayCardAccountTransactions();
+
+        // отсротировать транзакции по дате
+        Arrays.sort(allPayCardAccountTransactions);
+
+        // вывести все транзакции
+        for (int idTransaction = 0; idTransaction < allPayCardAccountTransactions.length; idTransaction++) {
+            System.out.println("#" + idTransaction + " " + allPayCardAccountTransactions[idTransaction]);
+        }
+
+    }
+
+    private String[] getAllPayCardAccountTransactions() {
+        // сформировать общий массив транзакций перевода и пополнения в человекочитаемом формате
+        String[] allTransferDepositingTransactions = getAllTransferDepositingTransactions();
+        // сформировать массив транзакций оплаты в человекочитаемом формате
+        String[] allPayTransactions = getAllPayTransactions();
+
+        // объявляем общий массив всех транзакций по платежному счету длиной равной общему количеству транзакций
+        String[] allTransactions = new String[allTransferDepositingTransactions.length + allPayTransactions.length];
+
+        // объединить массивы в один массив
+        // копировать массив транзакций перевода и пополнения в общий массив всех транзакций
+        System.arraycopy(allTransferDepositingTransactions, 0, allTransactions, 0, allTransferDepositingTransactions.length);
+        // копировать массив транзакций оплаты в общий массив всех транзакций
+        System.arraycopy(allPayTransactions, 0, allTransactions, allTransferDepositingTransactions.length, allPayTransactions.length);
+
+        return allTransactions;
+
+    }
+
+    private String[] getAllPayTransactions() {
+        // объявить массив транзакций оплаты по платежному счету длиной равной количеству транзакций
+        String[] allPayTransactions = new String[countPayTransactions];
+
+        int countAllPayTransactions = 0;
+        // перебираем транзакции оплаты и добавляем их в массив в человекочитаемом формате
+        for (int idTransaction = 0; idTransaction < countPayTransactions; idTransaction++) {
+            allPayTransactions[countAllPayTransactions++] = payTransactions[idTransaction].getStringTransactoin();
+        }
+
+        return allPayTransactions;
     }
 }

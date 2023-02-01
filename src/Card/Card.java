@@ -73,7 +73,7 @@ public class Card {
         payTransaction.setFromCard((SberVisaGold) this);
         payTransaction.setSum(sumPay);
         payTransaction.setCurrencySymbol(payCardAccount.getCurrencySymbol());
-        payTransaction.setTypeOperation("Покупка");
+        payTransaction.setTypeOperation("Покупка ");
         payTransaction.setBuyProductOrService(buyProductOrService);
 
         // рассчитать коммисию при оплате
@@ -188,7 +188,7 @@ public class Card {
 
     // Вывести транзакции по счету карты
     public void displayCardTransactions () {
-
+        payCardAccount.displayAccountTransactions();
     }
 
 /*

@@ -38,5 +38,11 @@ public class Main {
 
         I.payBayCard(mySberVisaGold1, 100.05f, "ЖКХ");
 
+        // Вывод операции по карте
+        I.displayCardTransactions(mySberVisaGold1);
+        // Вывод операций по счета
+
+        // Вывод всех операций по всем картам и счетам профиля клиента
+
     }
 }

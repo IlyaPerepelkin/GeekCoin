@@ -5,6 +5,8 @@ import ClientProfile.SberPhysicalPersonProfile;
 import Transaction.DepositingTransaction;
 import Transaction.TransferTransaction;
 
+import java.util.Arrays;
+
 public class Account {
 
     private Sberbank bank;
@@ -152,4 +154,34 @@ public class Account {
         return setBalance(balance - sum);
     }
 
+    // Вывести транзакции по счету
+    public void displayAccountTransactions() {
+        // сформировать общий массив транзакций перевода и пополнения в человекочитаемом формате
+        String[] allTransferDepositingTransactions = getAllTransferDepositingTransactions();
+
+        // отсротировать транзакции по дате
+        Arrays.sort(allTransferDepositingTransactions);
+
+        // вывести все транзакции
+        for (int idTransaction = 0; idTransaction < allTransferDepositingTransactions.length; idTransaction++) {
+            System.out.println("#" + idTransaction + " " + allTransferDepositingTransactions[idTransaction]);
+        }
+
+    }
+
+    public String[] getAllTransferDepositingTransactions() {
+        // объявить массив транзакций перевода и пополения по счету длиной равной общему количеству транзакций
+        String[] allTransferDepositingTransactions = new String[countTransferTransactions + countDepositingTransactions];
+
+        int countTransferDepositingTransactions = 0;
+        // перебрать транзакции перевода и пополнения и добавить их в общий массив в человекочитаемом формате
+        for (int idTransaction = 0; idTransaction < countTransferTransactions; idTransaction++) {
+            allTransferDepositingTransactions[countTransferDepositingTransactions++] = transferTransactions[idTransaction].getStringTransactoin();
+        }
+        for (int idTransaction = 0; idTransaction < countDepositingTransactions; idTransaction++) {
+            allTransferDepositingTransactions[countTransferDepositingTransactions++] = depositingTransactions[idTransaction].getStringTransactoin();
+        }
+
+        return allTransferDepositingTransactions;
+    }
 }
