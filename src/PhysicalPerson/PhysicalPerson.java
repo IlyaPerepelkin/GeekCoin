@@ -90,6 +90,10 @@ public class PhysicalPerson {
         card.payByCard(sumPay, byProductOrService);
     }
 
+    public void payBayCard(SberVisaGold card, float sumPay, String byProductOrService, String country) {
+        card.payByCard(sumPay, byProductOrService, country);
+    }
+
     public void displayCardTransactions(SberVisaGold card) {
         card.displayCardTransactions();
     }

@@ -38,6 +38,8 @@ public class Main {
 
         I.payBayCard(mySberVisaGold1, 100.05f, "ЖКХ");
 
+        I.payBayCard(mySberVisaGold1, 100.00f, "Excursion", "Турция");
+
         // Вывод операции по карте
         I.displayCardTransactions(mySberVisaGold1);
         // Вывод операций по счета

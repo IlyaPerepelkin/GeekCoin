@@ -7,8 +7,9 @@ import ClientProfile.SberPhysicalPersonProfile;
 import Transaction.DepositingTransaction;
 import Transaction.PayTransaction;
 
+
 import java.time.LocalDateTime;
-import java.util.Currency;
+
 public class Card {
 
     private Sberbank bank;
@@ -120,7 +121,38 @@ public class Card {
 
     // Оплата картой за рубежом
     public void payByCard(float sumPay, String byProductOrService, String country) {
+        // по названию страны определяем валюту покупки
+        String currencyPayCode = bank.getCurrencyCode(country);
+        // по названию страны определяем название биллинга - это валюта платежной системы
+        String billingCurrencyCode = getCurrencyCodePaySystem(country);
 
+        // если валюта покупки и валюта биллинга НЕ совпадают, то конвертируем сумму покупки и валюту платежной системы по курсу платежной системы
+        // если валюты совпадают, то конвертация не выполняется
+        float sumPayInBillingCurrency = !currencyPayCode.equals(billingCurrencyCode) ? convertToCurrencyExchangeRatePaySystem(sumPay, currencyPayCode, billingCurrencyCode) : sumPay;
+
+        // если валюта биллинга и валюта счета карты не свопадают, то конвертируем сумму покупки в валюте биллинга в валюту карты по курсу нашего банка
+        // если валюты совпадают, то конвертация не выполняется
+        String cardCurrencyCode = getPayCardAccount().getCurrencyCode();
+        float sumPayInCardCurrency = !billingCurrencyCode.equals(cardCurrencyCode) ? bank.convertToCurrencyExchangeRateBank(sumPayInBillingCurrency, billingCurrencyCode, cardCurrencyCode) : sumPayInBillingCurrency;
+
+        // округлим дробную часть до двух знаков после запятой
+        sumPayInCardCurrency = bank.round(sumPayInCardCurrency);
+
+        // приведя сумму покупки к валюте карты вызываем метод оплаты по умолчанию
+        payByCard(sumPayInCardCurrency, byProductOrService);
+
+    }
+
+    // Конвертировать в валюту по курсу платежной системы
+    // Переопределим в дочерних классах, потмоу что у платежных систем разные алгоритмы концертации
+    public float convertToCurrencyExchangeRatePaySystem(float sum, String fromCurrencyCode, String toBillingCurrencyCode) {
+        return 0;
+    }
+
+    // Запросим код валюты платежной системы
+    // Переопределим в дочерних классах, потому что нет общего алгоритма,  так как у платежных систем разные валюты
+    public String getCurrencyCodePaySystem(String country) {
+        return null;
     }
 
     // Перевести с карты на карту
@@ -157,7 +189,7 @@ public class Card {
         String authorizationStatus = authorizationMessage.substring(0, authorizationMessage.indexOf(":"));
 
         // если разрешение получено, то выполняем пополнение
-        if (authorizationStatus.equalsIgnoreCase("Succsess")) {
+        if (authorizationStatus.equalsIgnoreCase("Success")) {
             boolean topUpStatus = payCardAccount.topUp(sumDepositing);
             if (topUpStatus) {
                 // внести в транзакцию статус пополнения
