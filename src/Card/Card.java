@@ -298,7 +298,7 @@ public class Card {
 
 /*
     public void pay(float sumPay) {
-        // списать cумму покупки с карты
+        // списать сумму покупки с карты
         boolean payStatus;
         byte errorTransaction = 0;
         do {
@@ -315,19 +315,19 @@ public class Card {
     }
 
     public void transfer(float sumTransfer) {
-        float comission;
+        float commission;
         if (sumTransfer < 50000) {
-            comission = 0.0f;
+            commission = 0.0f;
         } else {
-            comission = sumTransfer * 0.01f;
+            commission = sumTransfer * 0.01f;
         }
         // списать деньги с карты
         boolean transferStatus;
         byte check = 0;
         do {
-            transferStatus = withdrawal(sumTransfer + comission);
+            transferStatus = withdrawal(sumTransfer + commission);
             if (transferStatus) {
-                String transactions = paySystems + " " + numberCard + ": " + "Переведено " + sumTransfer + currency + " Комиссия составила " + comission + currency + " Остаток на карте " + deposit + currency;
+                String transactions = paySystems + " " + numberCard + ": " + "Переведено " + sumTransfer + currency + " Комиссия составила " + commission + currency + " Остаток на карте " + deposit + currency;
                 setTransactions(transactions);
                 System.out.println(transactions);
             } else check++;

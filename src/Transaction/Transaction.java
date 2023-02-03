@@ -151,7 +151,7 @@ public class Transaction {
     }
 
     // Вывести транзакции в строковом человекочитаемом формате
-    public String getStringTransactoin() {
+    public String getStringTransaction() {
         return null;
     }
 }

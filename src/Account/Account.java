@@ -181,10 +181,10 @@ public class Account {
         int countTransferDepositingTransactions = 0;
         // перебрать транзакции перевода и пополнения и добавить их в общий массив в человекочитаемом формате
         for (int idTransaction = 0; idTransaction < countTransferTransactions; idTransaction++) {
-            allTransferDepositingTransactions[countTransferDepositingTransactions++] = transferTransactions[idTransaction].getStringTransactoin();
+            allTransferDepositingTransactions[countTransferDepositingTransactions++] = transferTransactions[idTransaction].getStringTransaction();
         }
         for (int idTransaction = 0; idTransaction < countDepositingTransactions; idTransaction++) {
-            allTransferDepositingTransactions[countTransferDepositingTransactions++] = depositingTransactions[idTransaction].getStringTransactoin();
+            allTransferDepositingTransactions[countTransferDepositingTransactions++] = depositingTransactions[idTransaction].getStringTransaction();
         }
 
         return allTransferDepositingTransactions;

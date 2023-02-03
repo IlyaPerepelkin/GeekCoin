@@ -4,7 +4,7 @@ public class DepositingTransaction extends Transaction {
 
 
     @Override
-    public String getStringTransactoin() {
+    public String getStringTransaction() {
 
         String transaction = getLocalDateTime() + " " + getRecipient() + " " + getTypeOperation() + (!getSender().isEmpty() ? " " + getSender() : "") + ": " + getSum() + getCurrencySymbol() +
                 " Статус: " + getStatusOperation() + " Баланс: " + getBalance() + getCurrencySymbol() + " Комиссия составила: " + getCommission() +

@@ -15,7 +15,7 @@ public class PayTransaction extends Transaction {
 
 
     @Override
-    public String getStringTransactoin() {
+    public String getStringTransaction() {
         String consumer = getNameCard(getFromCard());
 
         String transaction = getLocalDateTime() + " " + consumer + " " + getTypeOperation() + buyProductOrService + ": " + getSum() + getCurrencySymbol()

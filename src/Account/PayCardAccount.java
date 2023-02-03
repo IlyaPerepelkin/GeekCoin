@@ -124,7 +124,7 @@ public class PayCardAccount extends Account {
         int countAllPayTransactions = 0;
         // перебираем транзакции оплаты и добавляем их в массив в человекочитаемом формате
         for (int idTransaction = 0; idTransaction < countPayTransactions; idTransaction++) {
-            allPayTransactions[countAllPayTransactions++] = payTransactions[idTransaction].getStringTransactoin();
+            allPayTransactions[countAllPayTransactions++] = payTransactions[idTransaction].getStringTransaction();
         }
 
         return allPayTransactions;
