@@ -19,7 +19,7 @@ public class Sberbank extends Bank {
         sberPhysicalPersonProfile.setLimitPaymentsTransfersDayInRUB(1000000.00f);
         sberPhysicalPersonProfile.setLimitPaymentsTransfersDayInUSD(50000.00f);
         sberPhysicalPersonProfile.setLimitPaymentsTransfersDayInEUR(3800.00f);
-        sberPhysicalPersonProfile.setLimitTransfersToClientSberWithoutCommissionMonthRUB(50000.00f);
+        sberPhysicalPersonProfile.setLimitTransfersToClientSberWithoutCommissionMonthInRUB(50000.00f);
 
         // установить проценты комиссий
         sberPhysicalPersonProfile.setPercentOfCommissionForPayHousingCommunalServices(2.0f);
@@ -99,5 +99,20 @@ public class Sberbank extends Bank {
         // курс евро к рублю
         if (currency.equals("EUR") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 61.56f;
         return  exchangeRateBank;
+    }
+
+    @Override
+    // Рассчитать комиссию за перевод  клиенту моего банка Сбер
+    public float getCommissionOfTransferToClientBank(SberPhysicalPersonProfile clientProfile, float sum, String fromCurrencyCode) {
+        // по умолчанию комиссия 0
+        float commission = 0;
+        // если сумма перевода в рублях
+        if (fromCurrencyCode.equals("RUB")) {
+            // и если превышен лимит по переводам клиентам Сбера в месяц, то рассчитываем комиссию за перевод
+            boolean exceededLimitTransfersToClientSberWithoutCommissionMonthInRUB = clientProfile.exceededLimitTransfersToClientSberWithoutCommissionMonthInRUB(sum);
+            if (exceededLimitTransfersToClientSberWithoutCommissionMonthInRUB)
+                commission = (sum / 100) * clientProfile.getPercentOfCommissionForTransferInRUB();
+        }
+        return commission;
     }
 }

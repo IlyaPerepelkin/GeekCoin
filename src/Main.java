@@ -40,8 +40,13 @@ public class Main {
 
         I.payBayCard(mySberVisaGold1, 100.00f, "Excursion", "Турция");
 
+        I.transferCard2Card(mySberVisaGold1, mySberVisaGold2, 150.00f);
+
+
+
         // Вывод операции по карте
         I.displayCardTransactions(mySberVisaGold1);
+        I.displayCardTransactions(mySberVisaGold2);
         // Вывод операций по счета
 
         // Вывод всех операций по всем картам и счетам профиля клиента

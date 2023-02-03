@@ -2,24 +2,31 @@ package ClientProfile;
 
 public class SberPhysicalPersonProfile extends PhysicalPersonProfile {
 
-    private float limitTransfersToClientSberWithoutCommissionMonthRUB;
+    private float limitTransfersToClientSberWithoutCommissionMonthInRUB;
 
-    private float totalTransfersToClientSberWithoutCommissionMonthRUB;
+    private float totalTransfersToClientSberWithoutCommissionMonthInRUB;
 
 
-    public float getLimitTransfersToClientSberWithoutCommissionMonthRUB() {
-        return limitTransfersToClientSberWithoutCommissionMonthRUB;
+    public float getLimitTransfersToClientSberWithoutCommissionMonthInRUB() {
+        return limitTransfersToClientSberWithoutCommissionMonthInRUB;
     }
 
-    public void setLimitTransfersToClientSberWithoutCommissionMonthRUB(float limitTransfersToClientSberWithoutCommissionMonthRUB) {
-        this.limitTransfersToClientSberWithoutCommissionMonthRUB = limitTransfersToClientSberWithoutCommissionMonthRUB;
+    public void setLimitTransfersToClientSberWithoutCommissionMonthInRUB(float limitTransfersToClientSberWithoutCommissionMonthInRUB) {
+        this.limitTransfersToClientSberWithoutCommissionMonthInRUB = limitTransfersToClientSberWithoutCommissionMonthInRUB;
     }
 
-    public float getTotalTransfersToClientSberWithoutCommissionMonthRUB() {
-        return totalTransfersToClientSberWithoutCommissionMonthRUB;
+    public float getTotalTransfersToClientSberWithoutCommissionMonthInRUB() {
+        return totalTransfersToClientSberWithoutCommissionMonthInRUB;
     }
 
-    public void setTotalTransfersToClientSberWithoutCommissionMonthRUB(float totalTransfersToClientSberWithoutCommissionMonthRUB) {
-        this.totalTransfersToClientSberWithoutCommissionMonthRUB = totalTransfersToClientSberWithoutCommissionMonthRUB;
+    public void setTotalTransfersToClientSberWithoutCommissionMonthInRUB(float totalTransfersToClientSberWithoutCommissionMonthInRUB) {
+        this.totalTransfersToClientSberWithoutCommissionMonthInRUB = totalTransfersToClientSberWithoutCommissionMonthInRUB;
+    }
+
+
+    //  проверить не превышен ли лимит по переводам клиентам Сбера в месяц
+    public boolean exceededLimitTransfersToClientSberWithoutCommissionMonthInRUB(float sumTransfer) {
+        if (totalTransfersToClientSberWithoutCommissionMonthInRUB + sumTransfer > limitTransfersToClientSberWithoutCommissionMonthInRUB) return true;
+        return false;
     }
 }
