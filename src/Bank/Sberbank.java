@@ -95,9 +95,9 @@ public class Sberbank extends Bank {
         // TODO: Запрос к API банка
         float exchangeRateBank = 0;
         // курс доллара к рублю
-        if (currency.equals("USD") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 60.48f;
+        if (currency.equals("USD") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 60.30f;
         // курс евро к рублю
-        if (currency.equals("EUR") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 61.56f;
+        if (currency.equals("EUR") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 61.50f;
         return  exchangeRateBank;
     }
 

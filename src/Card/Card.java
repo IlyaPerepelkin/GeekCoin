@@ -195,7 +195,7 @@ public class Card {
                 depositingTransaction.setToCard(toCard);
                 depositingTransaction.setSum(sumTransfer);
                 depositingTransaction.setCurrencySymbol(toCard.getPayCardAccount().getCurrencySymbol());
-                depositingTransaction.setTypeOperation("Перевод с карты");
+                depositingTransaction.setTypeOperation("Пополнение с карты");
                 depositingTransaction.setAuthorizationCode(authorizationCode);
 
                 // TODO: если валюта списания и зачисления не совпадают, то конвертировать сумму перевода в валюту  карты зачисления по курсу банка
@@ -235,7 +235,69 @@ public class Card {
 
     // Перевести с карты на счет
     public void transferCard2Account(SberSavingsAccount toAccount, float sumTransfer) {
+        // инициализирвоать транзакцию перевода
+        TransferTransaction transferTransaction = new TransferTransaction();
+        transferTransaction.setLocalDateTime(LocalDateTime.now());
+        transferTransaction.setFromCard((SberVisaGold) this);
+        transferTransaction.setToAccount(toAccount);
+        transferTransaction.setSum(sumTransfer);
+        transferTransaction.setCurrencySymbol(payCardAccount.getCurrencySymbol());
+        transferTransaction.setTypeOperation("Перевод на счет");
 
+        String fromCurrencyCode = payCardAccount.getCurrencyCode();
+        // рассчитить комиссию за перевод на свой или чужой счет моего или другого банка
+        float commission = bank.getCommission(cardHolder, fromCurrencyCode, sumTransfer, toAccount);
+
+        // внести в транзакцию данные о комиссии
+        transferTransaction.setCommission(commission);
+
+        // проверить баланс карты и достаточни ли денег
+        boolean checkBalance = payCardAccount.checkBalance(sumTransfer + commission);
+        if (checkBalance) {
+            // проверить не превышен ли лимит по оплатам и переводам в сутки
+            boolean exceededLimitPaymentsTransfersDay = cardHolder.exceededLimitPaymentsTransfersDay(sumTransfer, fromCurrencyCode);
+            if (!exceededLimitPaymentsTransfersDay) {
+                // если не превышен, то выполняем списание суммы перевода и комиссии со счета карты
+                boolean withdrawalStatus = payCardAccount.withdrawal(sumTransfer + commission);
+                if (withdrawalStatus) {
+                    // внести в транзакцию статус списания
+                    transferTransaction.setStatusOperation("Списание прошло успешно");
+                    // инициализировать транзакцию пополнения
+                    DepositingTransaction depositingTransaction = new DepositingTransaction();
+                    depositingTransaction.setLocalDateTime(LocalDateTime.now());
+                    depositingTransaction.setFromCard((SberVisaGold) this);
+                    depositingTransaction.setToAccount(toAccount);
+                    depositingTransaction.setTypeOperation("Пополнение с карты");
+                    depositingTransaction.setSum(sumTransfer);
+                    depositingTransaction.setCurrencySymbol(toAccount.getCurrencySymbol());
+
+                    // TODO: если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту счета зачисления по курсу банка
+
+                    // и зачислить на счет
+                    boolean topUpStatus = toAccount.topUp(sumTransfer);
+                    if (topUpStatus) {
+                        // внести в транзакцию поплнения статус зачисления
+                        depositingTransaction.setStatusOperation("Пополнение прошло успешно");
+                        // внести в транзакцию пополнения баланс счета после зачисления
+                        depositingTransaction.setBalance(toAccount.getBalance());
+                        // добавить и привязать транзакцию пополнения к счету зачисления
+                        toAccount.addDepositingTransaction(depositingTransaction);
+
+                        // внести в транзакцию перевода, статус перевода
+                        transferTransaction.setStatusOperation("Перевод прошел успешно");
+                        // прибавить сумму перевода к общей сумме совершенных оплат и переводов за сутки, чтобы контролиовать лимиты
+                        getCardHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toAccount);
+
+                        // TODO: и перевести комиссию на счет банка
+                    } else transferTransaction.setStatusOperation("Перевод не прошел");
+                } else transferTransaction.setStatusOperation("Списание не прошло");
+            } else transferTransaction.setStatusOperation("Лимит по сумме операций в день превышен");
+        } else transferTransaction.setStatusOperation("Недостаточно средств");
+
+        // внести в транзакцию баланс карты после списания
+        transferTransaction.setBalance(getPayCardAccount().getBalance());
+        // добавить и привязать транзакцию перевода к счету карты списания
+        payCardAccount.addTransferTransaction(transferTransaction);
     }
 
     // внести наличные на карту

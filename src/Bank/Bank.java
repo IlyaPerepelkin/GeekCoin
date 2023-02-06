@@ -1,5 +1,7 @@
 package Bank;
 
+import Account.SavingsAccount;
+import Account.SberSavingsAccount;
 import ClientProfile.SberPhysicalPersonProfile;
 import Card.SberVisaGold;
 
@@ -127,6 +129,25 @@ public class Bank {
         return commission;
     }
 
+    // Рассчитать комиссию за перевод на свою или чужую карту моего или другого банка
+    public float getCommission(SberPhysicalPersonProfile clientProfile, String fromCurrencyCode, float sum, SberSavingsAccount toAccount) {
+        // запросить мой ли счет, на который выполняется перевод
+        boolean isMyAccount = clientProfile.isClientAccount(toAccount);
+        // запросить моего ли банка счет, на который выполняем перевод
+        boolean isAccountMyBank = isAccountBank(toAccount);
+
+        float commission = 0;
+        // если счет зачисления не мой, но моего банка, то вычисляем комиссию за перевод клиенту моего банка
+        if (!isMyAccount && isAccountMyBank) commission = getCommissionOfTransferToClientBank(clientProfile, sum, fromCurrencyCode);
+        // если счет зачисления не мой и не моего банка, то вычисляем комиссию за перевод клиенту другого банка
+        if (!isMyAccount && !isAccountMyBank) commission = getCommissionOfTransferToClientAnotherBank(clientProfile, sum, fromCurrencyCode);
+
+        // проверить превышен ли лимит  на сумму комиссии. Если да, то ограничим суммму комиссии заданным лимитом
+        commission = exceededLimitCommission(clientProfile, fromCurrencyCode, commission);
+
+        return commission;
+    }
+
     // Проверить превышен ли лимит на сумму комиссии? Если да, то ограничим сумму комиссии лимитом
     private float exceededLimitCommission(SberPhysicalPersonProfile clientProfile, String fromCurrencyCode, float commission) {
         // если комиссия превышает лимит за перевод в рублях, то ограничим комиссию в рублях, то есть максимально возможной суммой комиссии установленной банком
@@ -170,6 +191,12 @@ public class Bank {
     // Проверить карта моего ли банка
     private boolean isCardBank(SberVisaGold card) {
         if (card.getBank().getBankName().equals(getBankName())) return true;
+        return false;
+    }
+
+    // Проверить счет моего ли банка
+    private boolean isAccountBank(SberSavingsAccount account) {
+        if (account.getBank().getBankName().equals(getBankName())) return true;
         return false;
     }
 

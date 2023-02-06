@@ -102,11 +102,27 @@ public class PhysicalPersonProfile extends ClientProfile {
         return false;
     }
 
+    // проверить привязан ли счет к профилю клиента
+    public boolean isClientAccount(SberSavingsAccount account) {
+        for (int idAccount = 0; idAccount < countSavingsAccounts; idAccount++) {
+            if (savingsAccounts[idAccount].equals(account)) return true;
+        }
+        return false;
+    }
+
     // Прибавить сумму перевода на карту к общей сумме совершенных оплат и переводов в сутки, чтобы контролировать лимиты
     public void updateTotalPaymentsTransfersDay(float sum, String fromCurrencyCode, SberVisaGold toCard) {
         // моя ли карта, на которую выполняем перевод
         boolean isMyCard = isClientCard(toCard);
         // если не моя карта, то обновляем общую сумму
         if (!isMyCard) updateTotalPaymentsTransfersDay(sum, fromCurrencyCode);
+    }
+
+    // Прибавить сумму перевода на счет к общей сумме совершенных оплат и переводов в сутки, чтобы контролировать лимиты
+    public void updateTotalPaymentsTransfersDay(float sum, String fromCurrencyCode, SberSavingsAccount toAccount) {
+        // мой ли счета, на который выполняем перевод
+        boolean isMyAccount = isClientAccount(toAccount);
+        // если не мой счет, то обновляем общую сумму
+        if (!isMyAccount) updateTotalPaymentsTransfersDay(sum, fromCurrencyCode);
     }
 }
