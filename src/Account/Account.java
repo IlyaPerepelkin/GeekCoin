@@ -1,6 +1,7 @@
 package Account;
 
 import Bank.Sberbank;
+import Card.SberVisaGold;
 import ClientProfile.SberPhysicalPersonProfile;
 import Transaction.DepositingTransaction;
 import Transaction.TransferTransaction;
@@ -120,6 +121,12 @@ public class Account {
         this.countDepositingTransactions = countDepositingTransactions;
     }
 
+
+    // Перевести со счета на карту
+    public void transferAccount2Card(SberVisaGold toCard, float sumTransfer) {
+
+    }
+
     // пополнить баланс
     public boolean topUp(float sum) {
         setBalance(balance + sum);
@@ -189,4 +196,5 @@ public class Account {
 
         return allTransferDepositingTransactions;
     }
+
 }

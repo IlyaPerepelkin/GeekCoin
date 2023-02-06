@@ -345,12 +345,14 @@ public class Card {
 
     // Пополнить карту с карты
     public void depositingCardFromCard(SberVisaGold fromCard, float sumDepositing) {
-
+        // то есть перевести с карты на карты
+        fromCard.transferCard2Card((SberVisaGold) this, sumDepositing);
     }
 
     // Пополнить карту со счета
     public void depositingCardFromAccount(SberSavingsAccount fromAccount, float sumDepositing) {
-
+        // то есть перевести со счета на карту
+        fromAccount.transferAccount2Card((SberVisaGold)this, sumDepositing);
     }
 
     // Вывести транзакции по счету карты
