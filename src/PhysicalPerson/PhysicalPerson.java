@@ -69,7 +69,6 @@ public class PhysicalPerson {
     }
 
 
-
     public void registerToBank(Sberbank bank) {
         setPhysicalPersonProfile(bank.registerClientProfile(this));
     }
@@ -94,13 +93,16 @@ public class PhysicalPerson {
         card.payByCard(sumPay, byProductOrService, country);
     }
 
-
     public void transferCard2Card(SberVisaGold fromCard, SberVisaGold toCard, float sumTransfer) {
         fromCard.transferCard2Card(toCard, sumTransfer);
     }
 
     public void transferCard2Account(SberVisaGold fromCard, SberSavingsAccount toAccount, float sumTransfer) {
         fromCard.transferCard2Account(toAccount, sumTransfer);
+    }
+
+    public void transferAccount2Card(SberSavingsAccount fromAccount, SberVisaGold toCard, float sumTransfer) {
+        fromAccount.transferAccount2Card(toCard, sumTransfer);
     }
 
     public void depositingCardFromCard(SberVisaGold toCard, SberVisaGold fromCard, float sumDepositing) {
