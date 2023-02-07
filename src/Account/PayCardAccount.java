@@ -63,6 +63,7 @@ public class PayCardAccount extends Account {
         cards[countCards++] = card;
     }
 
+    // Блокировать сумму на счете карты
     public boolean blockSum(float sum) {
         // сохранить сумму на счете как зарезервированную
         blockedSum += sum;

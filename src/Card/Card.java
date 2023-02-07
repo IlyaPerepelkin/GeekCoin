@@ -43,6 +43,7 @@ public class Card {
         return payCardAccount;
     }
 
+    // Привязываем платежный счет к карте
     public void setPayCardAccount(SberPayCardAccount payCardAccount) {
         this.payCardAccount = payCardAccount;
     }
@@ -217,6 +218,7 @@ public class Card {
                     getCardHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toCard);
 
                     // TODO: и перевести комиссию на счет банка
+
                 } else transferTransaction.setStatusOperation("Перевод не прошел");
             } else transferTransaction.setStatusOperation("Списание не прошло");
         } else {
@@ -288,6 +290,7 @@ public class Card {
                         getCardHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toAccount);
 
                         // TODO: и перевести комиссию на счет банка
+
                     } else transferTransaction.setStatusOperation("Перевод не прошел");
                 } else transferTransaction.setStatusOperation("Списание не прошло");
             } else transferTransaction.setStatusOperation("Лимит по сумме операций в день превышен");
@@ -338,7 +341,7 @@ public class Card {
         // внести в транзакцию баланс карты после пополнения
         depositingTransaction.setBalance(getPayCardAccount().getBalance());
 
-        // TODO: добавить и привязать тразакцию пополнения к счету карты зачисления
+        // добавить и привязать тразакцию пополнения к счету карты зачисления
         payCardAccount.addDepositingTransaction(depositingTransaction);
     }
 
@@ -358,88 +361,6 @@ public class Card {
     public void displayCardTransactions () {
         payCardAccount.displayAccountTransactions();
     }
-
-/*
-    public void pay(float sumPay) {
-        // списать сумму покупки с карты
-        boolean payStatus;
-        byte errorTransaction = 0;
-        do {
-            payStatus = withdrawal(sumPay);
-            if (payStatus) { // payStatus == true
-                String transactions = paySystems + " " + numberCard + ": " + "Покупка " + sumPay + currency + " Остаток на карте " + deposit + currency;
-                setTransactions(transactions);
-                // System.out.println(transactions);
-            } else errorTransaction++;
-        } while (!payStatus && errorTransaction < 3);
-
-         TODO: перевести сумму на счет магазина
-
-    }
-
-    public void transfer(float sumTransfer) {
-        float commission;
-        if (sumTransfer < 50000) {
-            commission = 0.0f;
-        } else {
-            commission = sumTransfer * 0.01f;
-        }
-        // списать деньги с карты
-        boolean transferStatus;
-        byte check = 0;
-        do {
-            transferStatus = withdrawal(sumTransfer + commission);
-            if (transferStatus) {
-                String transactions = paySystems + " " + numberCard + ": " + "Переведено " + sumTransfer + currency + " Комиссия составила " + commission + currency + " Остаток на карте " + deposit + currency;
-                setTransactions(transactions);
-                System.out.println(transactions);
-            } else check++;
-        } while (!transferStatus && check <3);
-    }
-
-    public void depositing(float sumDepositing)  {
-        // внесение денег на карту
-        deposit = deposit + sumDepositing;
-        String transactions = paySystems + " " + numberCard + ": " + "Внесено " + sumDepositing + currency + " Остаток на карте " + deposit + currency;
-        setTransactions(transactions);
-        System.out.println(transactions);
-    }
-
-    private boolean withdrawal(float sum) {
-        if (deposit >= sum) {
-            deposit = deposit - sum;
-            return true;
-        } else {
-            String transactions = paySystems + " " + numberCard + ": " + "Недостаточно денег " + deposit + currency;
-            setTransactions(transactions);
-            return false;
-        }
-    }
-        // новый вид добавления денег на карту
-
-        public boolean plusMoney(float sum) {
-            if (sum > 0) {
-                deposit = deposit + sum;
-                return true;
-            } else {
-                String transactions = paySystems + " " + numberCard + ": " + "Операция недоступна" + deposit + currency;
-                setTransactions(transactions);
-                return false;
-            }
-        }
-         public void pay2 (float sumPay2) {
-             boolean payStatus;
-             byte check = 0;
-             do {
-                 payStatus = plusMoney(sumPay2);
-                 if (payStatus) { // payStatus == true
-                     String transactions = paySystems + " " + numberCard + ": " + "Карта пополнена на " + sumPay2 + " Остаток на карте " + deposit + currency;
-                     setTransactions(transactions);
-                     System.out.println(transactions);
-                 } else check++;
-             } while (!payStatus && check <3);
-         }
-*/
 
 }
 

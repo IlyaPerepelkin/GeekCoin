@@ -25,7 +25,7 @@ public class CardMastercard extends Card {
     public float convertToCurrencyExchangeRatePaySystem(float sum, String fromCurrencyCode, String toBillingCurrencyCode) {
         // запросим курс валюты покупки к курсу валюты биллинга (к $ или к €) по курсу платежнйо системы Mastercard
         float exchangeRateCurrencyToBillingCurrency = getExchangeRatePaySystem(fromCurrencyCode, toBillingCurrencyCode);
-        // поулчаем сумму покупки в валюте биллинга умножив сумму покупки на обменный курс валюты биллинга ($)
+        // поулчаем сумму покупки в валюте биллинга умножив сумму покупки на обменный курс валюты биллинга ($ или к €)
         float sumInBillingCurrency = sum * exchangeRateCurrencyToBillingCurrency;
 
         // возможна двойная конвертация через $ и  затем еще €
