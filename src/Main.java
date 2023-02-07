@@ -44,10 +44,12 @@ public class Main {
 
         I.transferCard2Account(mySberVisaGold1, mySberSavingsAccount1, 95.00f);
 
+        I.transferAccount2Card(mySberSavingsAccount1, mySberVisaGold1, 15.00f);
+
         I.depositingCardFromCard(mySberVisaGold1, mySberVisaGold2, 145.00f);
         I.depositingCardFromAccount(mySberVisaGold1, mySberSavingsAccount1, 75.00f);
 
-        I.transferAccount2Card(mySberSavingsAccount1, mySberVisaGold1, 15.00f);
+        I.depositingAccountFromCard(mySberSavingsAccount1, mySberVisaGold1, 350.00f);
 
         System.out.println("Вывод операции по карте " + mySberVisaGold1.getNumberCard());
         I.displayCardTransactions(mySberVisaGold1);

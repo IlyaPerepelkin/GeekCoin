@@ -122,6 +122,7 @@ public class Account {
         this.countDepositingTransactions = countDepositingTransactions;
     }
 
+    
     // Перевести со счета на карту
     public void transferAccount2Card(SberVisaGold toCard, float sumTransfer) {
         // TODO: инициализировать транзакцию перевода
@@ -194,6 +195,12 @@ public class Account {
 
         // TODO: добавить и привязать транзакцию перевода к счету спичания
         addTransferTransaction(transferTransaction);
+    }
+
+    // Пополнить счет с карты
+    public void depositingAccountFromCard(SberVisaGold fromCard, float sumDepositing) {
+        // то есть перевести с карты на счет
+        fromCard.transferCard2Account((SberSavingsAccount) this, sumDepositing);
     }
 
     // пополнить баланс
