@@ -130,9 +130,9 @@ public class ClientProfile {
     // обнулять сумму оплаты и переводов каждые сутки
     public void zeroingTotalPaymentsTransfersDay() {
         // TODO: если 00:00 каждого дня, то
-        totalPaymentsTransfersDayInRUB = 0;
-        totalPaymentsTransfersDayInEUR = 0;
-        totalPaymentsTransfersDayInUSD = 0;
+            totalPaymentsTransfersDayInRUB = 0;
+            totalPaymentsTransfersDayInEUR = 0;
+            totalPaymentsTransfersDayInUSD = 0;
 
     }
 

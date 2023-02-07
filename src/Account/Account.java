@@ -183,7 +183,7 @@ public class Account {
                         // прибавить сумму перевода к общей сумме совершенных оплат и переводов за сутки, чтобы контролировать лимиты
                         getAccountHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toCard);
 
-                        // перевести комиссию на счет банка
+                        // TODO: перевести комиссию на счет банка
                     } else transferTransaction.setStatusOperation("Перевод не прошел");
                 } else transferTransaction.setStatusOperation("Списание не прошло");
             } else transferTransaction.setStatusOperation("Превышен лимит по сумме операций в сутки");
