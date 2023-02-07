@@ -8,7 +8,6 @@ import Transaction.DepositingTransaction;
 import Transaction.PayTransaction;
 import Transaction.TransferTransaction;
 
-
 import java.time.LocalDateTime;
 
 public class Card {
