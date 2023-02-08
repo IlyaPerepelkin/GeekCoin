@@ -128,6 +128,7 @@ public class PhysicalPersonProfile extends ClientProfile {
         if (!isMyAccount) updateTotalPaymentsTransfersDay(sum, fromCurrencyCode);
     }
 
+    @Override
     // Вывод всех операций по всем картам и счетам профиля физического лица
     public void displayProfileTransactions() {
         System.out.println("Платежей и переводов за текущие сутки выполнено на сумму: " + getTotalPaymentsTransfersDayInRUB() +
