@@ -4,6 +4,7 @@ import Card.SberVisaGold;
 import PhysicalPerson.PhysicalPerson;
 
 public class Main {
+
     public static void main(String[] args) {
 
         PhysicalPerson I = new PhysicalPerson();
@@ -51,6 +52,7 @@ public class Main {
 
         I.depositingAccountFromCard(mySberSavingsAccount1, mySberVisaGold1, 350.00f);
 
+        /*
         System.out.println("Вывод операции по карте " + mySberVisaGold1.getNumberCard());
         I.displayCardTransactions(mySberVisaGold1);
 
@@ -62,8 +64,11 @@ public class Main {
 
         System.out.println("\nВывод операций по счету " + mySberSavingsAccount1.getNumberAccount());
         I.displayAccountTransactions(mySberSavingsAccount1);
+        */
 
-        // Вывод всех операций по всем картам и счетам профиля клиента
+        // Вывод всех операций по всем картам и счетам профиля клиента с сортировкой по дате и времени
+        I.displayProfileTransactions();
+        friend.displayProfileTransactions();
 
     }
 }

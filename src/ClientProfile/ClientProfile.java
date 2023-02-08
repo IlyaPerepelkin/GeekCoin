@@ -133,7 +133,6 @@ public class ClientProfile {
             totalPaymentsTransfersDayInRUB = 0;
             totalPaymentsTransfersDayInEUR = 0;
             totalPaymentsTransfersDayInUSD = 0;
-
     }
 
     // Проверить не превышен ли лимит по оплатам и переводам в сутки
@@ -149,5 +148,10 @@ public class ClientProfile {
         if (currencyCode.equals("RUB")) totalPaymentsTransfersDayInRUB += sum;
         if (currencyCode.equals("USD")) totalPaymentsTransfersDayInUSD += sum;
         if (currencyCode.equals("EUR")) totalPaymentsTransfersDayInEUR += sum;
+    }
+
+    // Вывод всех операций по всем картам и счетам профиля клиента. Переопределим в дочерних классах
+    public void displayProfileTransactions() {
+
     }
 }

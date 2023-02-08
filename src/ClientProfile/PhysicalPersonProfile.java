@@ -5,6 +5,8 @@ import Account.SberSavingsAccount;
 import Card.SberVisaGold;
 import PhysicalPerson.PhysicalPerson;
 
+import java.util.Arrays;
+
 public class PhysicalPersonProfile extends ClientProfile {
 
     private PhysicalPerson physicalPerson;
@@ -124,5 +126,54 @@ public class PhysicalPersonProfile extends ClientProfile {
         boolean isMyAccount = isClientAccount(toAccount);
         // если не мой счет, то обновляем общую сумму
         if (!isMyAccount) updateTotalPaymentsTransfersDay(sum, fromCurrencyCode);
+    }
+
+    // Вывод всех операций по всем картам и счетам профиля физического лица
+    public void displayProfileTransactions() {
+        System.out.println("Платежей и переводов за текущие сутки выполнено на сумму: " + getTotalPaymentsTransfersDayInRUB() +
+                "₽ Доступный лимит: " + (getLimitPaymentsTransfersDayInRUB() - getTotalPaymentsTransfersDayInRUB()) + "₽ из " +
+                getLimitPaymentsTransfersDayInRUB() + "₽");
+
+        // для подсчета всех транзакций по всем счетам и картам клиента
+        int countAllTransactions = 0;
+
+        // подсчитать общее количество всех транзакций по платежным счетам(то есть картам)
+        for (int idPayCardAccount = 0; idPayCardAccount < countPayCardAccounts; idPayCardAccount++) {
+            countAllTransactions += payCardAccounts[idPayCardAccount].getAllPayCardAccountTransactions().length;
+        }
+
+        // и общее количество всех транзакций по сберегательным счетам
+        for (int idSavingsAccount = 0; idSavingsAccount < countSavingsAccounts; idSavingsAccount++) {
+            countAllTransactions += savingsAccounts[idSavingsAccount].getAllTransferDepositingTransactions().length;
+        }
+
+        // и объявить массив всех транзакций профиля клиента длинной равной количеству всех транзакций
+        String[] allTransactions = new String[countAllTransactions];
+
+        // теперь нужно перебрать платежные счета (карты)
+        int destPos = 0;
+        for (int idPayCardAccount = 0; idPayCardAccount < countPayCardAccounts; idPayCardAccount++) {
+            String[] allPayCardAccountTransactions = payCardAccounts[idPayCardAccount].getAllPayCardAccountTransactions();
+            System.arraycopy(allPayCardAccountTransactions, 0, allTransactions, destPos, allPayCardAccountTransactions.length);
+            destPos += allPayCardAccountTransactions.length;
+        }
+
+        // и перебрать сберегательные счета
+        for (int idSavingsAccount = 0; idSavingsAccount < countSavingsAccounts; idSavingsAccount++) {
+            String[] allTransferDepositingTransactions = savingsAccounts[idSavingsAccount].getAllTransferDepositingTransactions();
+            System.arraycopy(allTransferDepositingTransactions, 0, allTransactions, destPos, allTransferDepositingTransactions.length);
+            destPos += allTransferDepositingTransactions.length;
+        }
+
+        // далее нужно отсортировать все транзакции по дате и времени
+        Arrays.sort(allTransactions);
+
+        // и осталось вывести все транзакции
+        for (int idTransaction = 0; idTransaction < countAllTransactions; idTransaction++) {
+            System.out.println("#" + (idTransaction + 1) + " " + allTransactions[idTransaction]);
+        }
+
+        System.out.println();
+
     }
 }
