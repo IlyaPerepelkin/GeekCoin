@@ -91,7 +91,7 @@ public class PhysicalPersonProfile extends ClientProfile {
         savingsAccounts[countSavingsAccounts++] = savingsAccount;
     }
 
-    // Привязать карут к прфоилю клиента
+    // Привязать карту к профилю клиента
     public void addCard(SberVisaGold card) {
         cards[countCards++] = card;
     }

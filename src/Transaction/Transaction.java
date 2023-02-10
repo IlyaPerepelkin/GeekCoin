@@ -150,7 +150,7 @@ public class Transaction {
         return account.getBank().getBankName() + "Счет ••" + account.getNumberAccount().substring(16);
     }
 
-    // Вывести транзакции в строковом человекочитаемом формате
+    // Вывести транзакции в строковом человеко-читаемом формате
     public String getStringTransaction() {
         return null;
     }

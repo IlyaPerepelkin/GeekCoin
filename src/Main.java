@@ -1,5 +1,7 @@
 import Account.SberSavingsAccount;
 import Bank.Sberbank;
+import Card.Card;
+import Card.CardVisa;
 import Card.SberVisaGold;
 import PhysicalPerson.PhysicalPerson;
 
@@ -37,7 +39,7 @@ public class Main {
 
         I.depositingCash2Card(mySberVisaGold1, 7600.50f);
 
-        I.payBayCard(mySberVisaGold1, 100.05f, "ЖКХ");
+        I.payBayCard(mySberVisaGold1, 100.50f, "ЖКХ");
         I.payBayCard(mySberVisaGold1, 110.00f, "Excursion", "Турция");
 
         I.transferCard2Card(mySberVisaGold1, mySberVisaGold2, 250.00f);
@@ -69,6 +71,6 @@ public class Main {
         // Вывод всех операций по всем картам и счетам профиля клиента с сортировкой по дате и времени
         I.displayProfileTransactions();
         friend.displayProfileTransactions();
-
+        
     }
 }

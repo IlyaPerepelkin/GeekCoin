@@ -61,7 +61,7 @@ public class Sberbank extends Bank {
 
     // Открыть платежный счет
     private SberPayCardAccount openAccount(SberPhysicalPersonProfile clientProfile, SberPayCardAccount account, String currencyCode) {
-        // установить свойства платежнего счета
+        // установить свойства платежного счета
         account.setBank(this);
         account.setNumberAccount(generateNumberAccount());
         account.setAccountHolder(clientProfile);
@@ -102,7 +102,7 @@ public class Sberbank extends Bank {
     }
 
     @Override
-    // Рассчитать комиссию за перевод  клиенту моего банка Сбер
+    // Рассчитать комиссию за перевод клиенту моего банка Сбер
     public float getCommissionOfTransferToClientBank(SberPhysicalPersonProfile clientProfile, float sum, String fromCurrencyCode) {
         // по умолчанию комиссия 0
         float commission = 0;

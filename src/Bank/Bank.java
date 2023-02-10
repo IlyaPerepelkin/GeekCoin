@@ -43,7 +43,7 @@ public class Bank {
         clientProfiles[countClientProfiles++] = clientProfile;
     }
 
-    // Сгенирировать номер карты 3546 0957 9843 7845
+    // Сгенерировать номер карты 3546 0957 9843 7845
     public String generateNumberCard() {
         byte lengthNumberCard = 20;
         StringBuffer numberCardBuffer = new StringBuffer();
@@ -54,7 +54,7 @@ public class Bank {
         return numberCardBuffer.toString();
     }
 
-    // Сгенирировать номер 3546709579984317845
+    // Сгенерировать номер 3546709579984317845
     public String generateNumberAccount() {
         byte lengthNumberAccount = 20;
         StringBuffer numberAccountBuffer = new StringBuffer();
@@ -64,7 +64,7 @@ public class Bank {
         return numberAccountBuffer.toString();
     }
 
-    //  Провести авторизацию и выдать разрешение на проведенеи операции
+    //  Провести авторизацию и выдать разрешение на проведение операции
     public String authorization(SberVisaGold card, String typeOperation, float sum, float commission) {
         // Сгенерировать код авторизации
         String authorizationCode = generateAuthorizationCode();
@@ -91,7 +91,7 @@ public class Bank {
             }
         } else authorizationMessage = "Failed: Карта заблокирована";
 
-        // вернуть код и сообщение о статсу авторизации
+        // вернуть код и сообщение о статусе авторизации
         return authorizationCode + "@" + authorizationMessage;
     }
 
@@ -110,7 +110,7 @@ public class Bank {
         return commission;
     }
 
-    // Рассчитать комиссию за перевод на свою или чужую карту моего илид ругого банка
+    // Рассчитать комиссию за перевод на свою или чужую карту моего или другого банка
     public float getCommission(SberPhysicalPersonProfile clientProfile, String fromCurrencyCode, float sum, SberVisaGold toCard) {
         // запросить моя ли карта, на которую выполняется перевод
         boolean isMyCard = clientProfile.isClientCard(toCard);
@@ -123,7 +123,7 @@ public class Bank {
         // если карта зачисления не моя и не моего банка, то вычисляем комиссию за перевод клиенту другого банка
         if (!isMyCard && !isCardMyBank) commission = getCommissionOfTransferToClientAnotherBank(clientProfile, sum, fromCurrencyCode);
 
-    // проверить превышен ли лимит  на сумму комиссии. Если да, то ограничим суммму комиссии заданным лимитом
+    // Проверить превышен ли лимит на сумму комиссии. Если да, то ограничим сумму комиссии заданным лимитом
         commission = exceededLimitCommission(clientProfile, fromCurrencyCode, commission);
 
         return commission;
@@ -142,7 +142,7 @@ public class Bank {
         // если счет зачисления не мой и не моего банка, то вычисляем комиссию за перевод клиенту другого банка
         if (!isMyAccount && !isAccountMyBank) commission = getCommissionOfTransferToClientAnotherBank(clientProfile, sum, fromCurrencyCode);
 
-        // проверить превышен ли лимит  на сумму комиссии. Если да, то ограничим суммму комиссии заданным лимитом
+        // Проверить превышен ли лимит на сумму комиссии. Если да, то ограничим сумму комиссии заданным лимитом
         commission = exceededLimitCommission(clientProfile, fromCurrencyCode, commission);
 
         return commission;
@@ -152,7 +152,7 @@ public class Bank {
     private float exceededLimitCommission(SberPhysicalPersonProfile clientProfile, String fromCurrencyCode, float commission) {
         // если комиссия превышает лимит за перевод в рублях, то ограничим комиссию в рублях, то есть максимально возможной суммой комиссии установленной банком
         if (fromCurrencyCode.equals("RUB") && commission > clientProfile.getLimitCommissionTransferInRUB()) commission = clientProfile.getLimitCommissionTransferInRUB();
-        // иначе если комиссия превышает лимит за перевод в $,то ограничим комиссию лимитом в $
+        // иначе если комиссия превышает лимит за перевод в $, то ограничим комиссию лимитом в $
         else if  (fromCurrencyCode.equals("USD") && commission > clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency())
             commission = clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency();
         // иначе если другая валюта, то по аналоги
@@ -170,12 +170,12 @@ public class Bank {
         return commission;
     }
 
-    // Рассчитать комиссию за перевод  клиенту моего банка. Переопределим метод в дочерних классах конкретных банков
+    // Рассчитать комиссию за перевод клиенту моего банка. Переопределим метод в дочерних классах конкретных банков
     public float getCommissionOfTransferToClientBank(SberPhysicalPersonProfile clientProfile, float sum, String fromCurrencyCode) {
         return 0;
     }
 
-    // Рассчитать коммиссию за перевод клиенту другого банка
+    // Рассчитать комиссию за перевод клиенту другого банка
     private float getCommissionOfTransferToClientAnotherBank(SberPhysicalPersonProfile clientProfile, float sum, String fromCurrencyCode) {
         // можно не инициализировать, так как в любом случае будет результат благодаря ветке else
         float commission;
@@ -216,13 +216,13 @@ public class Bank {
         return sumInCardCurrency;
     }
 
-    //  Предоставить обменный курс валют банка. Переопределим в каждои банке, так как у каждого банка свой курс
+    //  Предоставить обменный курс валют банка. Переопределим в каждом банке, так как у каждого банка свой курс
     public float getExchangeRateBank(String currency, String currencyExchangeRate) {
         return 0;
     }
 
     public float round(float sum) {
-        return Math.round(sum * 100 / 100);
+        return Math.round(sum * 100) / 100;
     }
 
 

@@ -7,9 +7,9 @@ public class CardVisa extends Card {
     @Override
     // Запросим код валюты платежной системы
     public String getCurrencyCodePaySystem(String country) {
-        // по умолчанию null, потому что не во всех странах может использоватся данная платежная система
+        // по умолчанию null, потому что не во всех странах может использоваться данная платежная система
         String billingCurrencyCode = null;
-        // если покупка в Турции то валюта биллинга в $
+        // если покупка в Турции, то валюта биллинга в $
         if (country.equalsIgnoreCase("Турция")) billingCurrencyCode = currencyCodePaySystemUSD;
 
         return billingCurrencyCode;
@@ -18,9 +18,9 @@ public class CardVisa extends Card {
     @Override
     // Конвертировать в валюту по курсу платежной системы
     public float convertToCurrencyExchangeRatePaySystem(float sum, String fromCurrencyCode, String toBillingCurrencyCode) {
-        // запросим курс валюты покупки к курсу валюты биллинга ($) по курсу платежнйо системы VISA
+        // запросим курс валюты покупки к курсу валюты биллинга ($) по курсу платежной системы VISA
         float exchangeRateCurrencyToBillingCurrency = getExchangeRatePaySystem(fromCurrencyCode, toBillingCurrencyCode);
-        // поулчаем сумму покупки в валюте биллинга умножив сумму покупки на обменный курс валюты биллинга ($)
+        // получаем сумму покупки в валюте биллинга умножив сумму покупки на обменный курс валюты биллинга ($)
         float sumInBillingCurrency = sum * exchangeRateCurrencyToBillingCurrency;
 
         return sumInBillingCurrency;

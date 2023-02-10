@@ -72,7 +72,7 @@ public class Account {
         if (currencyCode.equals("RUB")) this.currencySymbol = '₽';
         else if (currencyCode.equals("USD")) this.currencySymbol = '$';
         else if (currencyCode.equals("EUR")) this.currencySymbol = '€';
-        else System.out.println("Недопусимый код валюты: " + currencyCode);
+        else System.out.println("Недопустимый код валюты: " + currencyCode);
     }
 
     public float getBalance() {
@@ -84,7 +84,7 @@ public class Account {
             this.balance = balance;
             return true;
         } else {
-            System.out.println("Отрицательное недопустимое значенеи баланса: " + balance);
+            System.out.println("Отрицательное недопустимое значение баланса: " + balance);
             return false;
         }
     }
@@ -171,7 +171,7 @@ public class Account {
                         // внести в транзакцию пополнения статус пополнения
                         depositingTransaction.setStatusOperation("Пополнение прошло успешно");
 
-                        // внести в транзакцию баланс карты после пополнния
+                        // внести в транзакцию баланс карты после пополнения
                         depositingTransaction.setBalance(toCard.getPayCardAccount().getBalance());
 
                         // добавить и привязать транзакцию пополнения к счету карты зачисления
@@ -192,7 +192,7 @@ public class Account {
         // внести в транзакцию перевода баланс карты после списания
         transferTransaction.setBalance(getBalance());
 
-        // добавить и привязать транзакцию перевода к счету спичания
+        // добавить и привязать транзакцию перевода к счету списания
         addTransferTransaction(transferTransaction);
     }
 
@@ -243,10 +243,10 @@ public class Account {
 
     // Вывести транзакции по счету
     public void displayAccountTransactions() {
-        // сформировать общий массив транзакций перевода и пополнения в человекочитаемом формате
+        // сформировать общий массив транзакций перевода и пополнения в человеко читаемом формате
         String[] allTransferDepositingTransactions = getAllTransferDepositingTransactions();
 
-        // отсротировать транзакции по дате
+        // отсортировать транзакции по дате
         Arrays.sort(allTransferDepositingTransactions);
 
         // вывести все транзакции
@@ -257,11 +257,11 @@ public class Account {
     }
 
     public String[] getAllTransferDepositingTransactions() {
-        // объявить массив транзакций перевода и пополения по счету длиной равной общему количеству транзакций
+        // объявить массив транзакций перевода и пополнения по счету длиной равной общему количеству транзакций
         String[] allTransferDepositingTransactions = new String[countTransferTransactions + countDepositingTransactions];
 
         int countTransferDepositingTransactions = 0;
-        // перебрать транзакции перевода и пополнения и добавить их в общий массив в человекочитаемом формате
+        // перебрать транзакции перевода и пополнения и добавить их в общий массив в человеко читаемом формате
         for (int idTransaction = 0; idTransaction < countTransferTransactions; idTransaction++) {
             allTransferDepositingTransactions[countTransferDepositingTransactions++] = transferTransactions[idTransaction].getStringTransaction();
         }

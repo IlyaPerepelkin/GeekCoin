@@ -66,7 +66,7 @@ public class SberPhysicalPersonProfile extends PhysicalPersonProfile {
                 (getLimitTransfersToClientSberWithoutCommissionMonthInRUB() - getTotalTransfersToClientSberWithoutCommissionMonthInRUB()) + "₽ из " +
                 getLimitTransfersToClientSberWithoutCommissionMonthInRUB() + "₽");
 
-        // и вызываем родительскую верисю метода
+        // и вызываем родительскую версию метода
         super.displayProfileTransactions();
     }
 }

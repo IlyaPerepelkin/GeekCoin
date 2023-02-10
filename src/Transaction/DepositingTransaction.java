@@ -8,7 +8,7 @@ public class DepositingTransaction extends Transaction {
 
         String transaction = getLocalDateTime() + " " + getRecipient() + " " + getTypeOperation() + (!getSender().isEmpty() ? " " + getSender() : "") + ": " + getSum() + getCurrencySymbol() +
                 " Статус: " + getStatusOperation() + " Баланс: " + getBalance() + getCurrencySymbol() + " Комиссия составила: " + getCommission() +
-                getCurrencySymbol() + (getAuthorizationCode() != null ? " Код автаризации: " + getAuthorizationCode() : "");
+                getCurrencySymbol() + (getAuthorizationCode() != null ? " Код авторизации: " + getAuthorizationCode() : "");
 
         return transaction;
     }

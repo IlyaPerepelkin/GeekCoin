@@ -78,7 +78,7 @@ public class Card {
         payTransaction.setTypeOperation("Покупка ");
         payTransaction.setBuyProductOrService(buyProductOrService);
 
-        // рассчитать коммисию при оплате
+        // рассчитать комиссию при оплате
         float commission = bank.getCommission(cardHolder, sumPay, buyProductOrService);
 
         // внести в транзакции данные о комиссии
@@ -96,7 +96,7 @@ public class Card {
         // извлекаем статус из сообщения авторизации
         String authorizationStatus = authorizationMessage.substring(0, authorizationMessage.indexOf(":"));
         // если разрешение получено, то выполняем списание зарезервированной суммы и комиссии со счета карты
-        if (authorizationMessage.equalsIgnoreCase("Success")) {
+        if (authorizationStatus.equalsIgnoreCase("Success")) {
             boolean writeOffBlockedSum = payCardAccount.writeOffBlockedSum(sumPay + commission);
             if (writeOffBlockedSum) {
                 // внести в транзакцию статус оплаты
@@ -131,7 +131,7 @@ public class Card {
         // если валюты совпадают, то конвертация не выполняется
         float sumPayInBillingCurrency = !currencyPayCode.equals(billingCurrencyCode) ? convertToCurrencyExchangeRatePaySystem(sumPay, currencyPayCode, billingCurrencyCode) : sumPay;
 
-        // если валюта биллинга и валюта счета карты не свопадают, то конвертируем сумму покупки в валюте биллинга в валюту карты по курсу нашего банка
+        // если валюта биллинга и валюта счета карты не совпадают, то конвертируем сумму покупки в валюте биллинга в валюту карты по курсу нашего банка
         // если валюты совпадают, то конвертация не выполняется
         String cardCurrencyCode = getPayCardAccount().getCurrencyCode();
         float sumPayInCardCurrency = !billingCurrencyCode.equals(cardCurrencyCode) ? bank.convertToCurrencyExchangeRateBank(sumPayInBillingCurrency, billingCurrencyCode, cardCurrencyCode) : sumPayInBillingCurrency;
@@ -145,13 +145,13 @@ public class Card {
     }
 
     // Конвертировать в валюту по курсу платежной системы
-    // Переопределим в дочерних классах, потмоу что у платежных систем разные алгоритмы концертации
+    // переопределим в дочерних классах, потому что у платежных систем разные алгоритмы конвертации
     public float convertToCurrencyExchangeRatePaySystem(float sum, String fromCurrencyCode, String toBillingCurrencyCode) {
         return 0;
     }
 
     // Запросим код валюты платежной системы
-    // Переопределим в дочерних классах, потому что нет общего алгоритма,  так как у платежных систем разные валюты
+    // переопределим в дочерних классах, потому что нет общего алгоритма, так как у платежных систем разные валюты
     public String getCurrencyCodePaySystem(String country) {
         return null;
     }
@@ -236,7 +236,7 @@ public class Card {
 
     // Перевести с карты на счет
     public void transferCard2Account(SberSavingsAccount toAccount, float sumTransfer) {
-        // инициализирвоать транзакцию перевода
+        // инициализировать транзакцию перевода
         TransferTransaction transferTransaction = new TransferTransaction();
         transferTransaction.setLocalDateTime(LocalDateTime.now());
         transferTransaction.setFromCard((SberVisaGold) this);
@@ -246,13 +246,13 @@ public class Card {
         transferTransaction.setTypeOperation("Перевод на счет");
 
         String fromCurrencyCode = payCardAccount.getCurrencyCode();
-        // рассчитить комиссию за перевод на свой или чужой счет моего или другого банка
+        // рассчитать комиссию за перевод на свой или чужой счет моего или другого банка
         float commission = bank.getCommission(cardHolder, fromCurrencyCode, sumTransfer, toAccount);
 
         // внести в транзакцию данные о комиссии
         transferTransaction.setCommission(commission);
 
-        // проверить баланс карты и достаточни ли денег
+        // проверить баланс карты и достаточно ли денег
         boolean checkBalance = payCardAccount.checkBalance(sumTransfer + commission);
         if (checkBalance) {
             // проверить не превышен ли лимит по оплатам и переводам в сутки
@@ -277,7 +277,7 @@ public class Card {
                     // и зачислить на счет
                     boolean topUpStatus = toAccount.topUp(sumTransfer);
                     if (topUpStatus) {
-                        // внести в транзакцию поплнения статус зачисления
+                        // внести в транзакцию пополнения статус зачисления
                         depositingTransaction.setStatusOperation("Пополнение прошло успешно");
                         // внести в транзакцию пополнения баланс счета после зачисления
                         depositingTransaction.setBalance(toAccount.getBalance());
@@ -286,7 +286,7 @@ public class Card {
 
                         // внести в транзакцию перевода, статус перевода
                         transferTransaction.setStatusOperation("Перевод прошел успешно");
-                        // прибавить сумму перевода к общей сумме совершенных оплат и переводов за сутки, чтобы контролиовать лимиты
+                        // прибавить сумму перевода к общей сумме совершенных оплат и переводов за сутки, чтобы контролировать лимиты
                         getCardHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toAccount);
 
                         // TODO: и перевести комиссию на счет банка
@@ -312,11 +312,11 @@ public class Card {
         depositingTransaction.setCurrencySymbol(payCardAccount.getCurrencySymbol());
         depositingTransaction.setTypeOperation("Внесение наличных");
 
-        // запрсоить разрешение банка на проведение операции с проверкой статуса карты
+        // запросить разрешение банка на проведение операции с проверкой статуса карты
         String authorization = bank.authorization((SberVisaGold) this, depositingTransaction.getTypeOperation(), sumDepositing, 0);
         // извлекаем массив строк разделяя их символом @
         String[] authorizationData = authorization.split("@");
-        // извлекаем код авторазации
+        // извлекаем код авторизации
         String authorizationCode = authorizationData[0];
         // вносим в транзакцию код авторизации
         depositingTransaction.setAuthorizationCode(authorizationCode);
@@ -341,7 +341,7 @@ public class Card {
         // внести в транзакцию баланс карты после пополнения
         depositingTransaction.setBalance(getPayCardAccount().getBalance());
 
-        // добавить и привязать тразакцию пополнения к счету карты зачисления
+        // добавить и привязать транзакцию пополнения к счету карты зачисления
         payCardAccount.addDepositingTransaction(depositingTransaction);
     }
 

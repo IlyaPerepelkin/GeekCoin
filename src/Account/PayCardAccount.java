@@ -86,10 +86,10 @@ public class PayCardAccount extends Account {
     @Override
     // Вывести транзакции по счету
     public void displayAccountTransactions() {
-        // сформировать общий массив транзакций по платежному счету в человекочитаемом формате
+        // сформировать общий массив транзакций по платежному счету в человеко-читаемом формате
         String[] allPayCardAccountTransactions = getAllPayCardAccountTransactions();
 
-        // отсротировать транзакции по дате
+        // отсортировать транзакции по дате
         Arrays.sort(allPayCardAccountTransactions);
 
         // вывести все транзакции
@@ -100,9 +100,9 @@ public class PayCardAccount extends Account {
     }
 
     public String[] getAllPayCardAccountTransactions() {
-        // сформировать общий массив транзакций перевода и пополнения в человекочитаемом формате
+        // сформировать общий массив транзакций перевода и пополнения в человеко-читаемом формате
         String[] allTransferDepositingTransactions = getAllTransferDepositingTransactions();
-        // сформировать массив транзакций оплаты в человекочитаемом формате
+        // сформировать массив транзакций оплаты в человеко-читаемом формате
         String[] allPayTransactions = getAllPayTransactions();
 
         // объявляем общий массив всех транзакций по платежному счету длиной равной общему количеству транзакций
@@ -123,7 +123,7 @@ public class PayCardAccount extends Account {
         String[] allPayTransactions = new String[countPayTransactions];
 
         int countAllPayTransactions = 0;
-        // перебираем транзакции оплаты и добавляем их в массив в человекочитаемом формате
+        // перебираем транзакции оплаты и добавляем их в массив в человеко-читаемом формате
         for (int idTransaction = 0; idTransaction < countPayTransactions; idTransaction++) {
             allPayTransactions[countAllPayTransactions++] = payTransactions[idTransaction].getStringTransaction();
         }
