@@ -148,26 +148,34 @@ public class Bank {
         return commission;
     }
 
-    // Проверить превышен ли лимит на сумму комиссии? Если да, то ограничим сумму комиссии лимитом
+    // Проверить превышен ли лимит на сумму комиссии?
     private float exceededLimitCommission(SberPhysicalPersonProfile clientProfile, String fromCurrencyCode, float commission) {
-        // если комиссия превышает лимит за перевод в рублях, то ограничим комиссию в рублях, то есть максимально возможной суммой комиссии установленной банком
-        if (fromCurrencyCode.equals("RUB") && commission > clientProfile.getLimitCommissionTransferInRUB()) commission = clientProfile.getLimitCommissionTransferInRUB();
-        // иначе если комиссия превышает лимит за перевод в $, то ограничим комиссию лимитом в $
-        else if  (fromCurrencyCode.equals("USD") && commission > clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency())
-            commission = clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency();
-        // иначе если другая валюта, то по аналоги
-        else {
-            // рассчитать лимит комиссии в другой валюте путем конвертации лимита в $ в эквивалентную сумму в другой валюте
-            float limitCommissionTransferInCurrency = convertToCurrencyExchangeRateBank(
-                    clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(),
-                    "USD",
-                    fromCurrencyCode
-            );
-            // если комиссия превышает лимит за перевод в другой валюте, то ограничим комиссию лимитом в этой валюте
-            if (commission > limitCommissionTransferInCurrency) commission = limitCommissionTransferInCurrency;
+        // Если нет, то комиссия равна себе
+        if (fromCurrencyCode.equals("RUB") && commission <= clientProfile.getLimitCommissionTransferInRUB()) commission = commission;
+        else if (fromCurrencyCode.equals("USD") && commission <= clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency())
+            commission = commission;
+
+        else { // Если да, то ограничим сумму комиссии лимитом
+            // если комиссия превышает лимит за перевод в рублях, то ограничим комиссию в рублях, то есть максимально возможной суммой комиссии установленной банком
+            if (fromCurrencyCode.equals("RUB") && commission > clientProfile.getLimitCommissionTransferInRUB())
+                commission = clientProfile.getLimitCommissionTransferInRUB();
+                // иначе если комиссия превышает лимит за перевод в $, то ограничим комиссию лимитом в $
+            else if (fromCurrencyCode.equals("USD") && commission > clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency())
+                commission = clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency();
+                // иначе если другая валюта, то по аналоги
+            else {
+                // рассчитать лимит комиссии в другой валюте путем конвертации лимита в $ в эквивалентную сумму в другой валюте
+                float limitCommissionTransferInCurrency = convertToCurrencyExchangeRateBank(
+                        clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(),
+                        "USD",
+                        fromCurrencyCode);
+                // если комиссия превышает лимит за перевод в другой валюте, то ограничим комиссию лимитом в этой валюте
+                if (commission > limitCommissionTransferInCurrency) commission = limitCommissionTransferInCurrency;
+            }
         }
 
         return commission;
+
     }
 
     // Рассчитать комиссию за перевод клиенту моего банка. Переопределим метод в дочерних классах конкретных банков
