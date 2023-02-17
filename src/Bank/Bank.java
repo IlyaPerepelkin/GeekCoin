@@ -65,16 +65,25 @@ public class Bank {
         return numberAccountBuffer.toString();
     }
 
-    //  Провести авторизацию и выдать разрешение на проведение операции
-    public String authorization(SberVisaGold card, String typeOperation, float sum, float commission) {
+    // Вынесем из метода authorization генерацию кода авторизации и проверку статуса карты в отдельный метод authorizationStatusCard()
+    public String authorizationStatusCard(SberVisaGold card) {
         // Сгенерировать код авторизации
         String authorizationCode = generateAuthorizationCode();
+        String authorizationMessage = card.getStatusCard().equalsIgnoreCase("Активна") ? "Success: Карта активна" : "Failed: Карта заблокирована";
+        return authorizationCode + "@" + authorizationMessage;
+    }
 
-        String authorizationMessage;
-        // проверить статус карты
-        boolean statusCard = card.getStatusCard().equalsIgnoreCase("Активна") ? true : false;
-        if (statusCard) {
-            authorizationMessage = "Success: Карта активна";
+    public String generateAuthorizationCode() {
+        byte lengthAuthorizationCode = 6;
+        StringBuffer authorizationCodeBuffer = new StringBuffer();
+        for (byte i = 0; i < lengthAuthorizationCode; i++) {
+            authorizationCodeBuffer.append((byte) (Math.random() * 10));
+        }
+        return authorizationCodeBuffer.toString();
+    }
+
+    //  Провести авторизацию и выдать разрешение на проведение операции
+    public String authorization(SberVisaGold card, String typeOperation, float sum, float commission) {
 
             // если тип операции покупка или перевод, то проверяем баланс и блокируем сумму покупки или перевода с комиссией
             if (typeOperation.contains("Покупка") || typeOperation.contains("Перевод")) {
@@ -86,24 +95,16 @@ public class Bank {
                     if (!exceededLimitPaymentsTransfersDay) {
                         // блокируем сумму операции и комиссию на балансе счета карты
                         boolean reserveAmountStatus = card.getPayCardAccount().blockSum(sum + commission);
-                        authorizationMessage = reserveAmountStatus ? "Success: Авторизация прошла успешно" : "Failed: Сбой авторизации";
-                    } else authorizationMessage = "Failed: Превышен лимит по оплатам и переводам в сутки";
-                } else authorizationMessage = "Failed: Недостаточно средств, пополните карту";
-            }
-        } else authorizationMessage = "Failed: Карта заблокирована";
+                        // authorizationMessage = reserveAmountStatus ? "Success: Авторизация прошла успешно" : "Failed: Сбой авторизации";
+                         } // else authorizationMessage = "Failed: Превышен лимит по оплатам и переводам в сутки";
+                         } // else authorizationMessage = "Failed: Недостаточно средств, пополните карту";
+
+            } else authorizationStatusCard(card);
 
         // вернуть код и сообщение о статусе авторизации
-        return authorizationCode + "@" + authorizationMessage;
+        return authorizationStatusCard(card);
     }
 
-    private String generateAuthorizationCode() {
-        byte lengthAuthorizationCode = 6;
-        StringBuffer authorizationCodeBuffer = new StringBuffer();
-        for (byte i = 0; i < lengthAuthorizationCode; i++) {
-            authorizationCodeBuffer.append((byte) (Math.random() * 10));
-        }
-        return authorizationCodeBuffer.toString();
-    }
 
     // Рассчитать комиссию при оплате
     public float getCommission(SberPhysicalPersonProfile cardHolder, float sumPay, String buyProductOrService) {
