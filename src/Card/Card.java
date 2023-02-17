@@ -314,31 +314,8 @@ public class Card {
         depositingTransaction.setTypeOperation("Внесение наличных");
 
         // запросить разрешение банка на проведение операции с проверкой статуса карты
-        String authorization = bank.authorization((SberVisaGold) this, depositingTransaction.getTypeOperation(), sumDepositing, 0);
-        // извлекаем массив строк разделяя их символом @
-        String[] authorizationData = authorization.split("@");
-        // извлекаем код авторизации
-        String authorizationCode = authorizationData[0];
-        // вносим в транзакцию код авторизации
-        depositingTransaction.setAuthorizationCode(authorizationCode);
-        // извлекаем сообщение из авторизации
-        String authorizationMessage = authorizationData[1];
-        // извлекаем статус из сообщения авторизации
-        String authorizationStatus = authorizationMessage.substring(0, authorizationMessage.indexOf(":"));
-
-        // если разрешение получено, то выполняем пополнение
-        if (authorizationStatus.equalsIgnoreCase("Success")) {
-            boolean topUpStatus = payCardAccount.topUp(sumDepositing);
-            if (topUpStatus) {
-                // внести в транзакцию статус пополнения
-                depositingTransaction.setStatusOperation("Внесение наличных прошло успешно");
-            } else depositingTransaction.setStatusOperation("Внесение наличных не прошло");
-        } else {
-            // иначе выводим сообщение о статусе авторизации, чтобы понимать что пошло не так
-            String authorizationStatusMessage = authorizationMessage.substring(authorizationMessage.indexOf(":"));
-            depositingTransaction.setStatusOperation(authorizationStatusMessage);
-        }
-
+        String authorization = bank.authorizationStatusCard((SberVisaGold) this);
+        
         // внести в транзакцию баланс карты после пополнения
         depositingTransaction.setBalance(getPayCardAccount().getBalance());
 
