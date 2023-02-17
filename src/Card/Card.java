@@ -23,9 +23,7 @@ public class Card {
     private String statusCard;
 
 
-    public Sberbank getBank() {
-        return bank;
-    }
+    public Sberbank getBank() {return bank; }
 
     public void setBank(Sberbank bank) {
         this.bank = bank;

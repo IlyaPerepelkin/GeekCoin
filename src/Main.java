@@ -49,6 +49,8 @@ public class Main {
 
         I.transferAccount2Card(mySberSavingsAccount1, mySberVisaGold1, 15.00f);
 
+        I.transferAccount2Account(mySberSavingsAccount1, mySberSavingsAccount2, 45.25f);
+
         I.depositingCardFromCard(mySberVisaGold1, mySberVisaGold2, 145.00f);
         I.depositingCardFromAccount(mySberVisaGold1, mySberSavingsAccount1, 75.00f);
 

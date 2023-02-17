@@ -31,6 +31,17 @@ public class Account {
 
     private int countDepositingTransactions;
 
+    private SberSavingsAccount payAccountAccount;
+
+
+    public SberSavingsAccount getPayAccountAccount() {
+        return payAccountAccount;
+    }
+
+    public void setPayAccountAccount(SberSavingsAccount payAccountAccount) {
+        this.payAccountAccount = payAccountAccount;
+    }
+
 
     public Sberbank getBank() {
         return bank;
@@ -194,6 +205,65 @@ public class Account {
 
         // добавить и привязать транзакцию перевода к счету списания
         addTransferTransaction(transferTransaction);
+    }
+
+    public void transferAccount2Account(SberSavingsAccount toAccount, float sumTransfer) {
+        TransferTransaction transferTransaction = new TransferTransaction();
+        transferTransaction.setLocalDateTime(LocalDateTime.now());
+        transferTransaction.setFromAccount((SberSavingsAccount) this);
+        transferTransaction.setToAccount(toAccount);
+        transferTransaction.setSum(sumTransfer);
+        transferTransaction.setCurrencySymbol(currencySymbol);
+        transferTransaction.setTypeOperation("Перевод на счет");
+
+        String fromCurrencyCode = getCurrencyCode();
+
+        float commission = bank.getCommission(accountHolder, fromCurrencyCode, sumTransfer, toAccount);
+
+        transferTransaction.setCommission(commission);
+
+        boolean checkBalance = checkBalance(sumTransfer + commission);
+        if (checkBalance) {
+            boolean exceededLimitPaymentsTransfersDay = accountHolder.exceededLimitPaymentsTransfersDay(sumTransfer, fromCurrencyCode);
+            if (!exceededLimitPaymentsTransfersDay) {
+                boolean withdrawalStatus = withdrawal(sumTransfer + commission);
+                if (withdrawalStatus) {
+                    transferTransaction.setStatusOperation("Списание прошло успешно");
+
+                    
+                    DepositingTransaction depositingTransaction = new DepositingTransaction();
+                    depositingTransaction.setLocalDateTime(LocalDateTime.now());
+                    depositingTransaction.setFromAccount((SberSavingsAccount) this);
+                    depositingTransaction.setToAccount(toAccount);
+                    depositingTransaction.setTypeOperation("Перевод со счета");
+                    depositingTransaction.setSum(sumTransfer);
+                    depositingTransaction.setCurrencySymbol(toAccount.getPayAccountAccount().getCurrencySymbol());
+
+                    // TODO: если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту карты зачисления по курсу банка
+
+                    boolean topUpStatus = toAccount.getPayAccountAccount().topUp(sumTransfer);
+                    if (topUpStatus) {
+
+                        depositingTransaction.setStatusOperation("Пополнение прошло успешно");
+
+                        depositingTransaction.setBalance(toAccount.getPayAccountAccount().getBalance());
+
+                        toAccount.getPayAccountAccount().addDepositingTransaction(depositingTransaction);
+
+                        transferTransaction.setStatusOperation("Перевод прошел успешно");
+
+                        getAccountHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toAccount);
+
+                        // TODO: перевести комиссию на счет банка
+                    } else transferTransaction.setStatusOperation("Перевод не прошел");
+                } else transferTransaction.setStatusOperation("Списание не прошло");
+            } else transferTransaction.setStatusOperation("Превышен лимит по сумме операций в сутки");
+        } else transferTransaction.setStatusOperation("Недостаточно средств");
+
+        transferTransaction.setBalance(getBalance());
+
+        addTransferTransaction(transferTransaction);
+
     }
 
     // Пополнить счет с карты
