@@ -1,7 +1,5 @@
 import Account.SberSavingsAccount;
 import Bank.Sberbank;
-import Card.Card;
-import Card.CardVisa;
 import Card.SberVisaGold;
 import PhysicalPerson.PhysicalPerson;
 
@@ -45,14 +43,18 @@ public class Main {
         I.transferCard2Card(mySberVisaGold1, mySberVisaGold2, 250.00f);
         I.transferCard2Card(mySberVisaGold1, friendSberVisaGold1, 55.00f);
 
-        I.transferCard2Account(mySberVisaGold1, mySberSavingsAccount1, 95.00f);
+        I.transferCard2Account(mySberVisaGold1, mySberSavingsAccount1, 195.00f);
 
         I.transferAccount2Card(mySberSavingsAccount1, mySberVisaGold1, 15.00f);
+
+        I.transferAccount2Account(mySberSavingsAccount1, mySberSavingsAccount2, 45.20f);
 
         I.depositingCardFromCard(mySberVisaGold1, mySberVisaGold2, 145.00f);
         I.depositingCardFromAccount(mySberVisaGold1, mySberSavingsAccount1, 75.00f);
 
         I.depositingAccountFromCard(mySberSavingsAccount1, mySberVisaGold1, 350.00f);
+
+        I.depositingAccountFromAccount(mySberSavingsAccount1, mySberSavingsAccount2, 27.50f);
 
         /*
         System.out.println("Вывод операции по карте " + mySberVisaGold1.getNumberCard());
