@@ -261,6 +261,10 @@ public class Account {
         fromCard.transferCard2Account((SberSavingsAccount) this, sumDepositing);
     }
 
+    public void depositingAccountFromAccount(SberSavingsAccount fromAccount, float sumDepositing) {
+        fromAccount.transferAccount2Account((SberSavingsAccount) this, sumDepositing);
+    }
+
     // пополнить баланс
     public boolean topUp(float sum) {
         setBalance(balance + sum);
