@@ -43,7 +43,7 @@ public class Main {
         I.transferCard2Card(mySberVisaGold1, mySberVisaGold2, 250.00f);
         I.transferCard2Card(mySberVisaGold1, friendSberVisaGold1, 55.00f);
 
-        I.transferCard2Account(mySberVisaGold1, mySberSavingsAccount1, 95.00f);
+        I.transferCard2Account(mySberVisaGold1, mySberSavingsAccount1, 195.00f);
 
         I.transferAccount2Card(mySberSavingsAccount1, mySberVisaGold1, 15.00f);
 
