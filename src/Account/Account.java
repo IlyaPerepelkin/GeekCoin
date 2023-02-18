@@ -31,17 +31,6 @@ public class Account {
 
     private int countDepositingTransactions;
 
-    private SberSavingsAccount payAccountAccount;
-
-
-    public SberSavingsAccount getPayAccountAccount() {
-        return payAccountAccount;
-    }
-
-    public void setPayAccountAccount(SberSavingsAccount payAccountAccount) {
-        this.payAccountAccount = payAccountAccount;
-    }
-
 
     public Sberbank getBank() {
         return bank;
@@ -230,25 +219,25 @@ public class Account {
                 if (withdrawalStatus) {
                     transferTransaction.setStatusOperation("Списание прошло успешно");
 
-                    
+
                     DepositingTransaction depositingTransaction = new DepositingTransaction();
                     depositingTransaction.setLocalDateTime(LocalDateTime.now());
                     depositingTransaction.setFromAccount((SberSavingsAccount) this);
                     depositingTransaction.setToAccount(toAccount);
                     depositingTransaction.setTypeOperation("Перевод со счета");
                     depositingTransaction.setSum(sumTransfer);
-                    depositingTransaction.setCurrencySymbol(toAccount.getPayAccountAccount().getCurrencySymbol());
+                    depositingTransaction.setCurrencySymbol(toAccount.getCurrencySymbol());
 
                     // TODO: если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту карты зачисления по курсу банка
 
-                    boolean topUpStatus = toAccount.getPayAccountAccount().topUp(sumTransfer);
+                    boolean topUpStatus = toAccount.topUp(sumTransfer);
                     if (topUpStatus) {
 
                         depositingTransaction.setStatusOperation("Пополнение прошло успешно");
 
-                        depositingTransaction.setBalance(toAccount.getPayAccountAccount().getBalance());
+                        depositingTransaction.setBalance(toAccount.getBalance());
 
-                        toAccount.getPayAccountAccount().addDepositingTransaction(depositingTransaction);
+                        toAccount.addDepositingTransaction(depositingTransaction);
 
                         transferTransaction.setStatusOperation("Перевод прошел успешно");
 

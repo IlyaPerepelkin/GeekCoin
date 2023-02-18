@@ -1,6 +1,5 @@
 package Bank;
 
-import Account.SavingsAccount;
 import Account.SberSavingsAccount;
 import ClientProfile.SberPhysicalPersonProfile;
 import Card.SberVisaGold;
