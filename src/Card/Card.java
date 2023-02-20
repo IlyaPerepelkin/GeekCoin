@@ -197,7 +197,7 @@ public class Card {
                 depositingTransaction.setTypeOperation("Пополнение с карты");
                 depositingTransaction.setAuthorizationCode(authorizationCode);
 
-                // если валюта списания и зачисления не совпадают, то конвертировать сумму перевода в валюту  карты зачисления по курсу банка
+                // если валюта списания и зачисления не совпадают, то конвертировать сумму перевода в валюту карты зачисления по курсу банка
                 String toCurrencyCode = toCard.getPayCardAccount().getCurrencyCode();
                 // сравнить валюты списания и зачисления
                 if (!fromCurrencyCode.equals(toCurrencyCode)) {

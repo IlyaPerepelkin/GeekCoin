@@ -231,7 +231,7 @@ public class Bank {
     }
 
     public float round(float sum) {
-        return Math.round(sum * 100) / 100;
+        return Math.round(sum * 100.00f) / 100.00f;
     }
 
 
