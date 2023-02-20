@@ -197,7 +197,13 @@ public class Card {
                 depositingTransaction.setTypeOperation("Пополнение с карты");
                 depositingTransaction.setAuthorizationCode(authorizationCode);
 
-                // TODO: если валюта списания и зачисления не совпадают, то конвертировать сумму перевода в валюту  карты зачисления по курсу банка
+                // если валюта списания и зачисления не совпадают, то конвертировать сумму перевода в валюту  карты зачисления по курсу банка
+                String toCurrencyCode = toCard.getPayCardAccount().getCurrencyCode();
+                // сравнить валюты списания и зачисления
+                if (!fromCurrencyCode.equals(toCurrencyCode)) {
+                    // если они не равны, то вызвать метод convertToCurrencyExchangeRateBank
+                    sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode,toCurrencyCode);
+                }
 
                 // зачислить на карту
                 boolean topUpStatus = toCard.getPayCardAccount().topUp(sumTransfer);
@@ -271,7 +277,13 @@ public class Card {
                     depositingTransaction.setSum(sumTransfer);
                     depositingTransaction.setCurrencySymbol(toAccount.getCurrencySymbol());
 
-                    // TODO: если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту счета зачисления по курсу банка
+                    // если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту счета зачисления по курсу банка
+                    String toCurrencyCode = toAccount.getCurrencyCode();
+                    // сравнить валюты списания и зачисления
+                    if (!fromCurrencyCode.equals(toCurrencyCode)) {
+                        // если они не равны, то вызвать метод convertToCurrencyExchangeRateBank
+                        sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode,toCurrencyCode);
+                    }
 
                     // и зачислить на счет
                     boolean topUpStatus = toAccount.topUp(sumTransfer);
