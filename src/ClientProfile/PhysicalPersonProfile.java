@@ -1,5 +1,6 @@
 package ClientProfile;
 
+import Account.SavingsAccount;
 import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
 import Card.SberVisaGold;
@@ -83,17 +84,23 @@ public class PhysicalPersonProfile extends ClientProfile {
 
     // Привязать платежный счет к профилю клиента
     public void addAccount(SberPayCardAccount payCardAccount) {
-        payCardAccounts[countPayCardAccounts++] = payCardAccount;
+        if (countPayCardAccounts < payCardAccounts.length) {
+            payCardAccounts[countPayCardAccounts++] = payCardAccount;
+        } else System.out.println("Массив аккаунтов переполнен");
     }
 
     // Привязать сберегательный счет к профилю клиента
     public void addAccount(SberSavingsAccount savingsAccount) {
-        savingsAccounts[countSavingsAccounts++] = savingsAccount;
+        if (countSavingsAccounts < savingsAccounts.length) {
+            savingsAccounts[countSavingsAccounts++] = savingsAccount;
+        } else System.out.println("Массив аккаунтов переполнен");
     }
 
     // Привязать карту к профилю клиента
     public void addCard(SberVisaGold card) {
-        cards[countCards++] = card;
+        if (countCards < cards.length) {
+            cards[countCards++] = card;
+        } else System.out.println("Массив карт переполнен");
     }
 
     // проверить привязана ли карта к профилю клиента

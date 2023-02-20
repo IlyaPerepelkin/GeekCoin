@@ -39,7 +39,9 @@ public class Bank {
 
     // Добавить профиль клиента
     public void addClientProfile(SberPhysicalPersonProfile clientProfile) {
-        clientProfiles[countClientProfiles++] = clientProfile;
+        if (countClientProfiles < clientProfiles.length) {
+            clientProfiles[countClientProfiles++] = clientProfile;
+        } else System.out.println("Массив профилей переполнен");
     }
 
     // Сгенерировать номер карты 3546 0957 9843 7845
