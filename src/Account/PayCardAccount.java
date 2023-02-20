@@ -60,7 +60,9 @@ public class PayCardAccount extends Account {
 
     // Привязать карту к платежному счету
     public void addCard(SberVisaGold card) {
-        cards[countCards++] = card;
+        if (countCards < cards.length) {
+            cards[countCards++] = card;
+        } else System.out.println("Массив карт переполнен");
     }
 
     // Блокировать сумму на счете карты
@@ -80,7 +82,9 @@ public class PayCardAccount extends Account {
 
     // Добавить транзакцию об оплате
     public void addPayTransaction(PayTransaction payTransaction) {
-        payTransactions[countPayTransactions++] = payTransaction;
+        if (countPayTransactions < payTransactions.length) {
+            payTransactions[countPayTransactions++] = payTransaction;
+        } else System.out.println("Массив транзакций оплаты переполнен");
     }
 
     @Override

@@ -286,12 +286,16 @@ public class Account {
 
     // добавить транзакцию о пополнении
     public void addDepositingTransaction(DepositingTransaction depositingTransaction) {
-        depositingTransactions[countDepositingTransactions++] = depositingTransaction;
+        if (countDepositingTransactions < depositingTransactions.length) {
+            depositingTransactions[countDepositingTransactions++] = depositingTransaction;
+        } else System.out.println("Массив транзакций пополнений переполнен");
     }
 
     // добавить транзакцию перевода
     public void addTransferTransaction(TransferTransaction transferTransaction) {
-        transferTransactions[countTransferTransactions++] = transferTransaction;
+        if (countTransferTransactions < transferTransactions.length) {
+            transferTransactions[countTransferTransactions++] = transferTransaction;
+        } else System.out.println("Массив транзакций переводов переполнен");
     }
 
     //  Проверить достаточно ли денег на балансе
