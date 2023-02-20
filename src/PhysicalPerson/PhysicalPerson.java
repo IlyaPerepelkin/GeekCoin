@@ -1,5 +1,6 @@
 package PhysicalPerson;
 
+import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
 import Bank.Sberbank;
 import Card.SberVisaGold;
@@ -130,6 +131,10 @@ public class PhysicalPerson {
     }
 
     public void displayAccountTransactions(SberSavingsAccount account) {
+        account.displayAccountTransactions();
+    }
+
+    public void displayAccountTransactions(SberPayCardAccount account) {
         account.displayAccountTransactions();
     }
 
