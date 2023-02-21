@@ -22,6 +22,8 @@ public class Card {
 
     private String statusCard;
 
+    private String pinCode;
+
 
     public Sberbank getBank() {return bank; }
 
@@ -66,8 +68,17 @@ public class Card {
         this.statusCard = statusCard;
     }
 
+    public String getPinCode() {
+        return pinCode;
+    }
+
+    public void setPinCode(String pinCode) {
+        this.pinCode = bank.generatePinCode();
+    }
+
+
     // Оплата картой
-    public void payByCard(float sumPay, String buyProductOrService) {
+    public void payByCard(float sumPay, String buyProductOrService, String pinCode) {
         // инициализировать транзакцию оплаты
         PayTransaction payTransaction = new PayTransaction();
         payTransaction.setLocalDateTime(LocalDateTime.now());
@@ -76,6 +87,7 @@ public class Card {
         payTransaction.setCurrencySymbol(payCardAccount.getCurrencySymbol());
         payTransaction.setTypeOperation("Покупка ");
         payTransaction.setBuyProductOrService(buyProductOrService);
+        payTransaction.setPinCode();
 
         // рассчитать комиссию при оплате
         float commission = bank.getCommission(cardHolder, sumPay, buyProductOrService);
@@ -120,7 +132,7 @@ public class Card {
     }
 
     // Оплата картой за рубежом
-    public void payByCard(float sumPay, String byProductOrService, String country) {
+    public void payByCard(float sumPay, String byProductOrService, String pinCode, String country) {
         // по названию страны определяем валюту покупки
         String currencyPayCode = bank.getCurrencyCode(country);
         // по названию страны определяем название биллинга - это валюта платежной системы
@@ -139,7 +151,7 @@ public class Card {
         sumPayInCardCurrency = bank.round(sumPayInCardCurrency);
 
         // приведя сумму покупки к валюте карты вызываем метод оплаты по умолчанию
-        payByCard(sumPayInCardCurrency, byProductOrService);
+        payByCard(sumPayInCardCurrency, byProductOrService, pinCode);
 
     }
 

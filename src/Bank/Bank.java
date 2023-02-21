@@ -66,6 +66,15 @@ public class Bank {
         return numberAccountBuffer.toString();
     }
 
+    public String generatePinCode() {
+        byte lengthPinCode = 5;
+                StringBuffer pinCodeBuffer = new StringBuffer();
+        for (byte i = 1; i < lengthPinCode; i++) {
+            pinCodeBuffer.append((byte) (Math.random() * 10));
+        }
+        return pinCodeBuffer.toString();
+    }
+
     // Вынесем из метода authorization генерацию кода авторизации и проверку статуса карты в отдельный метод authorizationStatusCard()
     public String authorizationStatusCard(SberVisaGold card) {
         // Сгенерировать код авторизации

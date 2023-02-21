@@ -37,11 +37,12 @@ public class Sberbank extends Bank {
     }
 
     // Открыть карту
-    public SberVisaGold openCard(SberPhysicalPersonProfile clientProfile, SberVisaGold card, String currencyCode) {
+    public SberVisaGold openCard(SberPhysicalPersonProfile clientProfile, SberVisaGold card, String currencyCode, String pinCode) {
         // установить свойства карты
         card.setBank(this);
         card.setNumberCard(generateNumberCard());
         card.setCardHolder(clientProfile);
+        card.setPinCode(generatePinCode());
 
         // открыть платежный счет
         SberPayCardAccount payCardAccount = openAccount(clientProfile, new SberPayCardAccount(), currencyCode);
