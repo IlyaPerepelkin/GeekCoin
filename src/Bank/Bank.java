@@ -1,6 +1,7 @@
 package Bank;
 
 import Account.SberSavingsAccount;
+import Card.Card;
 import ClientProfile.SberPhysicalPersonProfile;
 import Card.SberVisaGold;
 
@@ -66,15 +67,6 @@ public class Bank {
         return numberAccountBuffer.toString();
     }
 
-    public String generatePinCode() {
-        byte lengthPinCode = 5;
-                StringBuffer pinCodeBuffer = new StringBuffer();
-        for (byte i = 1; i < lengthPinCode; i++) {
-            pinCodeBuffer.append((byte) (Math.random() * 10));
-        }
-        return pinCodeBuffer.toString();
-    }
-
     // Вынесем из метода authorization генерацию кода авторизации и проверку статуса карты в отдельный метод authorizationStatusCard()
     public String authorizationStatusCard(SberVisaGold card) {
         // Сгенерировать код авторизации
@@ -93,10 +85,16 @@ public class Bank {
     }
 
     //  Провести авторизацию и выдать разрешение на проведение операции
-    public String authorization(SberVisaGold card, String typeOperation, float sum, float commission) {
+    public String authorization(SberVisaGold card, String typeOperation, float sum, float commission, String pinCode) {
 
-            // если тип операции покупка или перевод, то проверяем баланс и блокируем сумму покупки или перевода с комиссией
-            if (typeOperation.contains("Покупка") || typeOperation.contains("Перевод")) {
+        String authorizationStatusCard = authorizationStatusCard(card);
+        String[] authorizationStatus = authorizationStatusCard(card).split("@");
+        String authorizationCode = authorizationStatus[0];
+        String authorizationMessage = authorizationStatus[1];
+
+        // если тип операции покупка или перевод, то проверяем баланс и блокируем сумму покупки или перевода с комиссией
+        if (typeOperation.contains("Покупка") || typeOperation.contains("Перевод")) {
+            if (pinCode == card.getPinCode()) {
                 // проверяем баланс и хватит ли нам денег с учетом комиссии
                 boolean checkBalance = card.getPayCardAccount().checkBalance(sum + commission);
                 if (checkBalance) {
@@ -105,14 +103,14 @@ public class Bank {
                     if (!exceededLimitPaymentsTransfersDay) {
                         // блокируем сумму операции и комиссию на балансе счета карты
                         boolean reserveAmountStatus = card.getPayCardAccount().blockSum(sum + commission);
-                        // authorizationMessage = reserveAmountStatus ? "Success: Авторизация прошла успешно" : "Failed: Сбой авторизации";
-                         } // else authorizationMessage = "Failed: Превышен лимит по оплатам и переводам в сутки";
-                         } // else authorizationMessage = "Failed: Недостаточно средств, пополните карту";
-
-            } else authorizationStatusCard(card);
+                         authorizationMessage = reserveAmountStatus ? "Success: Авторизация прошла успешно" : "Failed: Сбой авторизации";
+                    } else authorizationMessage = "Failed: Превышен лимит по оплатам и переводам в сутки";
+                } else authorizationMessage = "Failed: Недостаточно средств, пополните карту";
+            } else authorizationMessage = "Failed: Неверный пин код";
+        }
 
         // вернуть код и сообщение о статусе авторизации
-        return authorizationStatusCard(card);
+        return authorizationCode + "@" + authorizationMessage;
     }
 
 

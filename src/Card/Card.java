@@ -73,7 +73,7 @@ public class Card {
     }
 
     public void setPinCode(String pinCode) {
-        this.pinCode = bank.generatePinCode();
+        this.pinCode = pinCode;
     }
 
 
@@ -87,7 +87,6 @@ public class Card {
         payTransaction.setCurrencySymbol(payCardAccount.getCurrencySymbol());
         payTransaction.setTypeOperation("Покупка ");
         payTransaction.setBuyProductOrService(buyProductOrService);
-        payTransaction.setPinCode();
 
         // рассчитать комиссию при оплате
         float commission = bank.getCommission(cardHolder, sumPay, buyProductOrService);
@@ -96,7 +95,7 @@ public class Card {
         payTransaction.setCommission(commission);
 
         // запросить разрешение банка на проведение операции с блокированием суммы оплаты и комиссии
-        String authorization = bank.authorization((SberVisaGold) this, payTransaction.getTypeOperation(), sumPay, commission);
+        String authorization = bank.authorization((SberVisaGold) this, payTransaction.getTypeOperation(), sumPay, commission, pinCode);
         // извлекаем массив строк разделяя их символом "@"
         String[] authorizationData = authorization.split("@");
         // извлекаем код авторизации
@@ -185,7 +184,7 @@ public class Card {
         transferTransaction.setCommission(commission);
 
         // запросить разрешение банка на проведение операции с блокированием суммы перевода и комиссии
-        String authorization = bank.authorization((SberVisaGold) this, transferTransaction.getTypeOperation(), sumTransfer, commission);
+        String authorization = bank.authorization((SberVisaGold) this, transferTransaction.getTypeOperation(), sumTransfer, commission, null);
         String[] authorizationData = authorization.split("@");
         String authorizationCode = authorizationData[0];
         transferTransaction.setAuthorizationCode(authorizationCode);

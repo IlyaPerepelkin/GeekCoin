@@ -42,7 +42,7 @@ public class Sberbank extends Bank {
         card.setBank(this);
         card.setNumberCard(generateNumberCard());
         card.setCardHolder(clientProfile);
-        card.setPinCode(generatePinCode());
+        card.setPinCode(pinCode);
 
         // открыть платежный счет
         SberPayCardAccount payCardAccount = openAccount(clientProfile, new SberPayCardAccount(), currencyCode);
