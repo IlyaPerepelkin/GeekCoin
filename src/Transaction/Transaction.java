@@ -23,13 +23,13 @@ public class Transaction {
 
     private String statusOperation;
 
-    private SberVisaGold toCard;
+    protected SberVisaGold toCard;
 
-    private SberVisaGold fromCard;
+    protected SberVisaGold fromCard;
 
-    private SberSavingsAccount toAccount;
+    protected SberSavingsAccount toAccount;
 
-    private SberSavingsAccount fromAccount;
+    protected SberSavingsAccount fromAccount;
 
 
     public LocalDateTime getLocalDateTime() {
