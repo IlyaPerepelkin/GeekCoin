@@ -1,33 +1,28 @@
 package Transaction;
 
-import Account.SberSavingsAccount;
-import Card.SberVisaGold;
 import PhysicalPerson.PhysicalPerson;
 
 public class DepositingTransaction extends Transaction {
 
     @Override
     public String getSender() {
+
         String sender = "";
-        if (fromCard != null) sender = getNameCard(fromCard);
-        if (fromAccount != null) sender = getNameAccount(fromAccount);
+
+        if (getFromCard() != null && !getFromCard().getCardHolder().isClientCard(getToCard())) {
+            PhysicalPerson cardHolder = getFromCard().getCardHolder().getPhysicalPerson(); sender = cardHolder.getFirstName() +
+                   cardHolder.getLastName().substring(0,1);}
+        if (getFromAccount() != null && !getFromAccount().getAccountHolder().isClientAccount(getToAccount())) {
+            PhysicalPerson accountHolder = getFromAccount().getAccountHolder().getPhysicalPerson(); sender = accountHolder.getFirstName() +
+                  accountHolder.getLastName().substring(0,1);}
+        if (getFromCard() != null && !getFromAccount().getAccountHolder().isClientAccount(getToAccount())) {
+            PhysicalPerson cardHolder = getFromCard().getCardHolder().getPhysicalPerson(); sender = cardHolder.getFirstName() +
+                    cardHolder.getLastName().substring(0,1);}
+        if (getFromAccount() != null && !getFromCard().getCardHolder().isClientCard(getToCard())) {
+            PhysicalPerson accountHolder = getFromAccount().getAccountHolder().getPhysicalPerson(); sender = accountHolder.getFirstName() +
+                    accountHolder.getLastName().substring(0,1);}
+        sender = super.getSender() + " от" + sender;
         return sender;
-    }
-
-    @Override
-    public String getNameCard(SberVisaGold card) {
-        if (card != mySberVisaGold) {
-            return card.getBank().getBankName() + "Карта " + card.getClass().getSimpleName() + " ••" + card.getNumberCard().split(" ")[3]
-                    + "от " + PhysicalPerson.getFirstName + PhysicalPerson.getLastName.substring(getLastName.indexOf(1)) + ".";
-        }
-    }
-
-    @Override
-    public String getNameAccount(SberSavingsAccount account) {
-        if (account != mySberSavingsAccount) {
-            return account.getBank().getBankName() + "Счет ••" + account.getNumberAccount().substring(16) +
-                    "от " + PhysicalPerson.getFirstName + PhysicalPerson.getLastName.substring(getLastName.indexOf(1)) + ".";
-        }
     }
 
     @Override
