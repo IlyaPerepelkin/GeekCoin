@@ -336,6 +336,22 @@ public class Card {
 
         // запросить разрешение банка на проведение операции с проверкой статуса карты
         String authorization = bank.authorizationStatusCard((SberVisaGold) this);
+
+        String[] authorizationData = authorization.split("@");
+        String authorizationCode = authorizationData[0];
+        depositingTransaction.setAuthorizationCode(authorizationCode);
+        String authorizationMessage = authorizationData[1];
+        String authorizationStatus = authorizationMessage.substring(0, authorizationMessage.indexOf(":"));
+
+        if (authorizationStatus.equalsIgnoreCase("Success")) {
+            boolean topUpStatus = payCardAccount.topUp(sumDepositing);
+            if (topUpStatus) {
+                depositingTransaction.setStatusOperation("Внесение наличных прошло успешно");
+            } else depositingTransaction.setStatusOperation("Внесение наличных не прошло");
+        } else {
+            String authorizationStatusMessage = authorizationMessage.substring(authorizationMessage.indexOf(":"));
+            depositingTransaction.setStatusOperation(authorizationStatusMessage);
+        }
         
         // внести в транзакцию баланс карты после пополнения
         depositingTransaction.setBalance(getPayCardAccount().getBalance());

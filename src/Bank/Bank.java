@@ -87,14 +87,16 @@ public class Bank {
     //  Провести авторизацию и выдать разрешение на проведение операции
     public String authorization(SberVisaGold card, String typeOperation, float sum, float commission, String pinCode) {
 
-        String authorizationStatusCard = authorizationStatusCard(card);
         String[] authorizationStatus = authorizationStatusCard(card).split("@");
         String authorizationCode = authorizationStatus[0];
         String authorizationMessage = authorizationStatus[1];
 
-        // если тип операции покупка или перевод, то проверяем баланс и блокируем сумму покупки или перевода с комиссией
-        if (typeOperation.contains("Покупка") || typeOperation.contains("Перевод")) {
-            if (pinCode == card.getPinCode()) {
+        if (authorizationMessage.contains("Success")) {
+            // если тип операции покупка или перевод, то проверяем баланс и блокируем сумму покупки или перевода с комиссией
+            if (typeOperation.contains("Покупка") || typeOperation.contains("Перевод")) {
+
+                if (typeOperation.contains("Покупка") && !card.getPinCode().equals(pinCode)) return authorizationCode + "@" + "Failed: Неверный пин код";
+
                 // проверяем баланс и хватит ли нам денег с учетом комиссии
                 boolean checkBalance = card.getPayCardAccount().checkBalance(sum + commission);
                 if (checkBalance) {
@@ -103,10 +105,10 @@ public class Bank {
                     if (!exceededLimitPaymentsTransfersDay) {
                         // блокируем сумму операции и комиссию на балансе счета карты
                         boolean reserveAmountStatus = card.getPayCardAccount().blockSum(sum + commission);
-                         authorizationMessage = reserveAmountStatus ? "Success: Авторизация прошла успешно" : "Failed: Сбой авторизации";
+                        authorizationMessage = reserveAmountStatus ? "Success: Авторизация прошла успешно" : "Failed: Сбой авторизации";
                     } else authorizationMessage = "Failed: Превышен лимит по оплатам и переводам в сутки";
                 } else authorizationMessage = "Failed: Недостаточно средств, пополните карту";
-            } else authorizationMessage = "Failed: Неверный пин код";
+            }
         }
 
         // вернуть код и сообщение о статусе авторизации
@@ -161,10 +163,9 @@ public class Bank {
     // Проверить превышен ли лимит на сумму комиссии?
     private float exceededLimitCommission(SberPhysicalPersonProfile clientProfile, String fromCurrencyCode, float commission) {
         // Если нет, то комиссия равна себе
-        if (fromCurrencyCode.equals("RUB") && commission <= clientProfile.getLimitCommissionTransferInRUB()) commission = commission;
+        if (fromCurrencyCode.equals("RUB") && commission <= clientProfile.getLimitCommissionTransferInRUB()) return commission;
         else if (fromCurrencyCode.equals("USD") && commission <= clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency())
-            commission = commission;
-
+            return commission;
         else { // Если да, то ограничим сумму комиссии лимитом
             // если комиссия превышает лимит за перевод в рублях, то ограничим комиссию в рублях, то есть максимально возможной суммой комиссии установленной банком
             if (fromCurrencyCode.equals("RUB") && commission > clientProfile.getLimitCommissionTransferInRUB())
