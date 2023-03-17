@@ -9,19 +9,26 @@ public class DepositingTransaction extends Transaction {
 
         String sender = "";
 
-        if (getFromCard() != null && !getFromCard().getCardHolder().isClientCard(getToCard())) {
-            PhysicalPerson cardHolder = getFromCard().getCardHolder().getPhysicalPerson(); sender = cardHolder.getFirstName() +
-                   cardHolder.getLastName().substring(0,1);}
-        if (getFromAccount() != null && !getFromAccount().getAccountHolder().isClientAccount(getToAccount())) {
-            PhysicalPerson accountHolder = getFromAccount().getAccountHolder().getPhysicalPerson(); sender = accountHolder.getFirstName() +
-                  accountHolder.getLastName().substring(0,1);}
-        if (getFromCard() != null && !getFromAccount().getAccountHolder().isClientAccount(getToAccount())) {
-            PhysicalPerson cardHolder = getFromCard().getCardHolder().getPhysicalPerson(); sender = cardHolder.getFirstName() +
-                    cardHolder.getLastName().substring(0,1);}
-        if (getFromAccount() != null && !getFromCard().getCardHolder().isClientCard(getToCard())) {
-            PhysicalPerson accountHolder = getFromAccount().getAccountHolder().getPhysicalPerson(); sender = accountHolder.getFirstName() +
-                    accountHolder.getLastName().substring(0,1);}
-        sender = super.getSender() + " от" + sender;
+        if (getFromCard() != null) {
+            PhysicalPerson cardHolder = getFromCard().getCardHolder().getPhysicalPerson();
+
+            if ((getToCard() != null && !getFromCard().getCardHolder().isClientCard(getToCard())) || (getToAccount() != null && !getFromCard().getCardHolder().isClientAccount(getToAccount()))) {
+                sender = cardHolder.getFirstName() + " " + cardHolder.getLastName().substring(0,1) + ".";
+            }
+        }
+
+        if (getFromAccount() != null) {
+            PhysicalPerson accountHolder = getFromAccount().getAccountHolder().getPhysicalPerson();
+
+            if ((getToAccount() != null && !getFromAccount().getAccountHolder().isClientAccount(getToAccount())) || (getToCard() != null && !getFromAccount().getAccountHolder().isClientCard(getToCard()))) {
+                sender = accountHolder.getFirstName() + " " + accountHolder.getLastName().substring(0, 1) + ".";
+            }
+        }
+
+        if (!sender.isEmpty()) {
+            sender = super.getSender() + " от " + sender;
+        }
+
         return sender;
     }
 
