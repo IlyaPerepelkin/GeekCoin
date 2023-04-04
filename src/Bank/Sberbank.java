@@ -2,14 +2,12 @@ package Bank;
 
 import Account.Account;
 import Account.SberPayCardAccount;
-import Account.SberSavingsAccount;
 import Card.Card;
-import Card.SberVisaGold;
 import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
 import PhysicalPerson.PhysicalPerson;
 
-public class Sberbank extends Bank implements IServicePhysicalPerson {
+public class Sberbank extends Bank implements IBankServicePhysicalPerson {
 
     // Зарегистрировать профиль физ лица
     @Override

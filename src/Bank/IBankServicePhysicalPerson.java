@@ -1,13 +1,11 @@
 package Bank;
 
 import Account.Account;
-import Account.SberPayCardAccount;
 import Card.Card;
 import ClientProfile.PhysicalPersonProfile;
-import ClientProfile.SberPhysicalPersonProfile;
 import PhysicalPerson.PhysicalPerson;
 
-public interface IServicePhysicalPerson {
+public interface IBankServicePhysicalPerson {
 
     PhysicalPersonProfile registerPhysicalPersonProfile(PhysicalPerson physicalPerson);
 

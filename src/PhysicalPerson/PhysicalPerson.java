@@ -3,12 +3,9 @@ package PhysicalPerson;
 import Account.Account;
 import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
-import Bank.IServicePhysicalPerson;
-import Bank.Sberbank;
+import Bank.IBankServicePhysicalPerson;
 import Card.Card;
-import Card.SberVisaGold;
 import ClientProfile.PhysicalPersonProfile;
-import ClientProfile.SberPhysicalPersonProfile;
 
 public class PhysicalPerson {
 
@@ -74,15 +71,15 @@ public class PhysicalPerson {
     }
 
 
-    public void registerPhysicalPersonToBank(IServicePhysicalPerson bank) {
+    public void registerPhysicalPersonToBank(IBankServicePhysicalPerson bank) {
         setPhysicalPersonProfile(bank.registerPhysicalPersonProfile(this));
     }
 
-    public Card openCard(IServicePhysicalPerson bank, Card card, String currencyCode, String pinCode) {
+    public Card openCard(IBankServicePhysicalPerson bank, Card card, String currencyCode, String pinCode) {
         return bank.openCard(physicalPersonProfile, card, currencyCode, pinCode);
     }
 
-    public Account openAccount(IServicePhysicalPerson bank, Account account, String currencyCode) {
+    public Account openAccount(IBankServicePhysicalPerson bank, Account account, String currencyCode) {
         return bank.openAccount(physicalPersonProfile, account, currencyCode);
     }
 
