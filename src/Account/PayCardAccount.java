@@ -6,7 +6,7 @@ import Transaction.PayTransaction;
 
 import java.util.Arrays;
 
-public class PayCardAccount extends Account {
+public abstract class PayCardAccount extends Account {
 
     private Card [] cards = new Card[2];
 

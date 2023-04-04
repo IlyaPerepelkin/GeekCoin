@@ -5,7 +5,7 @@ import Card.Card;
 import ClientProfile.SberPhysicalPersonProfile;
 import Card.SberVisaGold;
 
-public class Bank {
+public abstract class Bank {
     private String bankName;
 
     private SberPhysicalPersonProfile[] clientProfiles = new SberPhysicalPersonProfile[5];

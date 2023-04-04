@@ -9,7 +9,7 @@ import PhysicalPerson.PhysicalPerson;
 
 import java.util.Arrays;
 
-public class PhysicalPersonProfile extends ClientProfile {
+public abstract class PhysicalPersonProfile extends ClientProfile {
 
     private PhysicalPerson physicalPerson;
 

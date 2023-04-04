@@ -2,7 +2,7 @@ package ClientProfile;
 
 import Bank.Sberbank;
 
-public class ClientProfile {
+public abstract class ClientProfile {
 
     private Sberbank bank;
 
@@ -151,7 +151,5 @@ public class ClientProfile {
     }
 
     // Вывод всех операций по всем картам и счетам профиля клиента. Переопределим в дочерних классах
-    public void displayProfileTransactions() {
-
-    }
+    public abstract void displayProfileTransactions();
 }
