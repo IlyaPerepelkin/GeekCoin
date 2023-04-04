@@ -3,6 +3,7 @@ package PhysicalPerson;
 import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
 import Bank.Sberbank;
+import Card.Card;
 import Card.SberVisaGold;
 import ClientProfile.SberPhysicalPersonProfile;
 
@@ -74,7 +75,7 @@ public class PhysicalPerson {
         setPhysicalPersonProfile(bank.registerClientProfile(this));
     }
 
-    public SberVisaGold openCard(Sberbank bank, SberVisaGold card, String currencyCode, String pinCode) {
+    public Card openCard(Sberbank bank, Card card, String currencyCode, String pinCode) {
         return bank.openCard(physicalPersonProfile, card, currencyCode, pinCode);
     }
 
@@ -82,27 +83,27 @@ public class PhysicalPerson {
         return bank.openAccount(physicalPersonProfile, account, currencyCode);
     }
 
-    public void depositingCash2Card(SberVisaGold toCard, float sumDepositing) {
+    public void depositingCash2Card(Card toCard, float sumDepositing) {
         toCard.depositingCash2Card(sumDepositing);
     }
 
-    public void payBayCard(SberVisaGold card, float sumPay, String byProductOrService, String pinCode) {
+    public void payBayCard(Card card, float sumPay, String byProductOrService, String pinCode) {
         card.payByCard(sumPay, byProductOrService, pinCode);
     }
 
-    public void payBayCard(SberVisaGold card, float sumPay, String byProductOrService, String pinCode, String country) {
+    public void payBayCard(Card card, float sumPay, String byProductOrService, String country, String pinCode) {
         card.payByCard(sumPay, byProductOrService, pinCode, country);
     }
 
-    public void transferCard2Card(SberVisaGold fromCard, SberVisaGold toCard, float sumTransfer) {
+    public void transferCard2Card(Card fromCard, Card toCard, float sumTransfer) {
         fromCard.transferCard2Card(toCard, sumTransfer);
     }
 
-    public void transferCard2Account(SberVisaGold fromCard, SberSavingsAccount toAccount, float sumTransfer) {
+    public void transferCard2Account(Card fromCard, SberSavingsAccount toAccount, float sumTransfer) {
         fromCard.transferCard2Account(toAccount, sumTransfer);
     }
 
-    public void transferAccount2Card(SberSavingsAccount fromAccount, SberVisaGold toCard, float sumTransfer) {
+    public void transferAccount2Card(SberSavingsAccount fromAccount, Card toCard, float sumTransfer) {
         fromAccount.transferAccount2Card(toCard, sumTransfer);
     }
 
@@ -110,15 +111,15 @@ public class PhysicalPerson {
         fromAccount.transferAccount2Account(toAccount, sumTransfer);
     }
 
-    public void depositingCardFromCard(SberVisaGold toCard, SberVisaGold fromCard, float sumDepositing) {
+    public void depositingCardFromCard(Card toCard, Card fromCard, float sumDepositing) {
         toCard.depositingCardFromCard(fromCard, sumDepositing);
     }
 
-    public void depositingCardFromAccount(SberVisaGold toCard, SberSavingsAccount fromAccount, float sumDepositing) {
+    public void depositingCardFromAccount(Card toCard, SberSavingsAccount fromAccount, float sumDepositing) {
         toCard.depositingCardFromAccount(fromAccount, sumDepositing);
     }
 
-    public void depositingAccountFromCard(SberSavingsAccount toAccount, SberVisaGold fromCard, float sumDepositing) {
+    public void depositingAccountFromCard(SberSavingsAccount toAccount, Card fromCard, float sumDepositing) {
         toAccount.depositingAccountFromCard(fromCard, sumDepositing);
     }
 
@@ -126,7 +127,7 @@ public class PhysicalPerson {
         toAccount.depositingAccountFromAccount(fromAccount, sumDepositing);
     }
 
-    public void displayCardTransactions(SberVisaGold card) {
+    public void displayCardTransactions(Card card) {
         card.displayCardTransactions();
     }
 

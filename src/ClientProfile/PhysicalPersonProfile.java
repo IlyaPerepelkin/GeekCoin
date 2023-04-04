@@ -3,6 +3,7 @@ package ClientProfile;
 import Account.SavingsAccount;
 import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
+import Card.Card;
 import Card.SberVisaGold;
 import PhysicalPerson.PhysicalPerson;
 
@@ -12,7 +13,7 @@ public class PhysicalPersonProfile extends ClientProfile {
 
     private PhysicalPerson physicalPerson;
 
-    private SberVisaGold[] cards = new SberVisaGold[5];
+    private Card[] cards = new Card[5];
 
     private SberPayCardAccount[] payCardAccounts = new SberPayCardAccount[5];
 
@@ -33,11 +34,11 @@ public class PhysicalPersonProfile extends ClientProfile {
         this.physicalPerson = physicalPerson;
     }
 
-    public SberVisaGold[] getCards() {
+    public Card[] getCards() {
         return cards;
     }
 
-    public void setCards(SberVisaGold[] cards) {
+    public void setCards(Card[] cards) {
         this.cards = cards;
     }
 
@@ -97,14 +98,14 @@ public class PhysicalPersonProfile extends ClientProfile {
     }
 
     // Привязать карту к профилю клиента
-    public void addCard(SberVisaGold card) {
+    public void addCard(Card card) {
         if (countCards < cards.length) {
             cards[countCards++] = card;
         } else System.out.println("Массив карт переполнен");
     }
 
     // проверить привязана ли карта к профилю клиента
-    public boolean isClientCard(SberVisaGold card) {
+    public boolean isClientCard(Card card) {
         for (int idCard = 0; idCard < countCards; idCard++) {
             if (cards[idCard].equals(card)) return true;
         }
@@ -120,7 +121,7 @@ public class PhysicalPersonProfile extends ClientProfile {
     }
 
     // Прибавить сумму перевода на карту к общей сумме совершенных оплат и переводов в сутки, чтобы контролировать лимиты
-    public void updateTotalPaymentsTransfersDay(float sum, String fromCurrencyCode, SberVisaGold toCard) {
+    public void updateTotalPaymentsTransfersDay(float sum, String fromCurrencyCode, Card toCard) {
         // моя ли карта, на которую выполняем перевод
         boolean isMyCard = isClientCard(toCard);
         // если не моя карта, то обновляем общую сумму

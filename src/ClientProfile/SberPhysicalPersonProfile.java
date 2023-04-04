@@ -1,6 +1,7 @@
 package ClientProfile;
 
 import Account.SberSavingsAccount;
+import Card.Card;
 import Card.SberVisaGold;
 
 public class SberPhysicalPersonProfile extends PhysicalPersonProfile {
@@ -39,7 +40,7 @@ public class SberPhysicalPersonProfile extends PhysicalPersonProfile {
     }
 
     // Прибавить сумму перевода на карту к общей сумме всех переводов на карту клиентам Сбера без комиссии за месяц, чтобы контролировать лимиты
-    public void updateTotalTransfersToClientSberWithoutCommissionMonthInRUB(SberVisaGold toCard, float sumTransfer) {
+    public void updateTotalTransfersToClientSberWithoutCommissionMonthInRUB(Card toCard, float sumTransfer) {
         boolean isMyCard = isClientCard(toCard);
         boolean isCardMyBank = getBank().isCardBank(toCard);
         // если карта не моя, но моего банка, то есть клиент Сбера, то суммируем

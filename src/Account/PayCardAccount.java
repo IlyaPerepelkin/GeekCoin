@@ -1,5 +1,6 @@
 package Account;
 
+import Card.Card;
 import Card.SberVisaGold;
 import Transaction.PayTransaction;
 
@@ -7,7 +8,7 @@ import java.util.Arrays;
 
 public class PayCardAccount extends Account {
 
-    private SberVisaGold [] cards = new SberVisaGold[2];
+    private Card [] cards = new Card[2];
 
     private PayTransaction [] payTransactions = new PayTransaction[50];
 
@@ -18,11 +19,11 @@ public class PayCardAccount extends Account {
     private int countPayTransactions;
 
 
-    public SberVisaGold[] getCards() {
+    public Card[] getCards() {
         return cards;
     }
 
-    public void setCards(SberVisaGold[] cards) {
+    public void setCards(Card[] cards) {
         this.cards = cards;
     }
 
@@ -59,7 +60,7 @@ public class PayCardAccount extends Account {
     }
 
     // Привязать карту к платежному счету
-    public void addCard(SberVisaGold card) {
+    public void addCard(Card card) {
         if (countCards < cards.length) {
             cards[countCards++] = card;
         } else System.out.println("Массив карт переполнен");

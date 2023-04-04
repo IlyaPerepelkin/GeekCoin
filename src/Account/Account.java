@@ -1,6 +1,7 @@
 package Account;
 
 import Bank.Sberbank;
+import Card.Card;
 import Card.SberVisaGold;
 import ClientProfile.SberPhysicalPersonProfile;
 import Transaction.DepositingTransaction;
@@ -123,7 +124,7 @@ public class Account {
 
 
     // Перевести со счета на карту
-    public void transferAccount2Card(SberVisaGold toCard, float sumTransfer) {
+    public void transferAccount2Card(Card toCard, float sumTransfer) {
         // инициализировать транзакцию перевода
         TransferTransaction transferTransaction = new TransferTransaction();
         transferTransaction.setLocalDateTime(LocalDateTime.now());
@@ -269,7 +270,7 @@ public class Account {
     }
 
     // Пополнить счет с карты
-    public void depositingAccountFromCard(SberVisaGold fromCard, float sumDepositing) {
+    public void depositingAccountFromCard(Card fromCard, float sumDepositing) {
         // то есть перевести с карты на счет
         fromCard.transferCard2Account((SberSavingsAccount) this, sumDepositing);
     }

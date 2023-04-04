@@ -1,11 +1,12 @@
 package Account;
 
+import Card.Card;
 import Card.SberVisaGold;
 
 public class SberPayCardAccount extends PayCardAccount {
 
     @Override
-    public void transferAccount2Card(SberVisaGold toCard, float sumTransfer) {
+    public void transferAccount2Card(Card toCard, float sumTransfer) {
         // вызываем родительскую версию метода
         super.transferAccount2Card(toCard, sumTransfer);
 

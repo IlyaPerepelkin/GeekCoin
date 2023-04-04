@@ -68,7 +68,7 @@ public class Bank {
     }
 
     // Вынесем из метода authorization генерацию кода авторизации и проверку статуса карты в отдельный метод authorizationStatusCard()
-    public String authorizationStatusCard(SberVisaGold card) {
+    public String authorizationStatusCard(Card card) {
         // Сгенерировать код авторизации
         String authorizationCode = generateAuthorizationCode();
         String authorizationMessage = card.getStatusCard().equalsIgnoreCase("Активна") ? "Success: Карта активна" : "Failed: Карта заблокирована";
@@ -85,7 +85,7 @@ public class Bank {
     }
 
     //  Провести авторизацию и выдать разрешение на проведение операции
-    public String authorization(SberVisaGold card, String typeOperation, float sum, float commission, String pinCode) {
+    public String authorization(Card card, String typeOperation, float sum, float commission, String pinCode) {
 
         String[] authorizationStatus = authorizationStatusCard(card).split("@");
         String authorizationCode = authorizationStatus[0];
@@ -123,7 +123,7 @@ public class Bank {
     }
 
     // Рассчитать комиссию за перевод на свою или чужую карту моего или другого банка
-    public float getCommission(SberPhysicalPersonProfile clientProfile, String fromCurrencyCode, float sum, SberVisaGold toCard) {
+    public float getCommission(SberPhysicalPersonProfile clientProfile, String fromCurrencyCode, float sum, Card toCard) {
         // запросить моя ли карта, на которую выполняется перевод
         boolean isMyCard = clientProfile.isClientCard(toCard);
         // запросить моего ли банка карта, на которую выполняем перевод
@@ -208,7 +208,7 @@ public class Bank {
     }
 
     // Проверить карта моего ли банка
-    public boolean isCardBank(SberVisaGold card) {
+    public boolean isCardBank(Card card) {
         if (card.getBank().getBankName().equals(getBankName())) return true;
         return false;
     }
