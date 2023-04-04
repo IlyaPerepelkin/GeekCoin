@@ -4,7 +4,9 @@ import Account.Account;
 import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
 import Bank.IBankServicePhysicalPerson;
+import Bank.Sberbank;
 import Card.Card;
+import Card.IMulticurrencyCard;
 import Card.IPaySystem.IPaySystem;
 import ClientProfile.PhysicalPersonProfile;
 
@@ -149,4 +151,11 @@ public class PhysicalPerson {
     }
 
 
+    public void addAccountToMulticurrencyCard(IBankServicePhysicalPerson bank, IMulticurrencyCard multicurrencyCard, String currencyCodeAccount) {
+        multicurrencyCard.addAccount(bank, physicalPersonProfile, currencyCodeAccount);
+    }
+
+    public void switchAccountOfMulticurrencyCard(IMulticurrencyCard multicurrencyCard, String currencyCodeAccount) {
+        multicurrencyCard.switchAccount(currencyCodeAccount);
+    }
 }
