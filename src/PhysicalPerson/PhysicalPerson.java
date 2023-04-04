@@ -5,6 +5,7 @@ import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
 import Bank.IBankServicePhysicalPerson;
 import Card.Card;
+import Card.IPaySystem.IPaySystem;
 import ClientProfile.PhysicalPersonProfile;
 
 public class PhysicalPerson {
@@ -125,6 +126,10 @@ public class PhysicalPerson {
 
     public void depositingAccountFromAccount(SberSavingsAccount toAccount, SberSavingsAccount fromAccount, float sumDepositing) {
         toAccount.depositingAccountFromAccount(fromAccount, sumDepositing);
+    }
+
+    public float getExchangeRatePaySystem(IPaySystem paySystemCard, String currency, String currencyExchangeRate) {
+        return paySystemCard.getExchangeRatePaySystem(currency, currencyExchangeRate);
     }
 
     public void displayCardTransactions(Card card) {
