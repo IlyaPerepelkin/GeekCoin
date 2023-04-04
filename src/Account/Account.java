@@ -3,6 +3,7 @@ package Account;
 import Bank.Sberbank;
 import Card.Card;
 import Card.SberVisaGold;
+import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
 import Transaction.DepositingTransaction;
 import Transaction.TransferTransaction;
@@ -14,7 +15,7 @@ public abstract class Account {
 
     private Sberbank bank;
 
-    private SberPhysicalPersonProfile accountHolder;
+    private PhysicalPersonProfile accountHolder;
 
     private String numberAccount;
 
@@ -41,11 +42,11 @@ public abstract class Account {
         this.bank = bank;
     }
 
-    public SberPhysicalPersonProfile getAccountHolder() {
+    public PhysicalPersonProfile getAccountHolder() {
         return accountHolder;
     }
 
-    public void setAccountHolder(SberPhysicalPersonProfile accountHolder) {
+    public void setAccountHolder(PhysicalPersonProfile accountHolder) {
         this.accountHolder = accountHolder;
     }
 
@@ -325,7 +326,7 @@ public abstract class Account {
     // Вывести транзакции по счету
     public void displayAccountTransactions() {
         // сформировать общий массив транзакций перевода и пополнения в человеко читаемом формате
-        String[] allTransferDepositingTransactions = getAllTransferDepositingTransactions();
+        String[] allTransferDepositingTransactions = getAllAccountTransactions();
 
         // отсортировать транзакции по дате
         Arrays.sort(allTransferDepositingTransactions);
@@ -337,7 +338,7 @@ public abstract class Account {
 
     }
 
-    public String[] getAllTransferDepositingTransactions() {
+    public String[] getAllAccountTransactions() {
         // объявить массив транзакций перевода и пополнения по счету длиной равной общему количеству транзакций
         String[] allTransferDepositingTransactions = new String[countTransferTransactions + countDepositingTransactions];
 

@@ -2,6 +2,7 @@ package Account;
 
 import Card.Card;
 import Card.SberVisaGold;
+import ClientProfile.SberPhysicalPersonProfile;
 
 public class SberPayCardAccount extends PayCardAccount {
 
@@ -12,7 +13,7 @@ public class SberPayCardAccount extends PayCardAccount {
 
         // и дополняем метод уникальным поведением
         // прибавим сумму перевода к общей сумме всех переводов клиентам Сбера без комиссии за месяц для контроля лимита
-        getAccountHolder().updateTotalTransfersToClientSberWithoutCommissionMonthInRUB(toCard, sumTransfer);
+        ((SberPhysicalPersonProfile) getAccountHolder()).updateTotalTransfersToClientSberWithoutCommissionMonthInRUB(toCard, sumTransfer);
     }
 
     @Override
@@ -22,6 +23,6 @@ public class SberPayCardAccount extends PayCardAccount {
 
         // и дополняем метод уникальным поведением
         // прибавим сумму перевода к общей сумме всех переводов клиентам Сбера без комиссии за месяц для контроля лимита
-        getAccountHolder().updateTotalTransfersToClientSberWithoutCommissionMonthInRUB(toAccount, sumTransfer);
+        ((SberPhysicalPersonProfile) getAccountHolder()).updateTotalTransfersToClientSberWithoutCommissionMonthInRUB(toAccount, sumTransfer);
     }
 }

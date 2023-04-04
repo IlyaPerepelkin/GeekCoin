@@ -1,10 +1,13 @@
 package PhysicalPerson;
 
+import Account.Account;
 import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
+import Bank.IServicePhysicalPerson;
 import Bank.Sberbank;
 import Card.Card;
 import Card.SberVisaGold;
+import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
 
 public class PhysicalPerson {
@@ -19,7 +22,7 @@ public class PhysicalPerson {
 
     private char gender;
 
-    private SberPhysicalPersonProfile physicalPersonProfile;
+    private PhysicalPersonProfile physicalPersonProfile;
 
 
     public String getFirstName() {
@@ -62,24 +65,24 @@ public class PhysicalPerson {
         this.gender = gender;
     }
 
-    public SberPhysicalPersonProfile getPhysicalPersonProfile() {
+    public PhysicalPersonProfile getPhysicalPersonProfile() {
         return physicalPersonProfile;
     }
 
-    public void setPhysicalPersonProfile(SberPhysicalPersonProfile physicalPersonProfile) {
+    public void setPhysicalPersonProfile(PhysicalPersonProfile physicalPersonProfile) {
         this.physicalPersonProfile = physicalPersonProfile;
     }
 
 
-    public void registerToBank(Sberbank bank) {
-        setPhysicalPersonProfile(bank.registerClientProfile(this));
+    public void registerPhysicalPersonToBank(IServicePhysicalPerson bank) {
+        setPhysicalPersonProfile(bank.registerPhysicalPersonProfile(this));
     }
 
-    public Card openCard(Sberbank bank, Card card, String currencyCode, String pinCode) {
+    public Card openCard(IServicePhysicalPerson bank, Card card, String currencyCode, String pinCode) {
         return bank.openCard(physicalPersonProfile, card, currencyCode, pinCode);
     }
 
-    public SberSavingsAccount openAccount(Sberbank bank, SberSavingsAccount account, String currencyCode) {
+    public Account openAccount(IServicePhysicalPerson bank, Account account, String currencyCode) {
         return bank.openAccount(physicalPersonProfile, account, currencyCode);
     }
 

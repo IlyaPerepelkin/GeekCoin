@@ -3,6 +3,7 @@ package Card;
 import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
 import Bank.Sberbank;
+import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
 import Transaction.DepositingTransaction;
 import Transaction.PayTransaction;
@@ -14,7 +15,7 @@ public abstract class Card {
 
     private Sberbank bank;
 
-    private SberPhysicalPersonProfile cardHolder;
+    private PhysicalPersonProfile cardHolder;
 
     private SberPayCardAccount payCardAccount;
 
@@ -31,11 +32,11 @@ public abstract class Card {
         this.bank = bank;
     }
 
-    public SberPhysicalPersonProfile getCardHolder() {
+    public PhysicalPersonProfile getCardHolder() {
         return cardHolder;
     }
 
-    public void setCardHolder(SberPhysicalPersonProfile cardHolder) {
+    public void setCardHolder(PhysicalPersonProfile cardHolder) {
         this.cardHolder = cardHolder;
     }
 

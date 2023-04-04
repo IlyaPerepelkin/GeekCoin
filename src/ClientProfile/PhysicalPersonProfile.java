@@ -1,6 +1,6 @@
 package ClientProfile;
 
-import Account.SavingsAccount;
+import Account.Account;
 import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
 import Card.Card;
@@ -15,15 +15,11 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
 
     private Card[] cards = new Card[5];
 
-    private SberPayCardAccount[] payCardAccounts = new SberPayCardAccount[5];
-
-    private SberSavingsAccount[] savingsAccounts = new SberSavingsAccount[15];
+    private Account[] accounts = new Account[15];
 
     private byte countCards;
 
-    private byte countPayCardAccounts;
-
-    private byte countSavingsAccounts;
+    private byte countAccounts;
 
 
     public PhysicalPerson getPhysicalPerson() {
@@ -42,20 +38,12 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
         this.cards = cards;
     }
 
-    public SberPayCardAccount[] getPayCardAccounts() {
-        return payCardAccounts;
+    public Account[] getAccounts() {
+        return accounts;
     }
 
-    public void setPayCardAccounts(SberPayCardAccount[] payCardAccounts) {
-        this.payCardAccounts = payCardAccounts;
-    }
-
-    public SberSavingsAccount[] getSavingsAccounts() {
-        return savingsAccounts;
-    }
-
-    public void setSavingsAccounts(SberSavingsAccount[] savingsAccounts) {
-        this.savingsAccounts = savingsAccounts;
+    public void setAccounts(Account[] accounts) {
+        this.accounts = accounts;
     }
 
     public byte getCountCards() {
@@ -66,34 +54,18 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
         this.countCards = countCards;
     }
 
-    public byte getCountPayCardAccounts() {
-        return countPayCardAccounts;
+    public byte getCountAccounts() {
+        return countAccounts;
     }
 
-    public void setCountPayCardAccounts(byte countPayCardAccounts) {
-        this.countPayCardAccounts = countPayCardAccounts;
+    public void setCountAccounts(byte countAccounts) {
+        this.countAccounts = countAccounts;
     }
 
-    public byte getCountSavingsAccounts() {
-        return countSavingsAccounts;
-    }
-
-    public void setCountSavingsAccounts(byte countSavingsAccounts) {
-        this.countSavingsAccounts = countSavingsAccounts;
-    }
-
-
-    // Привязать платежный счет к профилю клиента
-    public void addAccount(SberPayCardAccount payCardAccount) {
-        if (countPayCardAccounts < payCardAccounts.length) {
-            payCardAccounts[countPayCardAccounts++] = payCardAccount;
-        } else System.out.println("Массив аккаунтов переполнен");
-    }
-
-    // Привязать сберегательный счет к профилю клиента
-    public void addAccount(SberSavingsAccount savingsAccount) {
-        if (countSavingsAccounts < savingsAccounts.length) {
-            savingsAccounts[countSavingsAccounts++] = savingsAccount;
+    // Привязать счет к профилю клиента
+    public void addAccount(Account account) {
+        if (countAccounts < accounts.length) {
+            accounts[countAccounts++] = account;
         } else System.out.println("Массив аккаунтов переполнен");
     }
 
@@ -113,9 +85,9 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
     }
 
     // проверить привязан ли счет к профилю клиента
-    public boolean isClientAccount(SberSavingsAccount account) {
-        for (int idAccount = 0; idAccount < countSavingsAccounts; idAccount++) {
-            if (savingsAccounts[idAccount].equals(account)) return true;
+    public boolean isClientAccount(Account account) {
+        for (int idAccount = 0; idAccount < countAccounts; idAccount++) {
+            if (accounts[idAccount].equals(account)) return true;
         }
         return false;
     }
@@ -146,32 +118,20 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
         // для подсчета всех транзакций по всем счетам и картам клиента
         int countAllTransactions = 0;
 
-        // подсчитать общее количество всех транзакций по платежным счетам(то есть картам)
-        for (int idPayCardAccount = 0; idPayCardAccount < countPayCardAccounts; idPayCardAccount++) {
-            countAllTransactions += payCardAccounts[idPayCardAccount].getAllPayCardAccountTransactions().length;
-        }
-
-        // и общее количество всех транзакций по сберегательным счетам
-        for (int idSavingsAccount = 0; idSavingsAccount < countSavingsAccounts; idSavingsAccount++) {
-            countAllTransactions += savingsAccounts[idSavingsAccount].getAllTransferDepositingTransactions().length;
+        // подсчитать общее количество всех транзакций по всем счетам
+        for (int idAccount = 0; idAccount < countAccounts; idAccount++) {
+            countAllTransactions += accounts[idAccount].getAllAccountTransactions().length;
         }
 
         // и объявить массив всех транзакций профиля клиента длинной равной количеству всех транзакций
         String[] allTransactions = new String[countAllTransactions];
 
-        // теперь нужно перебрать платежные счета (карты)
+        // теперь нужно перебрать все счета
         int destPos = 0;
-        for (int idPayCardAccount = 0; idPayCardAccount < countPayCardAccounts; idPayCardAccount++) {
-            String[] allPayCardAccountTransactions = payCardAccounts[idPayCardAccount].getAllPayCardAccountTransactions();
-            System.arraycopy(allPayCardAccountTransactions, 0, allTransactions, destPos, allPayCardAccountTransactions.length);
-            destPos += allPayCardAccountTransactions.length;
-        }
-
-        // и перебрать сберегательные счета
-        for (int idSavingsAccount = 0; idSavingsAccount < countSavingsAccounts; idSavingsAccount++) {
-            String[] allTransferDepositingTransactions = savingsAccounts[idSavingsAccount].getAllTransferDepositingTransactions();
-            System.arraycopy(allTransferDepositingTransactions, 0, allTransactions, destPos, allTransferDepositingTransactions.length);
-            destPos += allTransferDepositingTransactions.length;
+        for (int idAccount = 0; idAccount < countAccounts; idAccount++) {
+            String[] allAccountTransactions = accounts[idAccount].getAllAccountTransactions();
+            System.arraycopy(allAccountTransactions, 0, allTransactions, destPos, allAccountTransactions.length);
+            destPos += allAccountTransactions.length;
         }
 
         // далее нужно отсортировать все транзакции по дате и времени

@@ -92,7 +92,7 @@ public abstract class PayCardAccount extends Account {
     // Вывести транзакции по счету
     public void displayAccountTransactions() {
         // сформировать общий массив транзакций по платежному счету в человеко-читаемом формате
-        String[] allPayCardAccountTransactions = getAllPayCardAccountTransactions();
+        String[] allPayCardAccountTransactions = getAllAccountTransactions();
 
         // отсортировать транзакции по дате
         Arrays.sort(allPayCardAccountTransactions);
@@ -104,9 +104,10 @@ public abstract class PayCardAccount extends Account {
 
     }
 
-    public String[] getAllPayCardAccountTransactions() {
+    @Override
+    public String[] getAllAccountTransactions() {
         // сформировать общий массив транзакций перевода и пополнения в человеко-читаемом формате
-        String[] allTransferDepositingTransactions = getAllTransferDepositingTransactions();
+        String[] allTransferDepositingTransactions = super.getAllAccountTransactions();
         // сформировать массив транзакций оплаты в человеко-читаемом формате
         String[] allPayTransactions = getAllPayTransactions();
 
