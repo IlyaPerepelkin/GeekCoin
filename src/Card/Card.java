@@ -1,5 +1,6 @@
 package Card;
 
+import Account.PayCardAccount;
 import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
 import Bank.Sberbank;
@@ -17,7 +18,7 @@ public abstract class Card implements IPaySystem {
 
     private PhysicalPersonProfile cardHolder;
 
-    private SberPayCardAccount payCardAccount;
+    private PayCardAccount payCardAccount;
 
     private String numberCard;
 
@@ -40,12 +41,12 @@ public abstract class Card implements IPaySystem {
         this.cardHolder = cardHolder;
     }
 
-    public SberPayCardAccount getPayCardAccount() {
+    public PayCardAccount getPayCardAccount() {
         return payCardAccount;
     }
 
     // Привязываем платежный счет к карте
-    public void setPayCardAccount(SberPayCardAccount payCardAccount) {
+    public void setPayCardAccount(PayCardAccount payCardAccount) {
         this.payCardAccount = payCardAccount;
     }
 

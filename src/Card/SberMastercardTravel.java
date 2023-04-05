@@ -1,5 +1,6 @@
 package Card;
 
+import Account.Account;
 import Account.PayCardAccount;
 import Account.SberPayCardAccount;
 import Bank.IBankServicePhysicalPerson;
@@ -33,7 +34,14 @@ public class SberMastercardTravel extends CardMastercard implements IMulticurren
 
     @Override
     public void switchAccount(String currencyCodeAccount) {
-        // реализовать и прислать свой вариант
-        // если сложно будет подсказка в виде псеводокод
+        for (int i = 0; i < multicurrencyAccounts.size(); i++) {
+            PayCardAccount payCardAccount = multicurrencyAccounts.get(i);
+            if (payCardAccount.getCurrencyCode().equals(currencyCodeAccount)) {
+                multicurrencyAccounts.remove(payCardAccount);
+                multicurrencyAccounts.add(getPayCardAccount());
+                setPayCardAccount(payCardAccount);
+            }
+        }
     }
+
 }

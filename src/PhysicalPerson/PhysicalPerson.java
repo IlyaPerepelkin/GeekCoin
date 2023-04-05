@@ -4,7 +4,7 @@ import Account.Account;
 import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
 import Bank.IBankServicePhysicalPerson;
-import Bank.Sberbank;
+import Card.IBonusCard;
 import Card.Card;
 import Card.IMulticurrencyCard;
 import Card.IPaySystem.IPaySystem;
@@ -90,11 +90,11 @@ public class PhysicalPerson {
         toCard.depositingCash2Card(sumDepositing);
     }
 
-    public void payBayCard(Card card, float sumPay, String byProductOrService, String pinCode) {
+    public void payByCard(Card card, float sumPay, String byProductOrService, String pinCode) {
         card.payByCard(sumPay, byProductOrService, pinCode);
     }
 
-    public void payBayCard(Card card, float sumPay, String byProductOrService, String country, String pinCode) {
+    public void payByCard(Card card, float sumPay, String byProductOrService, String country, String pinCode) {
         card.payByCard(sumPay, byProductOrService, pinCode, country);
     }
 
@@ -157,5 +157,9 @@ public class PhysicalPerson {
 
     public void switchAccountOfMulticurrencyCard(IMulticurrencyCard multicurrencyCard, String currencyCodeAccount) {
         multicurrencyCard.switchAccount(currencyCodeAccount);
+    }
+
+    public void payByCardBonuses(IBonusCard bonusCard, float sumPay, int bonusesPay, String buyProductOrService) {
+        bonusCard.payByCardBonuses(sumPay, bonusesPay, buyProductOrService);
     }
 }
