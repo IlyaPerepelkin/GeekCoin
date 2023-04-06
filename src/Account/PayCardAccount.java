@@ -1,13 +1,15 @@
 package Account;
 
+import Card.Card;
 import Card.SberVisaGold;
 import Transaction.PayTransaction;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
-public class PayCardAccount extends Account {
+public abstract class PayCardAccount extends Account {
 
-    private SberVisaGold [] cards = new SberVisaGold[2];
+    private ArrayList<Card> cards = new ArrayList<>();
 
     private PayTransaction [] payTransactions = new PayTransaction[50];
 
@@ -18,11 +20,11 @@ public class PayCardAccount extends Account {
     private int countPayTransactions;
 
 
-    public SberVisaGold[] getCards() {
+    public ArrayList<Card> getCards() {
         return cards;
     }
 
-    public void setCards(SberVisaGold[] cards) {
+    public void setCards(ArrayList<Card> cards) {
         this.cards = cards;
     }
 
@@ -58,12 +60,6 @@ public class PayCardAccount extends Account {
         this.countPayTransactions = countPayTransactions;
     }
 
-    // Привязать карту к платежному счету
-    public void addCard(SberVisaGold card) {
-        if (countCards < cards.length) {
-            cards[countCards++] = card;
-        } else System.out.println("Массив карт переполнен");
-    }
 
     // Блокировать сумму на счете карты
     public boolean blockSum(float sum) {
@@ -91,7 +87,7 @@ public class PayCardAccount extends Account {
     // Вывести транзакции по счету
     public void displayAccountTransactions() {
         // сформировать общий массив транзакций по платежному счету в человеко-читаемом формате
-        String[] allPayCardAccountTransactions = getAllPayCardAccountTransactions();
+        String[] allPayCardAccountTransactions = getAllAccountTransactions();
 
         // отсортировать транзакции по дате
         Arrays.sort(allPayCardAccountTransactions);
@@ -103,9 +99,10 @@ public class PayCardAccount extends Account {
 
     }
 
-    public String[] getAllPayCardAccountTransactions() {
+    @Override
+    public String[] getAllAccountTransactions() {
         // сформировать общий массив транзакций перевода и пополнения в человеко-читаемом формате
-        String[] allTransferDepositingTransactions = getAllTransferDepositingTransactions();
+        String[] allTransferDepositingTransactions = super.getAllAccountTransactions();
         // сформировать массив транзакций оплаты в человеко-читаемом формате
         String[] allPayTransactions = getAllPayTransactions();
 

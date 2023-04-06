@@ -1,6 +1,6 @@
 package Account;
 
-public class SavingsAccount extends Account {
+public abstract class SavingsAccount extends Account {
 
     private float percentOfBalance = 5.0f;
 

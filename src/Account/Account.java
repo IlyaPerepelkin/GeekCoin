@@ -1,7 +1,9 @@
 package Account;
 
 import Bank.Sberbank;
+import Card.Card;
 import Card.SberVisaGold;
+import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
 import Transaction.DepositingTransaction;
 import Transaction.TransferTransaction;
@@ -9,11 +11,11 @@ import Transaction.TransferTransaction;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-public class Account {
+public abstract class Account {
 
     private Sberbank bank;
 
-    private SberPhysicalPersonProfile accountHolder;
+    private PhysicalPersonProfile accountHolder;
 
     private String numberAccount;
 
@@ -40,11 +42,11 @@ public class Account {
         this.bank = bank;
     }
 
-    public SberPhysicalPersonProfile getAccountHolder() {
+    public PhysicalPersonProfile getAccountHolder() {
         return accountHolder;
     }
 
-    public void setAccountHolder(SberPhysicalPersonProfile accountHolder) {
+    public void setAccountHolder(PhysicalPersonProfile accountHolder) {
         this.accountHolder = accountHolder;
     }
 
@@ -123,7 +125,7 @@ public class Account {
 
 
     // Перевести со счета на карту
-    public void transferAccount2Card(SberVisaGold toCard, float sumTransfer) {
+    public void transferAccount2Card(Card toCard, float sumTransfer) {
         // инициализировать транзакцию перевода
         TransferTransaction transferTransaction = new TransferTransaction();
         transferTransaction.setLocalDateTime(LocalDateTime.now());
@@ -269,7 +271,7 @@ public class Account {
     }
 
     // Пополнить счет с карты
-    public void depositingAccountFromCard(SberVisaGold fromCard, float sumDepositing) {
+    public void depositingAccountFromCard(Card fromCard, float sumDepositing) {
         // то есть перевести с карты на счет
         fromCard.transferCard2Account((SberSavingsAccount) this, sumDepositing);
     }
@@ -324,7 +326,7 @@ public class Account {
     // Вывести транзакции по счету
     public void displayAccountTransactions() {
         // сформировать общий массив транзакций перевода и пополнения в человеко читаемом формате
-        String[] allTransferDepositingTransactions = getAllTransferDepositingTransactions();
+        String[] allTransferDepositingTransactions = getAllAccountTransactions();
 
         // отсортировать транзакции по дате
         Arrays.sort(allTransferDepositingTransactions);
@@ -336,7 +338,7 @@ public class Account {
 
     }
 
-    public String[] getAllTransferDepositingTransactions() {
+    public String[] getAllAccountTransactions() {
         // объявить массив транзакций перевода и пополнения по счету длиной равной общему количеству транзакций
         String[] allTransferDepositingTransactions = new String[countTransferTransactions + countDepositingTransactions];
 

@@ -1,22 +1,24 @@
 package Card;
 
+import Account.PayCardAccount;
 import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
 import Bank.Sberbank;
-import ClientProfile.SberPhysicalPersonProfile;
+import Card.IPaySystem.IPaySystem;
+import ClientProfile.PhysicalPersonProfile;
 import Transaction.DepositingTransaction;
 import Transaction.PayTransaction;
 import Transaction.TransferTransaction;
 
 import java.time.LocalDateTime;
 
-public class Card {
+public abstract class Card implements IPaySystem {
 
     private Sberbank bank;
 
-    private SberPhysicalPersonProfile cardHolder;
+    private PhysicalPersonProfile cardHolder;
 
-    private SberPayCardAccount payCardAccount;
+    private PayCardAccount payCardAccount;
 
     private String numberCard;
 
@@ -31,20 +33,20 @@ public class Card {
         this.bank = bank;
     }
 
-    public SberPhysicalPersonProfile getCardHolder() {
+    public PhysicalPersonProfile getCardHolder() {
         return cardHolder;
     }
 
-    public void setCardHolder(SberPhysicalPersonProfile cardHolder) {
+    public void setCardHolder(PhysicalPersonProfile cardHolder) {
         this.cardHolder = cardHolder;
     }
 
-    public SberPayCardAccount getPayCardAccount() {
+    public PayCardAccount getPayCardAccount() {
         return payCardAccount;
     }
 
     // Привязываем платежный счет к карте
-    public void setPayCardAccount(SberPayCardAccount payCardAccount) {
+    public void setPayCardAccount(PayCardAccount payCardAccount) {
         this.payCardAccount = payCardAccount;
     }
 
@@ -82,7 +84,7 @@ public class Card {
         // инициализировать транзакцию оплаты
         PayTransaction payTransaction = new PayTransaction();
         payTransaction.setLocalDateTime(LocalDateTime.now());
-        payTransaction.setFromCard((SberVisaGold) this);
+        payTransaction.setFromCard(this);
         payTransaction.setSum(sumPay);
         payTransaction.setCurrencySymbol(payCardAccount.getCurrencySymbol());
         payTransaction.setTypeOperation("Покупка ");
@@ -95,7 +97,7 @@ public class Card {
         payTransaction.setCommission(commission);
 
         // запросить разрешение банка на проведение операции с блокированием суммы оплаты и комиссии
-        String authorization = bank.authorization((SberVisaGold) this, payTransaction.getTypeOperation(), sumPay, commission, pinCode);
+        String authorization = bank.authorization(this, payTransaction.getTypeOperation(), sumPay, commission, pinCode);
         // извлекаем массив строк разделяя их символом "@"
         String[] authorizationData = authorization.split("@");
         // извлекаем код авторизации
@@ -154,24 +156,13 @@ public class Card {
 
     }
 
-    // Конвертировать в валюту по курсу платежной системы
-    // переопределим в дочерних классах, потому что у платежных систем разные алгоритмы конвертации
-    public float convertToCurrencyExchangeRatePaySystem(float sum, String fromCurrencyCode, String toBillingCurrencyCode) {
-        return 0;
-    }
-
-    // Запросим код валюты платежной системы
-    // переопределим в дочерних классах, потому что нет общего алгоритма, так как у платежных систем разные валюты
-    public String getCurrencyCodePaySystem(String country) {
-        return null;
-    }
 
     // Перевести с карты на карту
-    public void transferCard2Card(SberVisaGold toCard, float sumTransfer) {
+    public void transferCard2Card(Card toCard, float sumTransfer) {
         // инициализировать транзакцию перевода
         TransferTransaction transferTransaction = new TransferTransaction();
         transferTransaction.setLocalDateTime(LocalDateTime.now());
-        transferTransaction.setFromCard((SberVisaGold) this);
+        transferTransaction.setFromCard(this);
         transferTransaction.setToCard(toCard);
         transferTransaction.setSum(sumTransfer);
         transferTransaction.setCurrencySymbol(payCardAccount.getCurrencySymbol());
@@ -184,7 +175,7 @@ public class Card {
         transferTransaction.setCommission(commission);
 
         // запросить разрешение банка на проведение операции с блокированием суммы перевода и комиссии
-        String authorization = bank.authorization((SberVisaGold) this, transferTransaction.getTypeOperation(), sumTransfer, commission, null);
+        String authorization = bank.authorization(this, transferTransaction.getTypeOperation(), sumTransfer, commission, null);
         String[] authorizationData = authorization.split("@");
         String authorizationCode = authorizationData[0];
         transferTransaction.setAuthorizationCode(authorizationCode);
@@ -201,7 +192,7 @@ public class Card {
                 // инициализировать транзакцию пополнения
                 DepositingTransaction depositingTransaction = new DepositingTransaction();
                 depositingTransaction.setLocalDateTime(LocalDateTime.now());
-                depositingTransaction.setFromCard((SberVisaGold) this);
+                depositingTransaction.setFromCard(this);
                 depositingTransaction.setToCard(toCard);
                 depositingTransaction.setSum(sumTransfer);
                 depositingTransaction.setCurrencySymbol(toCard.getPayCardAccount().getCurrencySymbol());
@@ -255,7 +246,7 @@ public class Card {
         // инициализировать транзакцию перевода
         TransferTransaction transferTransaction = new TransferTransaction();
         transferTransaction.setLocalDateTime(LocalDateTime.now());
-        transferTransaction.setFromCard((SberVisaGold) this);
+        transferTransaction.setFromCard(this);
         transferTransaction.setToAccount(toAccount);
         transferTransaction.setSum(sumTransfer);
         transferTransaction.setCurrencySymbol(payCardAccount.getCurrencySymbol());
@@ -282,7 +273,7 @@ public class Card {
                     // инициализировать транзакцию пополнения
                     DepositingTransaction depositingTransaction = new DepositingTransaction();
                     depositingTransaction.setLocalDateTime(LocalDateTime.now());
-                    depositingTransaction.setFromCard((SberVisaGold) this);
+                    depositingTransaction.setFromCard(this);
                     depositingTransaction.setToAccount(toAccount);
                     depositingTransaction.setTypeOperation("Пополнение с карты");
                     depositingTransaction.setSum(sumTransfer);
@@ -329,13 +320,13 @@ public class Card {
         // инициализировать транзакцию пополнения
         DepositingTransaction depositingTransaction = new DepositingTransaction();
         depositingTransaction.setLocalDateTime(LocalDateTime.now());
-        depositingTransaction.setToCard((SberVisaGold) this);
+        depositingTransaction.setToCard(this);
         depositingTransaction.setSum(sumDepositing);
         depositingTransaction.setCurrencySymbol(payCardAccount.getCurrencySymbol());
         depositingTransaction.setTypeOperation("Внесение наличных");
 
         // запросить разрешение банка на проведение операции с проверкой статуса карты
-        String authorization = bank.authorizationStatusCard((SberVisaGold) this);
+        String authorization = bank.authorizationStatusCard(this);
 
         String[] authorizationData = authorization.split("@");
         String authorizationCode = authorizationData[0];
@@ -361,15 +352,15 @@ public class Card {
     }
 
     // Пополнить карту с карты
-    public void depositingCardFromCard(SberVisaGold fromCard, float sumDepositing) {
+    public void depositingCardFromCard(Card fromCard, float sumDepositing) {
         // то есть перевести с карты на карты
-        fromCard.transferCard2Card((SberVisaGold) this, sumDepositing);
+        fromCard.transferCard2Card(this, sumDepositing);
     }
 
     // Пополнить карту со счета
     public void depositingCardFromAccount(SberSavingsAccount fromAccount, float sumDepositing) {
         // то есть перевести со счета на карту
-        fromAccount.transferAccount2Card((SberVisaGold)this, sumDepositing);
+        fromAccount.transferAccount2Card(this, sumDepositing);
     }
 
     // Вывести транзакции по счету карты

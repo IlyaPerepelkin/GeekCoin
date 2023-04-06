@@ -1,10 +1,14 @@
 package PhysicalPerson;
 
+import Account.Account;
 import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
-import Bank.Sberbank;
-import Card.SberVisaGold;
-import ClientProfile.SberPhysicalPersonProfile;
+import Bank.IBankServicePhysicalPerson;
+import Card.IBonusCard;
+import Card.Card;
+import Card.IMulticurrencyCard;
+import Card.IPaySystem.IPaySystem;
+import ClientProfile.PhysicalPersonProfile;
 
 public class PhysicalPerson {
 
@@ -18,7 +22,7 @@ public class PhysicalPerson {
 
     private char gender;
 
-    private SberPhysicalPersonProfile physicalPersonProfile;
+    private PhysicalPersonProfile physicalPersonProfile;
 
 
     public String getFirstName() {
@@ -61,48 +65,48 @@ public class PhysicalPerson {
         this.gender = gender;
     }
 
-    public SberPhysicalPersonProfile getPhysicalPersonProfile() {
+    public PhysicalPersonProfile getPhysicalPersonProfile() {
         return physicalPersonProfile;
     }
 
-    public void setPhysicalPersonProfile(SberPhysicalPersonProfile physicalPersonProfile) {
+    public void setPhysicalPersonProfile(PhysicalPersonProfile physicalPersonProfile) {
         this.physicalPersonProfile = physicalPersonProfile;
     }
 
 
-    public void registerToBank(Sberbank bank) {
-        setPhysicalPersonProfile(bank.registerClientProfile(this));
+    public void registerPhysicalPersonToBank(IBankServicePhysicalPerson bank) {
+        setPhysicalPersonProfile(bank.registerPhysicalPersonProfile(this));
     }
 
-    public SberVisaGold openCard(Sberbank bank, SberVisaGold card, String currencyCode, String pinCode) {
+    public Card openCard(IBankServicePhysicalPerson bank, Card card, String currencyCode, String pinCode) {
         return bank.openCard(physicalPersonProfile, card, currencyCode, pinCode);
     }
 
-    public SberSavingsAccount openAccount(Sberbank bank, SberSavingsAccount account, String currencyCode) {
+    public Account openAccount(IBankServicePhysicalPerson bank, Account account, String currencyCode) {
         return bank.openAccount(physicalPersonProfile, account, currencyCode);
     }
 
-    public void depositingCash2Card(SberVisaGold toCard, float sumDepositing) {
+    public void depositingCash2Card(Card toCard, float sumDepositing) {
         toCard.depositingCash2Card(sumDepositing);
     }
 
-    public void payBayCard(SberVisaGold card, float sumPay, String byProductOrService, String pinCode) {
+    public void payByCard(Card card, float sumPay, String byProductOrService, String pinCode) {
         card.payByCard(sumPay, byProductOrService, pinCode);
     }
 
-    public void payBayCard(SberVisaGold card, float sumPay, String byProductOrService, String pinCode, String country) {
+    public void payByCard(Card card, float sumPay, String byProductOrService, String country, String pinCode) {
         card.payByCard(sumPay, byProductOrService, pinCode, country);
     }
 
-    public void transferCard2Card(SberVisaGold fromCard, SberVisaGold toCard, float sumTransfer) {
+    public void transferCard2Card(Card fromCard, Card toCard, float sumTransfer) {
         fromCard.transferCard2Card(toCard, sumTransfer);
     }
 
-    public void transferCard2Account(SberVisaGold fromCard, SberSavingsAccount toAccount, float sumTransfer) {
+    public void transferCard2Account(Card fromCard, SberSavingsAccount toAccount, float sumTransfer) {
         fromCard.transferCard2Account(toAccount, sumTransfer);
     }
 
-    public void transferAccount2Card(SberSavingsAccount fromAccount, SberVisaGold toCard, float sumTransfer) {
+    public void transferAccount2Card(SberSavingsAccount fromAccount, Card toCard, float sumTransfer) {
         fromAccount.transferAccount2Card(toCard, sumTransfer);
     }
 
@@ -110,15 +114,15 @@ public class PhysicalPerson {
         fromAccount.transferAccount2Account(toAccount, sumTransfer);
     }
 
-    public void depositingCardFromCard(SberVisaGold toCard, SberVisaGold fromCard, float sumDepositing) {
+    public void depositingCardFromCard(Card toCard, Card fromCard, float sumDepositing) {
         toCard.depositingCardFromCard(fromCard, sumDepositing);
     }
 
-    public void depositingCardFromAccount(SberVisaGold toCard, SberSavingsAccount fromAccount, float sumDepositing) {
+    public void depositingCardFromAccount(Card toCard, SberSavingsAccount fromAccount, float sumDepositing) {
         toCard.depositingCardFromAccount(fromAccount, sumDepositing);
     }
 
-    public void depositingAccountFromCard(SberSavingsAccount toAccount, SberVisaGold fromCard, float sumDepositing) {
+    public void depositingAccountFromCard(SberSavingsAccount toAccount, Card fromCard, float sumDepositing) {
         toAccount.depositingAccountFromCard(fromCard, sumDepositing);
     }
 
@@ -126,7 +130,11 @@ public class PhysicalPerson {
         toAccount.depositingAccountFromAccount(fromAccount, sumDepositing);
     }
 
-    public void displayCardTransactions(SberVisaGold card) {
+    public float getExchangeRatePaySystem(IPaySystem paySystemCard, String currency, String currencyExchangeRate) {
+        return paySystemCard.getExchangeRatePaySystem(currency, currencyExchangeRate);
+    }
+
+    public void displayCardTransactions(Card card) {
         card.displayCardTransactions();
     }
 
@@ -143,4 +151,15 @@ public class PhysicalPerson {
     }
 
 
+    public void addAccountToMulticurrencyCard(IMulticurrencyCard multicurrencyCard, String currencyCodeAccount) {
+        multicurrencyCard.addAccount(currencyCodeAccount);
+    }
+
+    public void switchAccountOfMulticurrencyCard(IMulticurrencyCard multicurrencyCard, String currencyCodeAccount) {
+        multicurrencyCard.switchAccount(currencyCodeAccount);
+    }
+
+    public void payByCardBonuses(IBonusCard bonusCard, float sumPay, int bonusesPay, String buyProductOrService) {
+        bonusCard.payByCardBonuses(sumPay, bonusesPay, buyProductOrService);
+    }
 }

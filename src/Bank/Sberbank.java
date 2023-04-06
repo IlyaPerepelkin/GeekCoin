@@ -1,19 +1,23 @@
 package Bank;
 
+import Account.Account;
 import Account.SberPayCardAccount;
-import Account.SberSavingsAccount;
-import Card.SberVisaGold;
+import Card.Card;
+import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
 import PhysicalPerson.PhysicalPerson;
 
-public class Sberbank extends Bank {
+public class Sberbank extends Bank implements IBankServicePhysicalPerson {
 
     // Зарегистрировать профиль физ лица
-    public SberPhysicalPersonProfile registerClientProfile(PhysicalPerson physicalPerson) {
+    @Override
+    public PhysicalPersonProfile registerPhysicalPersonProfile(PhysicalPerson physicalPerson) {
         // создать профиль клиента
         SberPhysicalPersonProfile sberPhysicalPersonProfile = new SberPhysicalPersonProfile();
         sberPhysicalPersonProfile.setBank(this);
         sberPhysicalPersonProfile.setPhysicalPerson(physicalPerson);
+
+        sberPhysicalPersonProfile.setPercentBonusOfSumPay(0.5f);
 
         // установить лимиты
         sberPhysicalPersonProfile.setLimitPaymentsTransfersDayInRUB(1000000.00f);
@@ -37,55 +41,42 @@ public class Sberbank extends Bank {
     }
 
     // Открыть карту
-    public SberVisaGold openCard(SberPhysicalPersonProfile clientProfile, SberVisaGold card, String currencyCode, String pinCode) {
+    @Override
+    public Card openCard(PhysicalPersonProfile physicalPersonProfile, Card  card, String currencyCode, String pinCode) {
         // установить свойства карты
         card.setBank(this);
         card.setNumberCard(generateNumberCard());
-        card.setCardHolder(clientProfile);
+        card.setCardHolder(physicalPersonProfile);
         card.setPinCode(pinCode);
 
         // открыть платежный счет
-        SberPayCardAccount payCardAccount = openAccount(clientProfile, new SberPayCardAccount(), currencyCode);
+        SberPayCardAccount payCardAccount = (SberPayCardAccount) openAccount(physicalPersonProfile, new SberPayCardAccount(), currencyCode);
 
         // привязать карту к платежному счету
-        payCardAccount.addCard(card);
+        payCardAccount.getCards().add(card);
 
         // привязать платежный счет к карте
         card.setPayCardAccount(payCardAccount);
         card.setStatusCard("Активна");
 
         // привязать карту к профилю клиента
-        clientProfile.addCard(card);
+        physicalPersonProfile.addCard(card);
 
         return card;
     }
 
-    // Открыть платежный счет
-    private SberPayCardAccount openAccount(SberPhysicalPersonProfile clientProfile, SberPayCardAccount account, String currencyCode) {
+    // Открыть счет
+    @Override
+    public Account openAccount(PhysicalPersonProfile physicalPersonProfile, Account account, String currencyCode) {
         // установить свойства платежного счета
         account.setBank(this);
         account.setNumberAccount(generateNumberAccount());
-        account.setAccountHolder(clientProfile);
+        account.setAccountHolder(physicalPersonProfile);
         account.setCurrencyCode(currencyCode);
         account.setCurrencySymbol(currencyCode);
 
         // привязать платежный счет к профилю клиента
-        clientProfile.addAccount(account);
-
-        return account;
-    }
-
-    // Открыть сберегательный счет
-    public SberSavingsAccount openAccount(SberPhysicalPersonProfile clientProfile, SberSavingsAccount account, String currencyCode) {
-        // Установить свойства сберегательного счета
-        account.setBank(this);
-        account.setNumberAccount(generateNumberAccount());
-        account.setAccountHolder(clientProfile);
-        account.setCurrencyCode(currencyCode);
-        account.setCurrencySymbol(currencyCode);
-
-        // привязать сберегательный счет к профилю клиента
-        clientProfile.addAccount(account);
+        physicalPersonProfile.addAccount(account);
 
         return account;
     }
@@ -104,13 +95,13 @@ public class Sberbank extends Bank {
 
     @Override
     // Рассчитать комиссию за перевод клиенту моего банка Сбер
-    public float getCommissionOfTransferToClientBank(SberPhysicalPersonProfile clientProfile, float sum, String fromCurrencyCode) {
+    public float getCommissionOfTransferToClientBank(PhysicalPersonProfile clientProfile, float sum, String fromCurrencyCode) {
         // по умолчанию комиссия 0
         float commission = 0;
         // если сумма перевода в рублях
         if (fromCurrencyCode.equals("RUB")) {
             // и если превышен лимит по переводам клиентам Сбера в месяц, то рассчитываем комиссию за перевод
-            boolean exceededLimitTransfersToClientSberWithoutCommissionMonthInRUB = clientProfile.exceededLimitTransfersToClientSberWithoutCommissionMonthInRUB(sum);
+            boolean exceededLimitTransfersToClientSberWithoutCommissionMonthInRUB = ((SberPhysicalPersonProfile) clientProfile).exceededLimitTransfersToClientSberWithoutCommissionMonthInRUB(sum);
             if (exceededLimitTransfersToClientSberWithoutCommissionMonthInRUB)
                 commission = (sum / 100) * clientProfile.getPercentOfCommissionForTransferInRUB();
         }
