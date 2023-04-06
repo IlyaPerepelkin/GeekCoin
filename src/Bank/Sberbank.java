@@ -8,6 +8,16 @@ import ClientProfile.SberPhysicalPersonProfile;
 import PhysicalPerson.PhysicalPerson;
 
 public class Sberbank extends Bank implements IBankServicePhysicalPerson {
+    PhysicalPersonProfile clientProfile;
+
+    float sum;
+
+    String fromCurrencyCode;
+
+    String currency;
+
+    String currencyExchangeRate;
+
 
     // Зарегистрировать профиль физ лица
     @Override
@@ -81,25 +91,24 @@ public class Sberbank extends Bank implements IBankServicePhysicalPerson {
         return account;
     }
 
-    @Override
     // Предоставить обменный курс валют Сбера
-    public float getExchangeRateBank(String currency, String currencyExchangeRate) {
+    public float getExchangeRateBank() {
         // TODO: Запрос к API банка
         float exchangeRateBank = 0;
         // курс доллара к рублю
-        if (currency.equals("USD") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 60.30f;
+        if (currency != null && currency.equals("USD") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 60.30f;
         // курс евро к рублю
-        if (currency.equals("EUR") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 61.50f;
+        if (currency != null && currency.equals("EUR") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 61.50f;
         return  exchangeRateBank;
     }
 
-    @Override
+
     // Рассчитать комиссию за перевод клиенту моего банка Сбер
-    public float getCommissionOfTransferToClientBank(PhysicalPersonProfile clientProfile, float sum, String fromCurrencyCode) {
+    public float getCommissionOfTransferToClientBank() {
         // по умолчанию комиссия 0
         float commission = 0;
         // если сумма перевода в рублях
-        if (fromCurrencyCode.equals("RUB")) {
+        if (fromCurrencyCode != null && fromCurrencyCode.equals("RUB")) {
             // и если превышен лимит по переводам клиентам Сбера в месяц, то рассчитываем комиссию за перевод
             boolean exceededLimitTransfersToClientSberWithoutCommissionMonthInRUB = ((SberPhysicalPersonProfile) clientProfile).exceededLimitTransfersToClientSberWithoutCommissionMonthInRUB(sum);
             if (exceededLimitTransfersToClientSberWithoutCommissionMonthInRUB)
