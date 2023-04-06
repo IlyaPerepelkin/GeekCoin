@@ -35,7 +35,7 @@ public class Main {
         SberMastercardGold sberMastercardGold = (SberMastercardGold) I.openCard(sberbank, new SberMastercardGold(), "RUB", "2535");
 
         SberMastercardTravel sberMastercardTravel = (SberMastercardTravel) I.openCard(sberbank, new SberMastercardTravel(), "RUB", "7895");
-        I.addAccountToMulticurrencyCard(sberbank, sberMastercardTravel, "USD");
+        I.addAccountToMulticurrencyCard(sberMastercardTravel, "USD");
         I.switchAccountOfMulticurrencyCard(sberMastercardTravel, "USD");
 
         SberSavingsAccount mySberSavingsAccount1 = (SberSavingsAccount) I.openAccount (sberbank, new SberSavingsAccount(), "RUB");
