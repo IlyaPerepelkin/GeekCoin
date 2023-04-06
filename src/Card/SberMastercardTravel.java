@@ -27,7 +27,7 @@ public class SberMastercardTravel extends CardMastercard implements IMulticurren
         // Открываем новый счет
         SberPayCardAccount sberPayCardAccount = (SberPayCardAccount) bank.openAccount(physicalPersonProfile, new SberPayCardAccount(), currencyCodeAccount);
         // Связываем созданный счет с картой
-        sberPayCardAccount.addCard(this);
+        sberPayCardAccount.getCards().add(this);
         // Добавляем созданный счет в массив других счетов мультивалютной карты
         getMulticurrencyAccounts().add(sberPayCardAccount);
     }

@@ -53,7 +53,7 @@ public class Sberbank extends Bank implements IBankServicePhysicalPerson {
         SberPayCardAccount payCardAccount = (SberPayCardAccount) openAccount(physicalPersonProfile, new SberPayCardAccount(), currencyCode);
 
         // привязать карту к платежному счету
-        payCardAccount.addCard(card);
+        payCardAccount.getCards().add(card);
 
         // привязать платежный счет к карте
         card.setPayCardAccount(payCardAccount);

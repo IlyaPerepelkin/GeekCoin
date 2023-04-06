@@ -4,11 +4,12 @@ import Card.Card;
 import Card.SberVisaGold;
 import Transaction.PayTransaction;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public abstract class PayCardAccount extends Account {
 
-    private Card [] cards = new Card[2];
+    private ArrayList<Card> cards = new ArrayList<>();
 
     private PayTransaction [] payTransactions = new PayTransaction[50];
 
@@ -19,11 +20,11 @@ public abstract class PayCardAccount extends Account {
     private int countPayTransactions;
 
 
-    public Card[] getCards() {
+    public ArrayList<Card> getCards() {
         return cards;
     }
 
-    public void setCards(Card[] cards) {
+    public void setCards(ArrayList<Card> cards) {
         this.cards = cards;
     }
 
@@ -59,12 +60,6 @@ public abstract class PayCardAccount extends Account {
         this.countPayTransactions = countPayTransactions;
     }
 
-    // Привязать карту к платежному счету
-    public void addCard(Card card) {
-        if (countCards < cards.length) {
-            cards[countCards++] = card;
-        } else System.out.println("Массив карт переполнен");
-    }
 
     // Блокировать сумму на счете карты
     public boolean blockSum(float sum) {
