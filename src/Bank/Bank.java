@@ -132,7 +132,7 @@ public abstract class Bank {
 
         float commission = 0;
         // если карта зачисления не моя, но моего банка, то вычисляем комиссию за перевод клиенту моего банка
-        if (!isMyCard && isCardMyBank) commission = getCommissionOfTransferToClientBank(clientProfile, sum, fromCurrencyCode);
+        if (!isMyCard && isCardMyBank) commission = getCommissionOfTransferToClientBank(); // clientProfile, sum, fromCurrencyCode
         // если карта зачисления не моя и не моего банка, то вычисляем комиссию за перевод клиенту другого банка
         if (!isMyCard && !isCardMyBank) commission = getCommissionOfTransferToClientAnotherBank(clientProfile, sum, fromCurrencyCode);
 
@@ -151,7 +151,7 @@ public abstract class Bank {
 
         float commission = 0;
         // если счет зачисления не мой, но моего банка, то вычисляем комиссию за перевод клиенту моего банка
-        if (!isMyAccount && isAccountMyBank) commission = getCommissionOfTransferToClientBank(clientProfile, sum, fromCurrencyCode);
+        if (!isMyAccount && isAccountMyBank) commission = getCommissionOfTransferToClientBank(); // clientProfile, sum, fromCurrencyCode
         // если счет зачисления не мой и не моего банка, то вычисляем комиссию за перевод клиенту другого банка
         if (!isMyAccount && !isAccountMyBank) commission = getCommissionOfTransferToClientAnotherBank(clientProfile, sum, fromCurrencyCode);
 
@@ -190,10 +190,8 @@ public abstract class Bank {
 
     }
 
-    // Рассчитать комиссию за перевод клиенту моего банка. Переопределим метод в дочерних классах конкретных банков
-    public float getCommissionOfTransferToClientBank(PhysicalPersonProfile clientProfile, float sum, String fromCurrencyCode) {
-        return 0;
-    }
+    // Рассчитать комиссию за перевод клиенту моего банка.
+    public abstract float getCommissionOfTransferToClientBank();
 
     // Рассчитать комиссию за перевод клиенту другого банка
     private float getCommissionOfTransferToClientAnotherBank(PhysicalPersonProfile clientProfile, float sum, String fromCurrencyCode) {
@@ -230,16 +228,14 @@ public abstract class Bank {
 
     // Конвертировать в валюту по курсу банка
     public float convertToCurrencyExchangeRateBank(float sum, String fromCurrencyCode, String toCurrencyCode) {
-        float exchangeRateToCardCurrency = getExchangeRateBank(fromCurrencyCode, toCurrencyCode);
+        float exchangeRateToCardCurrency = getExchangeRateBank();
         float sumInCardCurrency = sum * exchangeRateToCardCurrency;
 
         return sumInCardCurrency;
     }
 
-    //  Предоставить обменный курс валют банка. Переопределим в каждом банке, так как у каждого банка свой курс
-    public float getExchangeRateBank(String currency, String currencyExchangeRate) {
-        return 0;
-    }
+    //  Предоставить обменный курс валют банка.
+    public abstract float getExchangeRateBank();
 
     public float round(float sum) {
         return Math.round(sum * 100.00f) / 100.00f;
