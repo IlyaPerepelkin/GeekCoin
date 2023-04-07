@@ -1,10 +1,9 @@
 package Bank;
 
-import Account.SberSavingsAccount;
+import Account.SavingsAccount;
 import Card.Card;
 import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
-import Card.SberVisaGold;
 
 public abstract class Bank {
     private String bankName;
@@ -143,7 +142,7 @@ public abstract class Bank {
     }
 
     // Рассчитать комиссию за перевод на свою или чужую карту моего или другого банка
-    public float getCommission(PhysicalPersonProfile clientProfile, String fromCurrencyCode, float sum, SberSavingsAccount toAccount) {
+    public float getCommission(PhysicalPersonProfile clientProfile, String fromCurrencyCode, float sum, SavingsAccount toAccount) {
         // запросить мой ли счет, на который выполняется перевод
         boolean isMyAccount = clientProfile.isClientAccount(toAccount);
         // запросить моего ли банка счет, на который выполняем перевод
@@ -213,7 +212,7 @@ public abstract class Bank {
     }
 
     // Проверить счет моего ли банка
-    public boolean isAccountBank(SberSavingsAccount account) {
+    public boolean isAccountBank(SavingsAccount account) {
         if (account.getBank().getBankName().equals(getBankName())) return true;
         return false;
     }

@@ -1,7 +1,6 @@
 package Account;
 
 import Card.Card;
-import Card.SberVisaGold;
 import Transaction.PayTransaction;
 
 import java.util.ArrayList;

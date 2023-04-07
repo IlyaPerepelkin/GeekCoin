@@ -1,10 +1,8 @@
 package ClientProfile;
 
 import Account.Account;
-import Account.SberPayCardAccount;
-import Account.SberSavingsAccount;
+import Account.SavingsAccount;
 import Card.Card;
-import Card.SberVisaGold;
 import PhysicalPerson.PhysicalPerson;
 
 import java.util.Arrays;
@@ -101,7 +99,7 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
     }
 
     // Прибавить сумму перевода на счет к общей сумме совершенных оплат и переводов в сутки, чтобы контролировать лимиты
-    public void updateTotalPaymentsTransfersDay(float sum, String fromCurrencyCode, SberSavingsAccount toAccount) {
+    public void updateTotalPaymentsTransfersDay(float sum, String fromCurrencyCode, SavingsAccount toAccount) {
         // мой ли счета, на который выполняем перевод
         boolean isMyAccount = isClientAccount(toAccount);
         // если не мой счет, то обновляем общую сумму

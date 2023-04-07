@@ -1,7 +1,6 @@
 package Account;
 
 import Card.Card;
-import Card.SberVisaGold;
 import ClientProfile.SberPhysicalPersonProfile;
 
 public class SberPayCardAccount extends PayCardAccount {
@@ -17,7 +16,7 @@ public class SberPayCardAccount extends PayCardAccount {
     }
 
     @Override
-    public void transferAccount2Account(SberSavingsAccount toAccount, float sumTransfer) {
+    public void transferAccount2Account(SavingsAccount toAccount, float sumTransfer) {
         // вызываем родительскую версию метода
         super.transferAccount2Account(toAccount, sumTransfer);
 
