@@ -271,11 +271,11 @@ public abstract class Account {
     // Пополнить счет с карты
     public void depositingAccountFromCard(Card fromCard, float sumDepositing) {
         // то есть перевести с карты на счет
-        fromCard.transferCard2Account((SberSavingsAccount) this, sumDepositing);
+        fromCard.transferCard2Account((SavingsAccount) this, sumDepositing);
     }
 
-    public void depositingAccountFromAccount(SberSavingsAccount fromAccount, float sumDepositing) {
-        fromAccount.transferAccount2Account((SberSavingsAccount) this, sumDepositing);
+    public void depositingAccountFromAccount(SavingsAccount fromAccount, float sumDepositing) {
+        fromAccount.transferAccount2Account((SavingsAccount) this, sumDepositing);
     }
 
     // пополнить баланс

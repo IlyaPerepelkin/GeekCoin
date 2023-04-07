@@ -2,7 +2,6 @@ package ClientProfile;
 
 import Account.SavingsAccount;
 import Card.Card;
-import Card.SberVisaGold;
 
 public class SberPhysicalPersonProfile extends PhysicalPersonProfile {
 

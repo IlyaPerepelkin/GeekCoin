@@ -1,10 +1,8 @@
 package Card;
 
-import Account.Account;
 import Account.PayCardAccount;
 import Account.SberPayCardAccount;
-import Bank.IBankServicePhysicalPerson;
-import ClientProfile.PhysicalPersonProfile;
+import Bank.Bank;
 
 import java.util.ArrayList;
 
