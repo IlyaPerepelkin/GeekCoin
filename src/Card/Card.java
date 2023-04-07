@@ -1,7 +1,6 @@
 package Card;
 
 import Account.PayCardAccount;
-import Account.SberPayCardAccount;
 import Account.SberSavingsAccount;
 import Bank.Sberbank;
 import Card.IPaySystem.IPaySystem;

@@ -1,10 +1,8 @@
 package Account;
 
-import Bank.Sberbank;
+import Bank.Bank;
 import Card.Card;
-import Card.SberVisaGold;
 import ClientProfile.PhysicalPersonProfile;
-import ClientProfile.SberPhysicalPersonProfile;
 import Transaction.DepositingTransaction;
 import Transaction.TransferTransaction;
 
@@ -13,7 +11,7 @@ import java.util.Arrays;
 
 public abstract class Account {
 
-    private Sberbank bank;
+    private Bank bank;
 
     private PhysicalPersonProfile accountHolder;
 
@@ -34,11 +32,11 @@ public abstract class Account {
     private int countDepositingTransactions;
 
 
-    public Sberbank getBank() {
+    public Bank getBank() {
         return bank;
     }
 
-    public void setBank(Sberbank bank) {
+    public void setBank(Bank bank) {
         this.bank = bank;
     }
 
@@ -129,7 +127,7 @@ public abstract class Account {
         // инициализировать транзакцию перевода
         TransferTransaction transferTransaction = new TransferTransaction();
         transferTransaction.setLocalDateTime(LocalDateTime.now());
-        transferTransaction.setFromAccount((SberSavingsAccount) this);
+        transferTransaction.setFromAccount((SavingsAccount) this);
         transferTransaction.setToCard(toCard);
         transferTransaction.setSum(sumTransfer);
         transferTransaction.setCurrencySymbol(currencySymbol);
@@ -159,7 +157,7 @@ public abstract class Account {
                     // инициализировать транзакцию пополнения
                     DepositingTransaction depositingTransaction = new DepositingTransaction();
                     depositingTransaction.setLocalDateTime(LocalDateTime.now());
-                    depositingTransaction.setFromAccount((SberSavingsAccount) this);
+                    depositingTransaction.setFromAccount((SavingsAccount) this);
                     depositingTransaction.setToCard(toCard);
                     depositingTransaction.setTypeOperation("Перевод со счета");
                     depositingTransaction.setSum(sumTransfer);
@@ -204,10 +202,10 @@ public abstract class Account {
         addTransferTransaction(transferTransaction);
     }
 
-    public void transferAccount2Account(SberSavingsAccount toAccount, float sumTransfer) {
+    public void transferAccount2Account(SavingsAccount toAccount, float sumTransfer) {
         TransferTransaction transferTransaction = new TransferTransaction();
         transferTransaction.setLocalDateTime(LocalDateTime.now());
-        transferTransaction.setFromAccount((SberSavingsAccount) this);
+        transferTransaction.setFromAccount((SavingsAccount) this);
         transferTransaction.setToAccount(toAccount);
         transferTransaction.setSum(sumTransfer);
         transferTransaction.setCurrencySymbol(currencySymbol);
@@ -230,7 +228,7 @@ public abstract class Account {
 
                     DepositingTransaction depositingTransaction = new DepositingTransaction();
                     depositingTransaction.setLocalDateTime(LocalDateTime.now());
-                    depositingTransaction.setFromAccount((SberSavingsAccount) this);
+                    depositingTransaction.setFromAccount((SavingsAccount) this);
                     depositingTransaction.setToAccount(toAccount);
                     depositingTransaction.setTypeOperation("Перевод со счета");
                     depositingTransaction.setSum(sumTransfer);
