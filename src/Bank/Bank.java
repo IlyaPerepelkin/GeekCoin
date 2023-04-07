@@ -3,12 +3,11 @@ package Bank;
 import Account.SavingsAccount;
 import Card.Card;
 import ClientProfile.PhysicalPersonProfile;
-import ClientProfile.SberPhysicalPersonProfile;
 
 public abstract class Bank {
     private String bankName;
 
-    private SberPhysicalPersonProfile[] clientProfiles = new SberPhysicalPersonProfile[5];
+    private PhysicalPersonProfile[] clientProfiles = new PhysicalPersonProfile[5];
 
     private int countClientProfiles;
 
@@ -21,11 +20,11 @@ public abstract class Bank {
         this.bankName = bankName;
     }
 
-    public SberPhysicalPersonProfile[] getClientProfiles() {
+    public PhysicalPersonProfile[] getClientProfiles() {
         return clientProfiles;
     }
 
-    public void setClientProfiles(SberPhysicalPersonProfile[] clientProfiles) {
+    public void setClientProfiles(PhysicalPersonProfile[] clientProfiles) {
         this.clientProfiles = clientProfiles;
     }
 
@@ -39,7 +38,7 @@ public abstract class Bank {
 
 
     // Добавить профиль клиента
-    public void addClientProfile(SberPhysicalPersonProfile clientProfile) {
+    public void addClientProfile(PhysicalPersonProfile clientProfile) {
         if (countClientProfiles < clientProfiles.length) {
             clientProfiles[countClientProfiles++] = clientProfile;
         } else System.out.println("Массив профилей переполнен");
