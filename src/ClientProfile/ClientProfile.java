@@ -1,10 +1,10 @@
 package ClientProfile;
 
-import Bank.Sberbank;
+import Bank.Bank;
 
 public abstract class ClientProfile {
 
-    private Sberbank bank;
+    private Bank bank;
 
     private float limitPaymentsTransfersDayInRUB;
 
@@ -31,11 +31,11 @@ public abstract class ClientProfile {
     private float limitCommissionTransferInUsdOrEquivalentInOtherCurrency;
 
 
-    public Sberbank getBank() {
+    public Bank getBank() {
         return bank;
     }
 
-    public void setBank(Sberbank bank) {
+    public void setBank(Bank bank) {
         this.bank = bank;
     }
 
