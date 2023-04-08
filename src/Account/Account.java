@@ -7,6 +7,7 @@ import Transaction.DepositingTransaction;
 import Transaction.TransferTransaction;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public abstract class Account {
@@ -23,13 +24,9 @@ public abstract class Account {
 
     private float balance;
 
-    private TransferTransaction[] transferTransactions = new TransferTransaction[50];
+    private ArrayList<TransferTransaction> transferTransactions = new ArrayList<>();
 
-    private DepositingTransaction[] depositingTransactions = new DepositingTransaction[50];
-
-    private int countTransferTransactions;
-
-    private int countDepositingTransactions;
+    private ArrayList<DepositingTransaction> depositingTransactions = new ArrayList<>();
 
 
     public Bank getBank() {
@@ -89,39 +86,23 @@ public abstract class Account {
         }
     }
 
-    public TransferTransaction[] getTransferTransactions() {
+    public ArrayList<TransferTransaction> getTransferTransactions() {
         return transferTransactions;
     }
 
-    public void setTransferTransactions(TransferTransaction[] transferTransactions) {
+    public void setTransferTransactions(ArrayList<TransferTransaction> transferTransactions) {
         this.transferTransactions = transferTransactions;
     }
 
-    public DepositingTransaction[] getDepositingTransactions() {
+    public ArrayList<DepositingTransaction> getDepositingTransactions() {
         return depositingTransactions;
     }
 
-    public void setDepositingTransactions(DepositingTransaction[] depositingTransactions) {
+    public void setDepositingTransactions(ArrayList<DepositingTransaction> depositingTransactions) {
         this.depositingTransactions = depositingTransactions;
     }
 
-    public int getCountTransferTransactions() {
-        return countTransferTransactions;
-    }
-
-    public void setCountTransferTransactions(int countTransferTransactions) {
-        this.countTransferTransactions = countTransferTransactions;
-    }
-
-    public int getCountDepositingTransactions() {
-        return countDepositingTransactions;
-    }
-
-    public void setCountDepositingTransactions(int countDepositingTransactions) {
-        this.countDepositingTransactions = countDepositingTransactions;
-    }
-
-
+    
     // Перевести со счета на карту
     public void transferAccount2Card(Card toCard, float sumTransfer) {
         // инициализировать транзакцию перевода
@@ -286,16 +267,13 @@ public abstract class Account {
 
     // добавить транзакцию о пополнении
     public void addDepositingTransaction(DepositingTransaction depositingTransaction) {
-        if (countDepositingTransactions < depositingTransactions.length) {
-            depositingTransactions[countDepositingTransactions++] = depositingTransaction;
-        } else System.out.println("Массив транзакций пополнений переполнен");
+        depositingTransactions.add(depositingTransaction);
     }
 
     // добавить транзакцию перевода
     public void addTransferTransaction(TransferTransaction transferTransaction) {
-        if (countTransferTransactions < transferTransactions.length) {
-            transferTransactions[countTransferTransactions++] = transferTransaction;
-        } else System.out.println("Массив транзакций переводов переполнен");
+        transferTransactions.add(transferTransaction);
+
     }
 
     //  Проверить достаточно ли денег на балансе
@@ -338,18 +316,19 @@ public abstract class Account {
 
     public String[] getAllAccountTransactions() {
         // объявить массив транзакций перевода и пополнения по счету длиной равной общему количеству транзакций
-        String[] allTransferDepositingTransactions = new String[countTransferTransactions + countDepositingTransactions];
+        String[] allTransferDepositingTransactions = new String[transferTransactions.size() + depositingTransactions.size()];
 
         int countTransferDepositingTransactions = 0;
         // перебрать транзакции перевода и пополнения и добавить их в общий массив в человеко читаемом формате
-        for (int idTransaction = 0; idTransaction < countTransferTransactions; idTransaction++) {
-            allTransferDepositingTransactions[countTransferDepositingTransactions++] = transferTransactions[idTransaction].getStringTransaction();
+        for (int idTransaction = 0; idTransaction < transferTransactions.size(); idTransaction++) {
+            allTransferDepositingTransactions[countTransferDepositingTransactions++] = transferTransactions.get(idTransaction).getStringTransaction();
         }
-        for (int idTransaction = 0; idTransaction < countDepositingTransactions; idTransaction++) {
-            allTransferDepositingTransactions[countTransferDepositingTransactions++] = depositingTransactions[idTransaction].getStringTransaction();
+        for (int idTransaction = 0; idTransaction < depositingTransactions.size(); idTransaction++) {
+            allTransferDepositingTransactions[countTransferDepositingTransactions++] = depositingTransactions.get(idTransaction).getStringTransaction();
         }
 
         return allTransferDepositingTransactions;
+
     }
 
 }
