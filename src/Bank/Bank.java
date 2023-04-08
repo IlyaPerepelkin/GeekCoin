@@ -4,12 +4,12 @@ import Account.SavingsAccount;
 import Card.Card;
 import ClientProfile.PhysicalPersonProfile;
 
+import java.util.ArrayList;
+
 public abstract class Bank {
     private String bankName;
 
-    private PhysicalPersonProfile[] clientProfiles = new PhysicalPersonProfile[5];
-
-    private int countClientProfiles;
+    private ArrayList<PhysicalPersonProfile> clientProfiles = new ArrayList<>();
 
 
     public String getBankName() {
@@ -20,28 +20,18 @@ public abstract class Bank {
         this.bankName = bankName;
     }
 
-    public PhysicalPersonProfile[] getClientProfiles() {
+    public ArrayList<PhysicalPersonProfile> getClientProfiles() {
         return clientProfiles;
     }
 
-    public void setClientProfiles(PhysicalPersonProfile[] clientProfiles) {
+    public void setClientProfiles(ArrayList<PhysicalPersonProfile> clientProfiles) {
         this.clientProfiles = clientProfiles;
-    }
-
-    public int getCountClientProfiles() {
-        return countClientProfiles;
-    }
-
-    public void setCountClientProfiles(int countClientProfiles) {
-        this.countClientProfiles = countClientProfiles;
     }
 
 
     // Добавить профиль клиента
     public void addClientProfile(PhysicalPersonProfile clientProfile) {
-        if (countClientProfiles < clientProfiles.length) {
-            clientProfiles[countClientProfiles++] = clientProfile;
-        } else System.out.println("Массив профилей переполнен");
+            clientProfiles.add(clientProfile);
     }
 
     // Сгенерировать номер карты 3546 0957 9843 7845
