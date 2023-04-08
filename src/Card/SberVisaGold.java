@@ -14,7 +14,23 @@ public class SberVisaGold extends CardVisa implements IBonusCard {
 
     @Override
     public void payByCardBonuses(float sumPay, int bonusesPay, String buyProductOrService) {
-        // реализовать самому далее в заданиях
+        SberPhysicalPersonProfile cardHolder = (SberPhysicalPersonProfile) getCardHolder();
+        float maxBonuses = (float) (sumPay * 0.99); // максимально возможная сумма оплаты бонусами
+        float bonusesToPay = Math.min(bonusesPay, maxBonuses); // определяем сколько бонусов можно использовать
+        if (bonusesToPay < 0) {
+            bonusesToPay = 0; // бонусы не могут быть отрицательными
+        }
+        if (bonusesToPay > cardHolder.getBonuses()) {
+            bonusesToPay = cardHolder.getBonuses(); // нельзя использовать больше бонусов, чем есть на карте
+        }
+        float sumToPayWithCard = sumPay - bonusesToPay; // определяем остаток для оплаты картой
+        if (bonusesToPay > 0) {
+            cardHolder.setBonuses((int) (cardHolder.getBonuses() - bonusesToPay)); // уменьшаем количество бонусов на карте
+        }
+        if (sumToPayWithCard > 0) {
+            super.payByCard(sumToPayWithCard, buyProductOrService, getPinCode()); // оплачиваем остаток картой
+        }
+
     }
 
     @Override
