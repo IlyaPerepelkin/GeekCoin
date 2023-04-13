@@ -2,6 +2,9 @@ package Card;
 
 import Account.SavingsAccount;
 import ClientProfile.SberPhysicalPersonProfile;
+import Transaction.PayBonusTransaction;
+
+import java.time.LocalDateTime;
 
 public class SberVisaGold extends CardVisa implements IBonusCard {
 
@@ -13,8 +16,31 @@ public class SberVisaGold extends CardVisa implements IBonusCard {
     }
 
     @Override
-    public void payByCardBonuses(float sumPay, int bonusesPay, String buyProductOrService) {
-        // реализовать самому далее в заданиях
+    public void payByCardBonuses(float sumPay, int bonusesPay, String buyProductOrService, String pinCode) {
+        PayBonusTransaction payBonusTransaction = new PayBonusTransaction();
+        payBonusTransaction.setFromCard(this);
+        payBonusTransaction.setLocalDateTime(LocalDateTime.now());
+        payBonusTransaction.setTypeOperation("Оплата бонусами");
+        payBonusTransaction.setBuyProductOrService(buyProductOrService);
+
+        SberPhysicalPersonProfile cardHolder = (SberPhysicalPersonProfile) getCardHolder();
+        int bonuses = cardHolder.getBonuses();
+        int sumPay99 = (int) (sumPay * 0.99); // максимально возможная сумма оплаты бонусами
+        int payBonuses = Math.min(bonusesPay, sumPay99); // определяем сколько бонусов можно использовать
+        if (payBonuses < 0) {
+            payBonuses = 0; // бонусы не могут быть отрицательными
+        }
+        if (bonuses >= payBonuses) {
+            sumPay = sumPay - (float) payBonuses; // определяем остаток для оплаты картой
+            cardHolder.setBonuses(bonuses - payBonuses); // уменьшаем количество бонусов на карте
+            payBonusTransaction.setStatusOperation("Оплата бонусами прошла успешно");
+        } else payBonusTransaction.setStatusOperation("Недостаточно бонусов");
+
+        payBonusTransaction.setPayBonuses(payBonuses);
+        payBonusTransaction.setBalanceBonuses(cardHolder.getBonuses());
+        getPayCardAccount().addPayTransaction(payBonusTransaction);
+
+        payByCard(sumPay, buyProductOrService, pinCode); // оплачиваем остаток картой
     }
 
     @Override

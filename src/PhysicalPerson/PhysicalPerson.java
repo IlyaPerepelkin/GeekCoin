@@ -98,6 +98,10 @@ public class PhysicalPerson {
         card.payByCard(sumPay, byProductOrService, pinCode, country);
     }
 
+    public void payByCardBonuses(IBonusCard bonusCard, float sumPay, int bonusesPay, String buyProductOrService, String pinCode) {
+        bonusCard.payByCardBonuses(sumPay, bonusesPay, buyProductOrService, pinCode);
+    }
+
     public void transferCard2Card(Card fromCard, Card toCard, float sumTransfer) {
         fromCard.transferCard2Card(toCard, sumTransfer);
     }
@@ -159,7 +163,5 @@ public class PhysicalPerson {
         multicurrencyCard.switchAccount(currencyCodeAccount);
     }
 
-    public void payByCardBonuses(IBonusCard bonusCard, float sumPay, int bonusesPay, String buyProductOrService) {
-        bonusCard.payByCardBonuses(sumPay, bonusesPay, buyProductOrService);
-    }
+
 }
