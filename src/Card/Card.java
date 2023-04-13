@@ -3,7 +3,6 @@ package Card;
 import Account.PayCardAccount;
 import Account.SavingsAccount;
 import Bank.Sberbank;
-import Bank.Bank;
 import Card.IPaySystem.IPaySystem;
 import ClientProfile.PhysicalPersonProfile;
 import Transaction.DepositingTransaction;
