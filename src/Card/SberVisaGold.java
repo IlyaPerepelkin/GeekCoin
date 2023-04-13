@@ -17,32 +17,30 @@ public class SberVisaGold extends CardVisa implements IBonusCard {
 
     @Override
     public void payByCardBonuses(float sumPay, int bonusesPay, String buyProductOrService, String pinCode) {
-
-        SberPhysicalPersonProfile cardHolder = (SberPhysicalPersonProfile) getCardHolder();
-        int bonus = cardHolder.getBonuses();
-        int sumPay99 = (int) (sumPay * 0.99); // максимально возможная сумма оплаты бонусами
-        int bonusesToPay = Math.min(bonusesPay, sumPay99); // определяем сколько бонусов можно использовать
-        if (bonusesToPay < 0) {
-            bonusesToPay = 0; // бонусы не могут быть отрицательными
-        }
-        if (bonusesToPay > bonus) {
-            bonusesToPay = bonus; // нельзя использовать больше бонусов, чем есть на карте
-        }
-        float sumToPayWithCard = sumPay - (float) bonusesToPay; // определяем остаток для оплаты картой
-        cardHolder.setBonuses(bonus - bonusesToPay); // уменьшаем количество бонусов на карте
-        payByCard(sumToPayWithCard, buyProductOrService, pinCode); // оплачиваем остаток картой
-
         PayBonusTransaction payBonusTransaction = new PayBonusTransaction();
         payBonusTransaction.setFromCard(this);
         payBonusTransaction.setLocalDateTime(LocalDateTime.now());
-        payBonusTransaction.setTypeOperation("Оплата бонусами" + " " + bonusesToPay + " " + "бонусов");
+        payBonusTransaction.setTypeOperation("Оплата бонусами");
         payBonusTransaction.setBuyProductOrService(buyProductOrService);
-        payBonusTransaction.setStatusOperation("Оплата бонусами прошла успешно");
-        payBonusTransaction.setPayBonuses(bonusesToPay);
-        payBonusTransaction.setBalanceBonuses(cardHolder.getBonuses());
 
-        payBonusTransaction.setBalance(getPayCardAccount().getBalance());
+        SberPhysicalPersonProfile cardHolder = (SberPhysicalPersonProfile) getCardHolder();
+        int bonuses = cardHolder.getBonuses();
+        int sumPay99 = (int) (sumPay * 0.99); // максимально возможная сумма оплаты бонусами
+        int payBonuses = Math.min(bonusesPay, sumPay99); // определяем сколько бонусов можно использовать
+        if (payBonuses < 0) {
+            payBonuses = 0; // бонусы не могут быть отрицательными
+        }
+        if (bonuses >= payBonuses) {
+            sumPay = sumPay - (float) payBonuses; // определяем остаток для оплаты картой
+            cardHolder.setBonuses(bonuses - payBonuses); // уменьшаем количество бонусов на карте
+            payBonusTransaction.setStatusOperation("Оплата бонусами прошла успешно");
+        } else payBonusTransaction.setStatusOperation("Недостаточно бонусов");
+
+        payBonusTransaction.setPayBonuses(payBonuses);
+        payBonusTransaction.setBalanceBonuses(cardHolder.getBonuses());
         getPayCardAccount().addPayTransaction(payBonusTransaction);
+
+        payByCard(sumPay, buyProductOrService, pinCode); // оплачиваем остаток картой
     }
 
     @Override

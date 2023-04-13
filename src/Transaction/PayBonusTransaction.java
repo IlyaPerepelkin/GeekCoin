@@ -2,8 +2,9 @@ package Transaction;
 
 public class PayBonusTransaction extends PayTransaction {
 
-    private int payBonuses; // что в bonusesToPay
-    private int balanceBonuses; // актуальный баланс бонусов на карте после списания
+    private int payBonuses;
+
+    private int balanceBonuses;
 
 
     public int getPayBonuses() {
@@ -25,8 +26,8 @@ public class PayBonusTransaction extends PayTransaction {
     @Override
     public String getStringTransaction() {
 
-        String transaction = getLocalDateTime() + " " + getNameCard(getFromCard()) + " " + "Оплата бонусами " + getBuyProductOrService() + ": " +
-                getPayBonuses() + " " + "бонусов" + " Статус: " + getStatusOperation()+ " Доступно бонусов: " + getBalanceBonuses();
+        String transaction = getLocalDateTime() + " " + getNameCard(getFromCard()) + " " + getTypeOperation() + " " + getBuyProductOrService() + ": " +
+                getPayBonuses() + " " + "бонусов" + " Статус: " + getStatusOperation() + " Доступно бонусов: " + getBalanceBonuses();
 
         return transaction;
     }
