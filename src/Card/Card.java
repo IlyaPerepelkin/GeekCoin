@@ -2,7 +2,7 @@ package Card;
 
 import Account.PayCardAccount;
 import Account.SavingsAccount;
-import Bank.Sberbank;
+import Bank.Bank;
 import Card.IPaySystem.IPaySystem;
 import ClientProfile.PhysicalPersonProfile;
 import Transaction.DepositingTransaction;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 public abstract class Card implements IPaySystem {
 
-    private Sberbank bank;
+    private Bank bank;
 
     private PhysicalPersonProfile cardHolder;
 
@@ -26,9 +26,9 @@ public abstract class Card implements IPaySystem {
     private String pinCode;
 
 
-    public Sberbank getBank() {return bank; }
+    public Bank getBank() {return bank;}
 
-    public void setBank(Sberbank bank) {
+    public void setBank(Bank bank) {
         this.bank = bank;
     }
 
