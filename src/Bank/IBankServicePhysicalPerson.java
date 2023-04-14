@@ -9,8 +9,12 @@ public interface IBankServicePhysicalPerson {
 
     PhysicalPersonProfile registerPhysicalPersonProfile(PhysicalPerson physicalPerson);
 
-    Card openCard(PhysicalPersonProfile physicalPersonProfile, Card card, String currencyCode, String pinCode);
+    default Card openCard(PhysicalPersonProfile physicalPersonProfile, Card card, String currencyCode, String pinCode){
+        return card;
+    }
 
-    Account openAccount(PhysicalPersonProfile physicalPersonProfile, Account account, String currencyCode);
+    default Account openAccount(PhysicalPersonProfile physicalPersonProfile, Account account, String currencyCode) {
+        return account;
+    }
 
 }

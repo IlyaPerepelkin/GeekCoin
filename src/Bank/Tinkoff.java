@@ -91,6 +91,7 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         if (currency != null && currency.equals("USD") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 81.67f;
         // курс евро к рублю
         if (currency != null && currency.equals("EUR") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 90.12f;
-        return  exchangeRateBank;
+        return exchangeRateBank;
+    }
 
 }
