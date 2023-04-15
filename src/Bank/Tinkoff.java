@@ -5,8 +5,9 @@ import Account.Account;
 import Card.Card;
 import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.TinkoffPhysicalPersonProfile;
-import PhysicalPerson.PhysicalPerson;
 import Account.TinkoffPayCardAccount;
+
+import java.util.ArrayList;
 
 public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
 
@@ -14,11 +15,13 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
 
     String currencyExchangeRate;
 
-    public PhysicalPersonProfile registerPhysicalPersonProfile(PhysicalPerson physicalPerson) {
+    PhysicalPersonProfile clientProfile;
+
+    public PhysicalPersonProfile registerPhysicalPersonProfile(ArrayList<PhysicalPersonProfile> physicalPerson) {
         // создать профиль клиента
         TinkoffPhysicalPersonProfile tinkoffPhysicalPersonProfile = new TinkoffPhysicalPersonProfile();
         tinkoffPhysicalPersonProfile.setBank(this);
-        tinkoffPhysicalPersonProfile.setPhysicalPerson(physicalPerson);
+        tinkoffPhysicalPersonProfile.setPhysicalPerson(this.clientProfile.getPhysicalPerson());
 
         tinkoffPhysicalPersonProfile.setPercentBonusOfSumPay(0.5f);
 
@@ -43,11 +46,11 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         return tinkoffPhysicalPersonProfile;
     }
 
-    public Card openCard(PhysicalPersonProfile physicalPersonProfile, Card card, String currencyCode, String pinCode) {
+    public Card openCard(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Card card, String currencyCode, String pinCode) {
         // установить свойства карты
         card.setBank(this);
         card.setNumberCard(generateNumberCard());
-        card.setCardHolder(physicalPersonProfile);
+        card.setCardHolder(card.getCardHolder());
         card.setPinCode(pinCode);
 
         // открыть платежный счет
@@ -61,21 +64,21 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         card.setStatusCard("Активна");
 
         // привязать карту к профилю клиента
-        physicalPersonProfile.addCard(card);
+        physicalPersonProfile.add(card.getCardHolder());
 
         return card;
     }
 
-    public Account openAccount(PhysicalPersonProfile physicalPersonProfile, Account account, String currencyCode) {
+    public Account openAccount(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Account account, String currencyCode) {
         // установить свойства платежного счета
         account.setBank(this);
         account.setNumberAccount(generateNumberAccount());
-        account.setAccountHolder(physicalPersonProfile);
+        account.setAccountHolder(account.getAccountHolder());
         account.setCurrencyCode(currencyCode);
         account.setCurrencySymbol(currencyCode);
 
         // привязать платежный счет к профилю клиента
-        physicalPersonProfile.addAccount(account);
+        physicalPersonProfile.add(account.getAccountHolder());
 
         return account;
     }

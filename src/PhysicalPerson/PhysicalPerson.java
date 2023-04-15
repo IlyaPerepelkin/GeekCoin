@@ -4,11 +4,14 @@ import Account.Account;
 import Account.SberPayCardAccount;
 import Account.SavingsAccount;
 import Bank.IBankServicePhysicalPerson;
+import Bank.Bank;
 import Card.IBonusCard;
 import Card.Card;
 import Card.IMulticurrencyCard;
 import Card.IPaySystem.IPaySystem;
 import ClientProfile.PhysicalPersonProfile;
+
+import java.util.ArrayList;
 
 public class PhysicalPerson {
 
@@ -22,7 +25,7 @@ public class PhysicalPerson {
 
     private char gender;
 
-    private PhysicalPersonProfile physicalPersonProfile;
+    private ArrayList<PhysicalPersonProfile> physicalPersonProfile = new ArrayList<>();
 
 
     public String getFirstName() {
@@ -65,17 +68,21 @@ public class PhysicalPerson {
         this.gender = gender;
     }
 
-    public PhysicalPersonProfile getPhysicalPersonProfile() {
+    public PhysicalPersonProfile getPhysicalPersonProfile(Bank bank) {
+        return bank.getClientProfiles();
+    }
+
+    public ArrayList<PhysicalPersonProfile> getPhysicalPersonProfile() {
         return physicalPersonProfile;
     }
 
-    public void setPhysicalPersonProfile(PhysicalPersonProfile physicalPersonProfile) {
+    public void setPhysicalPersonProfile(ArrayList<PhysicalPersonProfile> physicalPersonProfile) {
         this.physicalPersonProfile = physicalPersonProfile;
     }
 
 
     public void registerPhysicalPersonToBank(IBankServicePhysicalPerson bank) {
-        setPhysicalPersonProfile(bank.registerPhysicalPersonProfile(this));
+        setPhysicalPersonProfile(bank.registerPhysicalPersonProfile(physicalPersonProfile));
     }
 
     public Card openCard(IBankServicePhysicalPerson bank, Card card, String currencyCode, String pinCode) {

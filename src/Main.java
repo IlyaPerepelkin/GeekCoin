@@ -1,5 +1,6 @@
 import Account.SberSavingsAccount;
 import Bank.Sberbank;
+import Bank.Tinkoff;
 import Card.SberMastercardGold;
 import Card.SberMastercardTravel;
 import Card.SberVisaGold;
@@ -23,11 +24,22 @@ public class Main {
         friend.setAge((byte)52);
         friend.setGender('M');
 
+        PhysicalPerson Ilya = new PhysicalPerson();
+        Ilya.setFirstName("Илья");
+        Ilya.setLastName("Перепелкин");
+        Ilya.setTelephone("+905010833253");
+        Ilya.setAge((byte)30);
+        Ilya.setGender('М');
+
         Sberbank sberbank = new Sberbank();
         sberbank.setBankName("Сбер");
 
+        Tinkoff tinkoff = new Tinkoff();
+        tinkoff.setBankName("Тинькофф");
+
         I.registerPhysicalPersonToBank(sberbank);
         friend.registerPhysicalPersonToBank(sberbank);
+        Ilya.registerPhysicalPersonToBank(tinkoff);
 
         SberVisaGold mySberVisaGold1 = (SberVisaGold) I.openCard(sberbank, new SberVisaGold(), "RUB", "1515");
         SberVisaGold mySberVisaGold2 = (SberVisaGold) I.openCard(sberbank, new SberVisaGold(), "RUB", "1717");

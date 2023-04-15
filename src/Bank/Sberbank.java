@@ -5,7 +5,8 @@ import Account.SberPayCardAccount;
 import Card.Card;
 import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
-import PhysicalPerson.PhysicalPerson;
+
+import java.util.ArrayList;
 
 public class Sberbank extends Bank implements IBankServicePhysicalPerson {
     PhysicalPersonProfile clientProfile;
@@ -21,11 +22,11 @@ public class Sberbank extends Bank implements IBankServicePhysicalPerson {
 
     // Зарегистрировать профиль физ лица
     @Override
-    public PhysicalPersonProfile registerPhysicalPersonProfile(PhysicalPerson physicalPerson) {
+    public PhysicalPersonProfile registerPhysicalPersonProfile(ArrayList<PhysicalPersonProfile> physicalPerson) {
         // создать профиль клиента
         SberPhysicalPersonProfile sberPhysicalPersonProfile = new SberPhysicalPersonProfile();
         sberPhysicalPersonProfile.setBank(this);
-        sberPhysicalPersonProfile.setPhysicalPerson(physicalPerson);
+        sberPhysicalPersonProfile.setPhysicalPerson(this.clientProfile.getPhysicalPerson());
 
         sberPhysicalPersonProfile.setPercentBonusOfSumPay(0.5f);
 
@@ -52,11 +53,11 @@ public class Sberbank extends Bank implements IBankServicePhysicalPerson {
 
     // Открыть карту
     @Override
-    public Card openCard(PhysicalPersonProfile physicalPersonProfile, Card  card, String currencyCode, String pinCode) {
+    public Card openCard(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Card  card, String currencyCode, String pinCode) {
         // установить свойства карты
         card.setBank(this);
         card.setNumberCard(generateNumberCard());
-        card.setCardHolder(physicalPersonProfile);
+        card.setCardHolder(card.getCardHolder());
         card.setPinCode(pinCode);
 
         // открыть платежный счет
@@ -70,23 +71,23 @@ public class Sberbank extends Bank implements IBankServicePhysicalPerson {
         card.setStatusCard("Активна");
 
         // привязать карту к профилю клиента
-        physicalPersonProfile.addCard(card);
+        physicalPersonProfile.add(card.getCardHolder());
 
         return card;
     }
 
     // Открыть счет
     @Override
-    public Account openAccount(PhysicalPersonProfile physicalPersonProfile, Account account, String currencyCode) {
+    public Account openAccount(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Account account, String currencyCode) {
         // установить свойства платежного счета
         account.setBank(this);
         account.setNumberAccount(generateNumberAccount());
-        account.setAccountHolder(physicalPersonProfile);
+        account.setAccountHolder(account.getAccountHolder());
         account.setCurrencyCode(currencyCode);
         account.setCurrencySymbol(currencyCode);
 
         // привязать платежный счет к профилю клиента
-        physicalPersonProfile.addAccount(account);
+        physicalPersonProfile.add(account.getAccountHolder());
 
         return account;
     }
