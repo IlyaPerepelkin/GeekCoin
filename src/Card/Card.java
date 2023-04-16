@@ -215,7 +215,7 @@ public abstract class Card implements IPaySystem {
                     // внести в транзакцию пополнения баланс карты после пополнения
                     depositingTransaction.setBalance(toCard.getPayCardAccount().getBalance());
                     // добавить и привязать транзакцию пополнения к счету карты зачисления
-                    toCard.getPayCardAccount().addDepositingTransaction(depositingTransaction);
+                    toCard.getPayCardAccount().getDepositingTransactions().add(depositingTransaction);
 
                     // внести в транзакцию перевода статус перевода
                     transferTransaction.setStatusOperation("Перевод прошел успешно");
@@ -294,7 +294,7 @@ public abstract class Card implements IPaySystem {
                         // внести в транзакцию пополнения баланс счета после зачисления
                         depositingTransaction.setBalance(toAccount.getBalance());
                         // добавить и привязать транзакцию пополнения к счету зачисления
-                        toAccount.addDepositingTransaction(depositingTransaction);
+                        toAccount.getDepositingTransactions().add(depositingTransaction);
 
                         // внести в транзакцию перевода, статус перевода
                         transferTransaction.setStatusOperation("Перевод прошел успешно");
@@ -347,7 +347,7 @@ public abstract class Card implements IPaySystem {
         depositingTransaction.setBalance(getPayCardAccount().getBalance());
 
         // добавить и привязать транзакцию пополнения к счету карты зачисления
-        payCardAccount.addDepositingTransaction(depositingTransaction);
+        payCardAccount.getDepositingTransactions().add(depositingTransaction);
     }
 
     // Пополнить карту с карты
@@ -362,8 +362,8 @@ public abstract class Card implements IPaySystem {
         fromAccount.transferAccount2Card(this, sumDepositing);
     }
 
-    public void depositingCashback2Card(float sumDepositing){
-
+    public void depositingCashback2Card(Card toCard, float sumDepositing){
+        toCard.transferCard2Card(this, sumDepositing);
     }
 
     // Вывести транзакции по счету карты

@@ -146,7 +146,7 @@ public class PhysicalPerson {
     }
 
     public void depositingCashback2Card(Card toCard, float sumDepositing) {
-        toCard.depositingCashback2Card(sumDepositing);
+        toCard.depositingCashback2Card(toCard, sumDepositing);
     }
 
     public float getExchangeRatePaySystem(IPaySystem paySystemCard, String currency, String currencyExchangeRate) {

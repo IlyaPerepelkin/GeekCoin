@@ -20,15 +20,12 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         tinkoffPhysicalPersonProfile.setBank(this);
         tinkoffPhysicalPersonProfile.setPhysicalPerson(physicalPerson);
 
-        tinkoffPhysicalPersonProfile.setPercentBonusOfSumPay(0.5f);
-
         tinkoffPhysicalPersonProfile.setPercentCashbackOfSumPay(0.01f);
 
         // установить лимиты
         tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInRUB(1000000.00f);
         tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInUSD(50000.00f);
         tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInEUR(3500.00f);
-        tinkoffPhysicalPersonProfile.setLimitTransfersToClientTinkoffWithoutCommissionMonthInRUB(50000.00f);
 
         // установить проценты комиссий
         tinkoffPhysicalPersonProfile.setPercentOfCommissionForPayHousingCommunalServices(1.8f);
@@ -95,5 +92,6 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         if (currency != null && currency.equals("EUR") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 90.12f;
         return exchangeRateBank;
     }
+
 
 }
