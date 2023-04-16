@@ -19,4 +19,13 @@ public interface IBankServicePhysicalPerson {
         return account;
     }
 
+    default float convertToCurrencyExchangeRateBank(float sum, String fromCurrencyCode, String toCurrencyCode) {
+        float exchangeRateToCardCurrency = getExchangeRateBank();
+        float sumInCardCurrency = sum * exchangeRateToCardCurrency;
+
+        return sumInCardCurrency;
+    }
+
+    public abstract float getExchangeRateBank();
+
 }
