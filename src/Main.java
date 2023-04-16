@@ -4,6 +4,7 @@ import Bank.Tinkoff;
 import Card.SberMastercardGold;
 import Card.SberMastercardTravel;
 import Card.SberVisaGold;
+import Card.TinkoffBlackMir;
 import PhysicalPerson.PhysicalPerson;
 
 public class Main {
@@ -43,6 +44,8 @@ public class Main {
 
         SberVisaGold mySberVisaGold1 = (SberVisaGold) I.openCard(sberbank, new SberVisaGold(), "RUB", "1515");
         SberVisaGold mySberVisaGold2 = (SberVisaGold) I.openCard(sberbank, new SberVisaGold(), "RUB", "1717");
+
+        TinkoffBlackMir myTinkoffBlackMir1 = (TinkoffBlackMir) Ilya.openCard(tinkoff, new TinkoffBlackMir(), "RUB", "0011");
 
         SberMastercardGold sberMastercardGold = (SberMastercardGold) I.openCard(sberbank, new SberMastercardGold(), "RUB", "2535");
 
@@ -89,6 +92,7 @@ public class Main {
         I.depositingAccountFromCard(mySberSavingsAccount2, sberMastercardGold, 105.00f);
         I.depositingAccountFromAccount(mySberSavingsAccount1, mySberSavingsAccount2, 25.00f);
 
+        Ilya.depositingCashback2Card(myTinkoffBlackMir1, 200.00f);
 /*
         System.out.println("Вывод операции по карте " + sberMastercardGold.getNumberCard());
         I.displayCardTransactions(sberMastercardGold);

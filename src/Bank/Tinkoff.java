@@ -22,6 +22,8 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
 
         tinkoffPhysicalPersonProfile.setPercentBonusOfSumPay(0.5f);
 
+        tinkoffPhysicalPersonProfile.setPercentCashbackOfSumPay(0.01f);
+
         // установить лимиты
         tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInRUB(1000000.00f);
         tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInUSD(50000.00f);

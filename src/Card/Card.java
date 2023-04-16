@@ -362,6 +362,10 @@ public abstract class Card implements IPaySystem {
         fromAccount.transferAccount2Card(this, sumDepositing);
     }
 
+    public void depositingCashback2Card(float sumDepositing){
+
+    }
+
     // Вывести транзакции по счету карты
     public void displayCardTransactions () {
         payCardAccount.displayAccountTransactions();
