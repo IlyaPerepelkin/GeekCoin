@@ -9,13 +9,13 @@ import java.util.ArrayList;
 
 public interface IBankServicePhysicalPerson {
 
-    PhysicalPersonProfile registerPhysicalPersonProfile(ArrayList<PhysicalPersonProfile> physicalPersonProfile);
+    PhysicalPersonProfile registerPhysicalPersonProfile(PhysicalPerson physicalPerson);
 
-    default Card openCard(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Card card, String currencyCode, String pinCode){
+    default Card openCard(PhysicalPersonProfile physicalPersonProfile, Card card, String currencyCode, String pinCode){
         return card;
     }
 
-    default Account openAccount(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Account account, String currencyCode) {
+    default Account openAccount(PhysicalPersonProfile physicalPersonProfile, Account account, String currencyCode) {
         return account;
     }
 

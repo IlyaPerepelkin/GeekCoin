@@ -25,7 +25,7 @@ public class PhysicalPerson {
 
     private char gender;
 
-    private ArrayList<PhysicalPersonProfile> physicalPersonProfile = new ArrayList<>();
+    private ArrayList<PhysicalPersonProfile> physicalPersonProfiles = new ArrayList<>();
 
 
     public String getFirstName() {
@@ -68,29 +68,34 @@ public class PhysicalPerson {
         this.gender = gender;
     }
 
-    public PhysicalPersonProfile getPhysicalPersonProfile(Bank bank) {
-        return bank.getClientProfiles();
+    public ArrayList<PhysicalPersonProfile> getPhysicalPersonProfiles() {
+        return physicalPersonProfiles;
     }
 
-    public ArrayList<PhysicalPersonProfile> getPhysicalPersonProfile() {
-        return physicalPersonProfile;
+    public void setPhysicalPersonProfiles(ArrayList<PhysicalPersonProfile> physicalPersonProfiles) {
+        this.physicalPersonProfiles = physicalPersonProfiles;
     }
 
-    public void setPhysicalPersonProfile(ArrayList<PhysicalPersonProfile> physicalPersonProfile) {
-        this.physicalPersonProfile = physicalPersonProfile;
+    public PhysicalPersonProfile getPhysicalPersonProfile(IBankServicePhysicalPerson bank) {
+        for (int i = 0; i < physicalPersonProfiles.size(); i++) {
+            PhysicalPersonProfile physicalPersonProfile = physicalPersonProfiles.get(i);
+            if (physicalPersonProfile.getBank() == bank) {
+                return physicalPersonProfile;
+            }
+        }
+        return null;
     }
-
 
     public void registerPhysicalPersonToBank(IBankServicePhysicalPerson bank) {
-        setPhysicalPersonProfile(bank.registerPhysicalPersonProfile(physicalPersonProfile));
+        physicalPersonProfiles.add(bank.registerPhysicalPersonProfile(this));
     }
 
     public Card openCard(IBankServicePhysicalPerson bank, Card card, String currencyCode, String pinCode) {
-        return bank.openCard(physicalPersonProfile, card, currencyCode, pinCode);
+        return bank.openCard(getPhysicalPersonProfile(bank), card, currencyCode, pinCode);
     }
 
     public Account openAccount(IBankServicePhysicalPerson bank, Account account, String currencyCode) {
-        return bank.openAccount(physicalPersonProfile, account, currencyCode);
+        return bank.openAccount(getPhysicalPersonProfile(bank), account, currencyCode);
     }
 
     public void depositingCash2Card(Card toCard, float sumDepositing) {
@@ -158,7 +163,9 @@ public class PhysicalPerson {
     }
 
     public void displayProfileTransactions() {
-        physicalPersonProfile.displayProfileTransactions();
+        for (int i = 0; i < physicalPersonProfiles.size(); i++) {
+            physicalPersonProfiles.get(i).displayProfileTransactions();
+        }
     }
 
 

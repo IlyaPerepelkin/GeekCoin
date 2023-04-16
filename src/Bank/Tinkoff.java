@@ -5,9 +5,8 @@ import Account.Account;
 import Card.Card;
 import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.TinkoffPhysicalPersonProfile;
+import PhysicalPerson.PhysicalPerson;
 import Account.TinkoffPayCardAccount;
-
-import java.util.ArrayList;
 
 public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
 
@@ -15,21 +14,19 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
 
     String currencyExchangeRate;
 
-    PhysicalPersonProfile clientProfile;
-
-    public PhysicalPersonProfile registerPhysicalPersonProfile(ArrayList<PhysicalPersonProfile> physicalPerson) {
+    public PhysicalPersonProfile registerPhysicalPersonProfile(PhysicalPerson physicalPerson) {
         // создать профиль клиента
         TinkoffPhysicalPersonProfile tinkoffPhysicalPersonProfile = new TinkoffPhysicalPersonProfile();
         tinkoffPhysicalPersonProfile.setBank(this);
-        tinkoffPhysicalPersonProfile.setPhysicalPerson(this.clientProfile.getPhysicalPerson());
+        tinkoffPhysicalPersonProfile.setPhysicalPerson(physicalPerson);
 
         tinkoffPhysicalPersonProfile.setPercentBonusOfSumPay(0.5f);
 
         // установить лимиты
-        tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInRUB(2000000.00f);
-        tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInUSD(60000.00f);
+        tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInRUB(1000000.00f);
+        tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInUSD(50000.00f);
         tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInEUR(3500.00f);
-        tinkoffPhysicalPersonProfile.setLimitTransfersToClientTinkoffWithoutCommissionMonthInRUB(100000.00f);
+        tinkoffPhysicalPersonProfile.setLimitTransfersToClientTinkoffWithoutCommissionMonthInRUB(50000.00f);
 
         // установить проценты комиссий
         tinkoffPhysicalPersonProfile.setPercentOfCommissionForPayHousingCommunalServices(1.8f);
@@ -37,8 +34,8 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         tinkoffPhysicalPersonProfile.setPercentOfCommissionForTransferInUsdOrOtherCurrency(1.20f);
 
         // установить лимиты на суммы комиссий
-        tinkoffPhysicalPersonProfile.setLimitCommissionTransferInRUB(5000.00f);
-        tinkoffPhysicalPersonProfile.setLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(300.00f);
+        tinkoffPhysicalPersonProfile.setLimitCommissionTransferInRUB(3000.00f);
+        tinkoffPhysicalPersonProfile.setLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(100.00f);
 
         // и привязать профиль клиента к банку
         addClientProfile(tinkoffPhysicalPersonProfile);
@@ -46,11 +43,11 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         return tinkoffPhysicalPersonProfile;
     }
 
-    public Card openCard(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Card card, String currencyCode, String pinCode) {
+    public Card openCard(PhysicalPersonProfile physicalPersonProfile, Card card, String currencyCode, String pinCode) {
         // установить свойства карты
         card.setBank(this);
         card.setNumberCard(generateNumberCard());
-        card.setCardHolder(card.getCardHolder());
+        card.setCardHolder(physicalPersonProfile);
         card.setPinCode(pinCode);
 
         // открыть платежный счет
@@ -64,21 +61,21 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         card.setStatusCard("Активна");
 
         // привязать карту к профилю клиента
-        physicalPersonProfile.add(card.getCardHolder());
+        physicalPersonProfile.addCard(card);
 
         return card;
     }
 
-    public Account openAccount(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Account account, String currencyCode) {
+    public Account openAccount(PhysicalPersonProfile physicalPersonProfile, Account account, String currencyCode) {
         // установить свойства платежного счета
         account.setBank(this);
         account.setNumberAccount(generateNumberAccount());
-        account.setAccountHolder(account.getAccountHolder());
+        account.setAccountHolder(physicalPersonProfile);
         account.setCurrencyCode(currencyCode);
         account.setCurrencySymbol(currencyCode);
 
         // привязать платежный счет к профилю клиента
-        physicalPersonProfile.add(account.getAccountHolder());
+        physicalPersonProfile.addAccount(account);
 
         return account;
     }
