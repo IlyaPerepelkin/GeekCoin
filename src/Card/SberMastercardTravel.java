@@ -2,6 +2,7 @@ package Card;
 
 import Account.PayCardAccount;
 import Account.SberPayCardAccount;
+import Bank.Sberbank;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class SberMastercardTravel extends CardMastercard implements IMulticurren
     @Override
     public void addAccount(String currencyCodeAccount) {
         // Открываем новый счет
-        SberPayCardAccount sberPayCardAccount = (SberPayCardAccount) this.getBank().openAccount(this.getCardHolder(), new SberPayCardAccount(), currencyCodeAccount);
+        SberPayCardAccount sberPayCardAccount = (SberPayCardAccount) (((Sberbank) this.getBank()).openAccount(this.getCardHolder(), new SberPayCardAccount(), currencyCodeAccount));
         // Связываем созданный счет с картой
         sberPayCardAccount.getCards().add(this);
         // Добавляем созданный счет в массив других счетов мультивалютной карты
