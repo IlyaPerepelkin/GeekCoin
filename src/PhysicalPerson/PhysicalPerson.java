@@ -162,7 +162,13 @@ public class PhysicalPerson {
         account.displayAccountTransactions();
     }
 
-    public void displayProfileTransactions() {
+    public void displayProfileTransactions(IBankServicePhysicalPerson bank) {
+        for (int i = 0; i < physicalPersonProfiles.size(); i++) {
+            physicalPersonProfiles.get(i).displayProfileTransactions();
+        }
+    }
+
+    public void displayAllProfileTransactions() {
         for (int i = 0; i < physicalPersonProfiles.size(); i++) {
             physicalPersonProfiles.get(i).displayProfileTransactions();
         }
