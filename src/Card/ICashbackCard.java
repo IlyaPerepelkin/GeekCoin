@@ -6,6 +6,6 @@ public interface ICashbackCard {
     void accumulateCashback(float sumPay);
 
     // зачисления на карту накопленного кэшбэка
-    void depositingCashback2Card(Card toCard, float sumDepositing);
+    void depositingCashback2Card();
 
 }
