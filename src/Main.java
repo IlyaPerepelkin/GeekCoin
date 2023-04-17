@@ -4,6 +4,7 @@ import Bank.Tinkoff;
 import Card.SberMastercardGold;
 import Card.SberMastercardTravel;
 import Card.SberVisaGold;
+import Card.TinkoffBlackMir;
 import PhysicalPerson.PhysicalPerson;
 
 public class Main {
@@ -11,10 +12,10 @@ public class Main {
     public static void main(String[] args) {
 
         PhysicalPerson I = new PhysicalPerson();
-        I.setFirstName("Игорь");
-        I.setLastName("Коннов");
-        I.setTelephone("+79273253258");
-        I.setAge((byte)32);
+        I.setFirstName("Илья");
+        I.setLastName("Перепелкин");
+        I.setTelephone("+905010833253");
+        I.setAge((byte)30);
         I.setGender('M');
 
         PhysicalPerson friend = new PhysicalPerson();
@@ -24,13 +25,6 @@ public class Main {
         friend.setAge((byte)52);
         friend.setGender('M');
 
-        PhysicalPerson Ilya = new PhysicalPerson();
-        Ilya.setFirstName("Илья");
-        Ilya.setLastName("Перепелкин");
-        Ilya.setTelephone("+905010833253");
-        Ilya.setAge((byte)30);
-        Ilya.setGender('М');
-
         Sberbank sberbank = new Sberbank();
         sberbank.setBankName("Сбер");
 
@@ -39,10 +33,12 @@ public class Main {
 
         I.registerPhysicalPersonToBank(sberbank);
         friend.registerPhysicalPersonToBank(sberbank);
-        Ilya.registerPhysicalPersonToBank(tinkoff);
+        I.registerPhysicalPersonToBank(tinkoff);
 
         SberVisaGold mySberVisaGold1 = (SberVisaGold) I.openCard(sberbank, new SberVisaGold(), "RUB", "1515");
         SberVisaGold mySberVisaGold2 = (SberVisaGold) I.openCard(sberbank, new SberVisaGold(), "RUB", "1717");
+
+        TinkoffBlackMir myTinkoffBlackMir1 = (TinkoffBlackMir) I.openCard(tinkoff, new TinkoffBlackMir(), "RUB", "0011");
 
         SberMastercardGold sberMastercardGold = (SberMastercardGold) I.openCard(sberbank, new SberMastercardGold(), "RUB", "2535");
 
@@ -59,10 +55,12 @@ public class Main {
 
         I.depositingCash2Card(mySberVisaGold1, 7600.50f);
         I.depositingCash2Card(sberMastercardGold, 2000.00f);
+        I.depositingCash2Card(myTinkoffBlackMir1, 30000.00f);
 
         I.payByCard(sberMastercardTravel, 3700.00f, "Bike", "Турция", "7895");
         I.payByCard(mySberVisaGold1, 100.50f, "ЖКХ", "1515");
         I.payByCard(sberMastercardGold, 700.00f, "Пятерочка", "2535");
+        I.payByCard(myTinkoffBlackMir1, 12500.00f, "iPhone", "0011");
 
         I.payByCard(mySberVisaGold1, 110.00f, "Excursion", "Турция","1515");
         I.payByCard(sberMastercardGold, 200.00f, "Attraction", "Турция", "2535");
@@ -89,6 +87,7 @@ public class Main {
         I.depositingAccountFromCard(mySberSavingsAccount2, sberMastercardGold, 105.00f);
         I.depositingAccountFromAccount(mySberSavingsAccount1, mySberSavingsAccount2, 25.00f);
 
+        I.depositingCashback2Card(myTinkoffBlackMir1);
 /*
         System.out.println("Вывод операции по карте " + sberMastercardGold.getNumberCard());
         I.displayCardTransactions(sberMastercardGold);

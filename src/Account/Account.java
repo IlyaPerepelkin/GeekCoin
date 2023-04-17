@@ -162,7 +162,7 @@ public abstract class Account {
                         depositingTransaction.setBalance(toCard.getPayCardAccount().getBalance());
 
                         // добавить и привязать транзакцию пополнения к счету карты зачисления
-                        toCard.getPayCardAccount().addDepositingTransaction(depositingTransaction);
+                        toCard.getPayCardAccount().getDepositingTransactions().add(depositingTransaction);
 
                         // внести в транзакцию статус перевода
                         transferTransaction.setStatusOperation("Перевод прошел успешно");
@@ -231,7 +231,7 @@ public abstract class Account {
 
                         depositingTransaction.setBalance(toAccount.getBalance());
 
-                        toAccount.addDepositingTransaction(depositingTransaction);
+                        toAccount.getDepositingTransactions().add(depositingTransaction);
 
                         transferTransaction.setStatusOperation("Перевод прошел успешно");
 
@@ -265,10 +265,6 @@ public abstract class Account {
         return true;
     }
 
-    // добавить транзакцию о пополнении
-    public void addDepositingTransaction(DepositingTransaction depositingTransaction) {
-        depositingTransactions.add(depositingTransaction);
-    }
 
     // добавить транзакцию перевода
     public void addTransferTransaction(TransferTransaction transferTransaction) {

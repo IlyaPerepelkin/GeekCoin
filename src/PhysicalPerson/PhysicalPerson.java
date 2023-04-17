@@ -4,8 +4,8 @@ import Account.Account;
 import Account.SberPayCardAccount;
 import Account.SavingsAccount;
 import Bank.IBankServicePhysicalPerson;
-import Bank.Bank;
 import Card.IBonusCard;
+import Card.ICashbackCard;
 import Card.Card;
 import Card.IMulticurrencyCard;
 import Card.IPaySystem.IPaySystem;
@@ -144,6 +144,10 @@ public class PhysicalPerson {
 
     public void depositingAccountFromAccount(SavingsAccount toAccount, SavingsAccount fromAccount, float sumDepositing) {
         toAccount.depositingAccountFromAccount(fromAccount, sumDepositing);
+    }
+
+    public void depositingCashback2Card(ICashbackCard toCard) {
+        toCard.depositingCashback2Card();
     }
 
     public float getExchangeRatePaySystem(IPaySystem paySystemCard, String currency, String currencyExchangeRate) {

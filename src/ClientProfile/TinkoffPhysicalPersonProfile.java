@@ -2,25 +2,39 @@ package ClientProfile;
 
 public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
 
-    private float percentBonusOfSumPay;
+    private float cashback;
 
-    private float limitTransfersToClientTinkoffWithoutCommissionMonthInRUB;
+    private float percentCashbackOfSumPay;
 
 
-    public float getPercentBonusOfSumPay() {
-        return percentBonusOfSumPay;
+    public float getCashback() {
+        return cashback;
     }
 
-    public void setPercentBonusOfSumPay(float percentBonusOfSumPay) {
-        this.percentBonusOfSumPay = percentBonusOfSumPay;
+    public void setCashback(float cashback) {
+        this.cashback = cashback;
     }
 
-    public float getLimitTransfersToClientTinkoffWithoutCommissionMonthInRUB() {
-        return limitTransfersToClientTinkoffWithoutCommissionMonthInRUB;
+    public float getPercentCashbackOfSumPay() {
+        return percentCashbackOfSumPay;
     }
 
-    public void setLimitTransfersToClientTinkoffWithoutCommissionMonthInRUB(float limitTransfersToClientSberWithoutCommissionMonthInRUB) {
-        this.limitTransfersToClientTinkoffWithoutCommissionMonthInRUB = limitTransfersToClientSberWithoutCommissionMonthInRUB;
+    public void setPercentCashbackOfSumPay(float percentCashbackOfSumPay) {
+        this.percentCashbackOfSumPay = percentCashbackOfSumPay;
+    }
+
+
+    @Override
+    // Вывод всех операций по всем картам и счетам профиля физического лица в Тинькове
+    public void displayProfileTransactions() {
+        // дополним метод уникальной информацией, присуще только Тинькову
+        System.out.println("Все операции по картам и счетам клиента " + getPhysicalPerson().getFirstName() + " " + getPhysicalPerson().getLastName() +
+                " в " + getBank().getBankName() + "Банке");
+
+        System.out.println("Накопленный кэшбэк: " + getCashback());
+
+        // и вызываем родительскую версию метода
+        super.displayProfileTransactions();
     }
 
 }
