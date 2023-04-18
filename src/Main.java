@@ -1,10 +1,7 @@
 import Account.SberSavingsAccount;
 import Bank.Sberbank;
 import Bank.Tinkoff;
-import Card.SberMastercardGold;
-import Card.SberMastercardTravel;
-import Card.SberVisaGold;
-import Card.TinkoffBlackMir;
+import Card.*;
 import PhysicalPerson.PhysicalPerson;
 
 public class Main {
@@ -46,12 +43,17 @@ public class Main {
         I.addAccountToMulticurrencyCard(sberMastercardTravel, "USD");
         I.switchAccountOfMulticurrencyCard(sberMastercardTravel, "USD");
 
+        TinkoffAirlinesMir tinkoffAirlinesMir = (TinkoffAirlinesMir) I.openCard(tinkoff, new TinkoffAirlinesMir(), "RUB", "0022");
+        I.addAccountToMulticurrencyCard(tinkoffAirlinesMir, "USD");
+        I.switchAccountOfMulticurrencyCard(tinkoffAirlinesMir, "RUB");
+
         SberSavingsAccount mySberSavingsAccount1 = (SberSavingsAccount) I.openAccount (sberbank, new SberSavingsAccount(), "RUB");
         SberSavingsAccount mySberSavingsAccount2 = (SberSavingsAccount) I.openAccount (sberbank, new SberSavingsAccount(), "RUB");
 
         SberVisaGold friendSberVisaGold1 = (SberVisaGold) friend.openCard(sberbank, new SberVisaGold(), "RUB", "1818");
 
         I.depositingCash2Card(sberMastercardTravel, 8300.00f);
+        I.depositingCash2Card(tinkoffAirlinesMir, 7500.00f);
 
         I.depositingCash2Card(mySberVisaGold1, 7600.50f);
         I.depositingCash2Card(sberMastercardGold, 2000.00f);
@@ -61,6 +63,9 @@ public class Main {
         I.payByCard(mySberVisaGold1, 100.50f, "ЖКХ", "1515");
         I.payByCard(sberMastercardGold, 700.00f, "Пятерочка", "2535");
         I.payByCard(myTinkoffBlackMir1, 12500.00f, "iPhone", "0011");
+
+        I.payByCard(tinkoffAirlinesMir, 3500.00f, "Ноутбук", "0022");
+        I.payByCardMiles(tinkoffAirlinesMir, 2000, 20, "Билет в Турцию", "0022");
 
         I.payByCard(mySberVisaGold1, 110.00f, "Excursion", "Турция","1515");
         I.payByCard(sberMastercardGold, 200.00f, "Attraction", "Турция", "2535");

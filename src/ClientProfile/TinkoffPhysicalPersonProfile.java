@@ -6,6 +6,47 @@ public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
 
     private float percentCashbackOfSumPay;
 
+    private int miles;
+
+    private int costOfMileRUB = 60;
+
+    private int costOfMileUSD = 1;
+
+    private int costOfMileEUR = 1;
+
+
+    public int getCostOfMileRUB() {
+        return costOfMileRUB;
+    }
+
+    public void setCostOfMileRUB(int costOfMileRUB) {
+        this.costOfMileRUB = costOfMileRUB;
+    }
+
+    public int getCostOfMileUSD() {
+        return costOfMileUSD;
+    }
+
+    public void setCostOfMileUSD(int costOfMileUSD) {
+        this.costOfMileUSD = costOfMileUSD;
+    }
+
+    public int getCostOfMileEUR() {
+        return costOfMileEUR;
+    }
+
+    public void setCostOfMileEUR(int costOfMileEUR) {
+        this.costOfMileEUR = costOfMileEUR;
+    }
+
+    public int getMiles() {
+        return miles;
+    }
+
+    public void setMiles(int miles) {
+        this.miles = miles;
+    }
+
 
     public float getCashback() {
         return cashback;
@@ -32,6 +73,8 @@ public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
                 " в " + getBank().getBankName() + "Банке");
 
         System.out.println("Накопленный кэшбэк: " + getCashback());
+
+        System.out.println("Накопленные милли: " + getMiles());
 
         // и вызываем родительскую версию метода
         super.displayProfileTransactions();

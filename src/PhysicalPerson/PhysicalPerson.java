@@ -6,6 +6,7 @@ import Account.SavingsAccount;
 import Bank.IBankServicePhysicalPerson;
 import Card.IBonusCard;
 import Card.ICashbackCard;
+import Card.IAirlinesCard;
 import Card.Card;
 import Card.IMulticurrencyCard;
 import Card.IPaySystem.IPaySystem;
@@ -108,6 +109,10 @@ public class PhysicalPerson {
 
     public void payByCard(Card card, float sumPay, String byProductOrService, String country, String pinCode) {
         card.payByCard(sumPay, byProductOrService, pinCode, country);
+    }
+
+    public void payByCardMiles(IAirlinesCard airlinesCard, int sumPay, int milesPay, String byProductOrService, String pinCode) {
+        airlinesCard.payByCardMiles(sumPay, milesPay, byProductOrService, pinCode);
     }
 
     public void payByCardBonuses(IBonusCard bonusCard, float sumPay, int bonusesPay, String buyProductOrService, String pinCode) {
