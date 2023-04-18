@@ -8,6 +8,37 @@ public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
 
     private int miles;
 
+    private int costOfMileRUB = 60;
+
+    private int costOfMileUSD = 1;
+
+    private int costOfMileEUR = 1;
+
+
+    public int getCostOfMileRUB() {
+        return costOfMileRUB;
+    }
+
+    public void setCostOfMileRUB(int costOfMileRUB) {
+        this.costOfMileRUB = costOfMileRUB;
+    }
+
+    public int getCostOfMileUSD() {
+        return costOfMileUSD;
+    }
+
+    public void setCostOfMileUSD(int costOfMileUSD) {
+        this.costOfMileUSD = costOfMileUSD;
+    }
+
+    public int getCostOfMileEUR() {
+        return costOfMileEUR;
+    }
+
+    public void setCostOfMileEUR(int costOfMileEUR) {
+        this.costOfMileEUR = costOfMileEUR;
+    }
+
     public int getMiles() {
         return miles;
     }

@@ -30,16 +30,5 @@ public class SberMastercardTravel extends CardMastercard implements IMulticurren
         getMulticurrencyAccounts().add(sberPayCardAccount);
     }
 
-    @Override
-    public void switchAccount(String currencyCodeAccount) {
-        for (int i = 0; i < multicurrencyAccounts.size(); i++) {
-            PayCardAccount payCardAccount = multicurrencyAccounts.get(i);
-            if (payCardAccount.getCurrencyCode().equals(currencyCodeAccount)) {
-                multicurrencyAccounts.remove(payCardAccount);
-                multicurrencyAccounts.add(getPayCardAccount());
-                setPayCardAccount(payCardAccount);
-            }
-        }
-    }
 
 }

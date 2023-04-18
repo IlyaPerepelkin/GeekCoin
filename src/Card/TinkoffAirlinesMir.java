@@ -4,6 +4,7 @@ import Account.PayCardAccount;
 import Account.TinkoffPayCardAccount;
 import Bank.Tinkoff;
 import ClientProfile.TinkoffPhysicalPersonProfile;
+import Transaction.PayMilesTransaction;
 import Transaction.PayTransaction;
 
 import java.time.LocalDateTime;
@@ -27,56 +28,48 @@ public class TinkoffAirlinesMir extends CardMir implements IMulticurrencyCard, I
 
     @Override
     public void addAccount(String currencyCodeAccount) {
-        TinkoffPayCardAccount tinkoffPayCardAccount = (TinkoffPayCardAccount) (((Tinkoff) this.getBank()).openAccount(this.getCardHolder(), new TinkoffPayCardAccount(), currencyCodeAccount));
+        TinkoffPayCardAccount tinkoffPayCardAccount = (TinkoffPayCardAccount) ((Tinkoff) this.getBank()).openAccount(this.getCardHolder(), new TinkoffPayCardAccount(), currencyCodeAccount);
         tinkoffPayCardAccount.getCards().add(this);
         getMulticurrencyAccounts().add(tinkoffPayCardAccount);
     }
 
     @Override
-    public void switchAccount(String currencyCodeAccount) {
-        for (int i = 0; i < multicurrencyAccounts.size(); i++) {
-            PayCardAccount payCardAccount = multicurrencyAccounts.get(i);
-            if (payCardAccount.getCurrencyCode().equals(currencyCodeAccount)) {
-                multicurrencyAccounts.remove(payCardAccount);
-                multicurrencyAccounts.add(getPayCardAccount());
-                setPayCardAccount(payCardAccount);
-            }
-        }
-    }
-
-    @Override
-    public void accumulateMiles(float sumPay, String currency) {
+    public void accumulateMiles(float sumPay) {
         TinkoffPhysicalPersonProfile cardHolder = (TinkoffPhysicalPersonProfile) getCardHolder();
-        float exchangeMilesRate = 0;
-        if (currency.equals("RUB")) {
-            exchangeMilesRate = 60;
-        } else if (currency.equals("USD") || currency.equals("EUR")) {
-            exchangeMilesRate = 1;
-        }
-        int miles = (int) (sumPay / exchangeMilesRate);
+        int miles = 0;
+        if (getPayCardAccount().getCurrencyCode().equals("RUB")) miles = (int) (sumPay / cardHolder.getCostOfMileRUB());
+        if (getPayCardAccount().getCurrencyCode().equals("USD")) miles = (int) (sumPay / cardHolder.getCostOfMileUSD());
+        if (getPayCardAccount().getCurrencyCode().equals("EUR")) miles = (int) (sumPay / cardHolder.getCostOfMileEUR());
+
         cardHolder.setMiles(cardHolder.getMiles() + miles);
     }
 
     @Override
-    public void payByCardMiles(int ticketPrice,String byProductOrService, String pinCode) {
+    public void payByCard(float sumPay, String buyProductOrService, String pinCode) {
+        super.payByCard(sumPay, buyProductOrService, pinCode);
+        accumulateMiles(sumPay);
+    }
+
+    @Override
+    public void payByCardMiles(int sumPay, int milesPay, String byProductOrService, String pinCode) {
         TinkoffPhysicalPersonProfile cardHolder = (TinkoffPhysicalPersonProfile) getCardHolder();
+        int miles = cardHolder.getMiles();
 
-        PayTransaction payTransaction = new PayTransaction();
-        payTransaction.setLocalDateTime(LocalDateTime.now());
-        payTransaction.setFromCard(this);
-        payTransaction.setSum(ticketPrice);
-        payTransaction.setTypeOperation("Оплата милями ");
-        payTransaction.setBuyProductOrService(byProductOrService);
+        PayMilesTransaction payMilesTransaction = new PayMilesTransaction();
+        payMilesTransaction.setLocalDateTime(LocalDateTime.now());
+        payMilesTransaction.setFromCard(this);
+        payMilesTransaction.setSum(sumPay);
+        payMilesTransaction.setTypeOperation("Оплата милями ");
+        payMilesTransaction.setBuyProductOrService(byProductOrService);
 
-        boolean topUpStatus = getPayCardAccount().topUp(cardHolder.getMiles());
-        if (topUpStatus) {
-            ((cardHolder.getMiles()) < ticketPrice).setStatusOperation("Недостаточно миль для оплаты билета");
-        } else {
-            cardHolder.setMiles((cardHolder.getMiles()) - ticketPrice).setStatusOperation("Билет оплачен милями");
-        }
+        if (miles >= milesPay) {
+            sumPay = (sumPay - milesPay);
+            payMilesTransaction.setStatusOperation("Билет оплачен милями");
+        } else payMilesTransaction.setStatusOperation("Недостаточно миль для оплаты билета бонусов");
 
+        payMilesTransaction.setBalance(getPayCardAccount().getBalance());
+        getPayCardAccount().getPayTransactions().add(payMilesTransaction);
 
-        payTransaction.setBalance(getPayCardAccount().getBalance());
-        getPayCardAccount().getPayTransactions().add(payTransaction);
+        payByCard(sumPay, byProductOrService, pinCode);
     }
 }

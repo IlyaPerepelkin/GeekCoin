@@ -111,8 +111,8 @@ public class PhysicalPerson {
         card.payByCard(sumPay, byProductOrService, pinCode, country);
     }
 
-    public void payByCardMiles(IAirlinesCard airlinesCard, int ticketPrice, String byProductOrService, String pinCode) {
-        airlinesCard.payByCardMiles(ticketPrice, byProductOrService, pinCode);
+    public void payByCardMiles(IAirlinesCard airlinesCard, int sumPay, int milesPay, String byProductOrService, String pinCode) {
+        airlinesCard.payByCardMiles(sumPay, milesPay, byProductOrService, pinCode);
     }
 
     public void payByCardBonuses(IBonusCard bonusCard, float sumPay, int bonusesPay, String buyProductOrService, String pinCode) {

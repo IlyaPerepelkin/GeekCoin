@@ -17,8 +17,8 @@ public class PayMilesTransaction extends PayTransaction {
     @Override
     public String getStringTransaction() {
 
-        String transaction = getLocalDateTime() + " " + getNameCard(getFromCard()) + " " + getBuyProductOrService() + ": " +
-            " Миль использовано: " + getMiles();
+        String transaction = getLocalDateTime() + " " + getNameCard(getFromCard()) + " " + getTypeOperation() + getBuyProductOrService() + " " +
+                " Статус: " + getStatusOperation();
 
         return transaction;
     }
