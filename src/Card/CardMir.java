@@ -15,15 +15,6 @@ public abstract class CardMir extends Card implements IMir {
         return billingCurrencyCode;
     }
 
-    @Override
-    // Конвертировать в валюту по курсу платежной системы
-    public float convertToCurrencyExchangeRatePaySystem(float sum, String fromCurrencyCode, String toBillingCurrencyCode) {
-        float exchangeRateCurrencyToBillingCurrency = getExchangeRatePaySystem(fromCurrencyCode, toBillingCurrencyCode);
-        float sumInBillingCurrency = sum * exchangeRateCurrencyToBillingCurrency;
-
-        return sumInBillingCurrency;
-    }
-
     // Запросить обменный курс валют платежной системы
     public float getExchangeRatePaySystem(String currency, String currencyExchangeRate) {
         // TODO: Запрос к API Mir

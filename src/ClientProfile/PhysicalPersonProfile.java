@@ -1,7 +1,6 @@
 package ClientProfile;
 
 import Account.Account;
-import Account.SavingsAccount;
 import Card.Card;
 import PhysicalPerson.PhysicalPerson;
 
@@ -42,16 +41,6 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
     }
 
 
-    // Привязать счет к профилю клиента
-    public void addAccount(Account account) {
-        accounts.add(account);
-    }
-
-    // Привязать карту к профилю клиента
-    public void addCard(Card card) {
-        cards.add(card);
-    }
-
     // проверить привязана ли карта к профилю клиента
     public boolean isClientCard(Card card) {
         return cards.contains(card);
@@ -71,7 +60,7 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
     }
 
     // Прибавить сумму перевода на счет к общей сумме совершенных оплат и переводов в сутки, чтобы контролировать лимиты
-    public void updateTotalPaymentsTransfersDay(float sum, String fromCurrencyCode, SavingsAccount toAccount) {
+    public void updateTotalPaymentsTransfersDay(float sum, String fromCurrencyCode, Account toAccount) {
         // мой ли счета, на который выполняем перевод
         boolean isMyAccount = isClientAccount(toAccount);
         // если не мой счет, то обновляем общую сумму

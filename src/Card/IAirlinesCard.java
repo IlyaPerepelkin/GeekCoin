@@ -6,6 +6,6 @@ public interface IAirlinesCard {
     void accumulateMiles(float sumPay);
 
     // оплата милями до 100% стоимости билетов из расчёта 1 миля = 1₽
-    void payByCardMiles(int sumPay, int milesPay, String byProductOrService, String pinCode);
+    void payByCardMiles(float sumPay, int milesPay, String byProductOrService, String pinCode);
 
 }

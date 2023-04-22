@@ -1,27 +1,28 @@
 package Card;
 
-import Account.PayCardAccount;
+import Account.Account;
 import Account.TinkoffPayCardAccount;
 import Bank.Tinkoff;
 import ClientProfile.TinkoffPhysicalPersonProfile;
 import Transaction.PayMilesTransaction;
-import Transaction.PayTransaction;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class TinkoffAirlinesMir extends CardMir implements IMulticurrencyCard, IAirlinesCard {
 
-    private ArrayList<PayCardAccount> multicurrencyAccounts = new ArrayList<>();
-
 
     @Override
-    public ArrayList<PayCardAccount> getMulticurrencyAccounts() {
+    public void setPayCardAccount(Account payCardAccount) {
+
+    }
+
+    @Override
+    public Account getMulticurrencyAccounts() {
         return multicurrencyAccounts;
     }
 
     @Override
-    public void setMulticurrencyAccounts(ArrayList<PayCardAccount> multicurrencyAccounts) {
+    public void setMulticurrencyAccounts(Account multicurrencyAccounts) {
         this.multicurrencyAccounts = multicurrencyAccounts;
 
     }
@@ -51,7 +52,7 @@ public class TinkoffAirlinesMir extends CardMir implements IMulticurrencyCard, I
     }
 
     @Override
-    public void payByCardMiles(int sumPay, int milesPay, String byProductOrService, String pinCode) {
+    public void payByCardMiles(float sumPay, int milesPay, String byProductOrService, String pinCode) {
         TinkoffPhysicalPersonProfile cardHolder = (TinkoffPhysicalPersonProfile) getCardHolder();
         int miles = cardHolder.getMiles();
 
@@ -62,6 +63,8 @@ public class TinkoffAirlinesMir extends CardMir implements IMulticurrencyCard, I
         payMilesTransaction.setTypeOperation("Оплата милями ");
         payMilesTransaction.setBuyProductOrService(byProductOrService);
 
+        if (milesPay > sumPay) payMilesTransaction.setStatusOperation("Сумма оплаты милями больше, чем стоимость билета");
+
         if (miles >= milesPay) {
             sumPay = (sumPay - milesPay);
             payMilesTransaction.setStatusOperation("Билет оплачен милями");
@@ -71,5 +74,8 @@ public class TinkoffAirlinesMir extends CardMir implements IMulticurrencyCard, I
         getPayCardAccount().getPayTransactions().add(payMilesTransaction);
 
         payByCard(sumPay, byProductOrService, pinCode);
+        cardHolder.setMiles(miles - milesPay);
+
     }
+
 }

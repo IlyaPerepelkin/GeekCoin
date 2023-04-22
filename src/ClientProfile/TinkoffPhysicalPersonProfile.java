@@ -8,11 +8,11 @@ public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
 
     private int miles;
 
-    private int costOfMileRUB = 60;
+    private int costOfMileRUB;
 
-    private int costOfMileUSD = 1;
+    private int costOfMileUSD;
 
-    private int costOfMileEUR = 1;
+    private int costOfMileEUR;
 
 
     public int getCostOfMileRUB() {

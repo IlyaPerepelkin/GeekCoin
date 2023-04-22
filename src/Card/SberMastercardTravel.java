@@ -1,22 +1,23 @@
 package Card;
 
-import Account.PayCardAccount;
+import Account.Account;
 import Account.SberPayCardAccount;
 import Bank.Sberbank;
 
-import java.util.ArrayList;
-
 public class SberMastercardTravel extends CardMastercard implements IMulticurrencyCard {
 
-    private ArrayList<PayCardAccount> multicurrencyAccounts = new ArrayList<>();
+    @Override
+    public void setPayCardAccount(Account payCardAccount) {
+        this.setPayCardAccount(payCardAccount);
+    }
 
     @Override
-    public ArrayList<PayCardAccount> getMulticurrencyAccounts() {
+    public Account getMulticurrencyAccounts() {
         return multicurrencyAccounts;
     }
 
     @Override
-    public void setMulticurrencyAccounts(ArrayList<PayCardAccount> multicurrencyAccounts) {
+    public void setMulticurrencyAccounts(Account multicurrencyAccounts) {
         this.multicurrencyAccounts = multicurrencyAccounts;
     }
 
@@ -29,6 +30,5 @@ public class SberMastercardTravel extends CardMastercard implements IMulticurren
         // Добавляем созданный счет в массив других счетов мультивалютной карты
         getMulticurrencyAccounts().add(sberPayCardAccount);
     }
-
 
 }

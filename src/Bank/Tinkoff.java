@@ -1,18 +1,12 @@
 package Bank;
 
-
-import Account.Account;
-import Card.Card;
+import ClientProfile.ClientProfile;
 import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.TinkoffPhysicalPersonProfile;
 import PhysicalPerson.PhysicalPerson;
-import Account.TinkoffPayCardAccount;
 
 public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
 
-    String currency;
-
-    String currencyExchangeRate;
 
     public PhysicalPersonProfile registerPhysicalPersonProfile(PhysicalPerson physicalPerson) {
         // создать профиль клиента
@@ -36,54 +30,18 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         tinkoffPhysicalPersonProfile.setLimitCommissionTransferInRUB(3000.00f);
         tinkoffPhysicalPersonProfile.setLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(100.00f);
 
-        // и привязать профиль клиента к банку
-        addClientProfile(tinkoffPhysicalPersonProfile);
+        tinkoffPhysicalPersonProfile.setCostOfMileRUB(60);
+        tinkoffPhysicalPersonProfile.setCostOfMileUSD(1);
+        tinkoffPhysicalPersonProfile.setCostOfMileEUR(1);
 
         return tinkoffPhysicalPersonProfile;
     }
 
-    public Card openCard(PhysicalPersonProfile physicalPersonProfile, Card card, String currencyCode, String pinCode) {
-        // установить свойства карты
-        card.setBank(this);
-        card.setNumberCard(generateNumberCard());
-        card.setCardHolder(physicalPersonProfile);
-        card.setPinCode(pinCode);
-
-        // открыть платежный счет
-        TinkoffPayCardAccount payCardAccount = (TinkoffPayCardAccount) openAccount(physicalPersonProfile, new TinkoffPayCardAccount(), currencyCode);
-
-        // привязать карту к платежному счету
-        payCardAccount.getCards().add(card);
-
-        // привязать платежный счет к карте
-        card.setPayCardAccount(payCardAccount);
-        card.setStatusCard("Активна");
-
-        // привязать карту к профилю клиента
-        physicalPersonProfile.addCard(card);
-
-        return card;
-    }
-
-    public Account openAccount(PhysicalPersonProfile physicalPersonProfile, Account account, String currencyCode) {
-        // установить свойства платежного счета
-        account.setBank(this);
-        account.setNumberAccount(generateNumberAccount());
-        account.setAccountHolder(physicalPersonProfile);
-        account.setCurrencyCode(currencyCode);
-        account.setCurrencySymbol(currencyCode);
-
-        // привязать платежный счет к профилю клиента
-        physicalPersonProfile.addAccount(account);
-
-        return account;
-    }
-
-    public float getCommissionOfTransferToClientBank() {
+    public float getCommissionOfTransferToClientBank(ClientProfile clientProfile, float sum, String fromCurrencyCode) {
         return 0;
     }
 
-    public float getExchangeRateBank() {
+    public float getExchangeRateBank(String currency, String currencyExchangeRate) {
         // TODO: Запрос к API банка
         float exchangeRateBank = 0;
         // курс доллара к рублю

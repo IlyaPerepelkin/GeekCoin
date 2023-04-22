@@ -1,6 +1,6 @@
 package Card;
 
-import Account.SavingsAccount;
+import Account.Account;
 import ClientProfile.SberPhysicalPersonProfile;
 import Transaction.PayBonusTransaction;
 
@@ -38,7 +38,7 @@ public class SberVisaGold extends CardVisa implements IBonusCard {
 
         payBonusTransaction.setPayBonuses(payBonuses);
         payBonusTransaction.setBalanceBonuses(cardHolder.getBonuses());
-        getPayCardAccount().addPayTransaction(payBonusTransaction);
+
 
         payByCard(sumPay, buyProductOrService, pinCode); // оплачиваем остаток картой
     }
@@ -64,7 +64,7 @@ public class SberVisaGold extends CardVisa implements IBonusCard {
     }
 
     @Override
-    public void transferCard2Account(SavingsAccount toAccount, float sumTransfer) {
+    public void transferCard2Account(Account toAccount, float sumTransfer) {
         // вызовем родительскую версию кода
         super.transferCard2Account(toAccount, sumTransfer);
 

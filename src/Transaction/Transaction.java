@@ -1,6 +1,6 @@
 package Transaction;
 
-import Account.SavingsAccount;
+import Account.Account;
 import Card.Card;
 
 import java.time.LocalDateTime;
@@ -27,9 +27,9 @@ public abstract class Transaction {
 
     private Card fromCard;
 
-    private SavingsAccount toAccount;
+    private Account toAccount;
 
-    private SavingsAccount fromAccount;
+    private Account fromAccount;
 
 
     public LocalDateTime getLocalDateTime() {
@@ -112,19 +112,19 @@ public abstract class Transaction {
         this.fromCard = fromCard;
     }
 
-    public SavingsAccount getToAccount() {
+    public Account getToAccount() {
         return toAccount;
     }
 
-    public void setToAccount(SavingsAccount toAccount) {
+    public void setToAccount(Account toAccount) {
         this.toAccount = toAccount;
     }
 
-    public SavingsAccount getFromAccount() {
+    public Account getFromAccount() {
         return fromAccount;
     }
 
-    public void setFromAccount(SavingsAccount fromAccount) {
+    public void setFromAccount(Account fromAccount) {
         this.fromAccount = fromAccount;
     }
 
@@ -146,7 +146,7 @@ public abstract class Transaction {
         return card.getBank().getBankName() + "Карта " + card.getClass().getSimpleName() + " ••" + card.getNumberCard().split(" ")[3];
     }
 
-    public String getNameAccount(SavingsAccount account) {
+    public String getNameAccount(Account account) {
         return account.getBank().getBankName() + "Счет ••" + account.getNumberAccount().substring(20);
     }
 

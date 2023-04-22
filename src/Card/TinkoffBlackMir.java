@@ -11,7 +11,7 @@ public class TinkoffBlackMir extends CardMir implements ICashbackCard {
     public void accumulateCashback(float sumPay) {
         TinkoffPhysicalPersonProfile cardHolder = (TinkoffPhysicalPersonProfile) getCardHolder();
         float cashback = sumPay * cardHolder.getPercentCashbackOfSumPay();
-        cardHolder.setCashback(cashback);
+        cardHolder.setCashback(cardHolder.getCashback() + cashback);
     }
 
     @Override

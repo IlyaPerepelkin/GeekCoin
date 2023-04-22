@@ -1,7 +1,7 @@
 package Card;
 
 import Account.PayCardAccount;
-import Account.SavingsAccount;
+import Account.Account;
 import Bank.Bank;
 import Card.IPaySystem.IPaySystem;
 import ClientProfile.PhysicalPersonProfile;
@@ -26,7 +26,9 @@ public abstract class Card implements IPaySystem {
     private String pinCode;
 
 
-    public Bank getBank() {return bank;}
+    public Bank getBank() {
+        return bank;
+    }
 
     public void setBank(Bank bank) {
         this.bank = bank;
@@ -128,11 +130,11 @@ public abstract class Card implements IPaySystem {
         payTransaction.setBalance(getPayCardAccount().getBalance());
 
         // добавить и привязать транзакцию оплаты к счету карты
-        payCardAccount.addPayTransaction(payTransaction);
+
     }
 
     // Оплата картой за рубежом
-    public void payByCard(float sumPay, String byProductOrService, String pinCode, String country) {
+    public void payByCard(float sumPay, String buyProductOrService, String pinCode, String country) {
         // по названию страны определяем валюту покупки
         String currencyPayCode = bank.getCurrencyCode(country);
         // по названию страны определяем название биллинга - это валюта платежной системы
@@ -151,7 +153,7 @@ public abstract class Card implements IPaySystem {
         sumPayInCardCurrency = bank.round(sumPayInCardCurrency);
 
         // приведя сумму покупки к валюте карты вызываем метод оплаты по умолчанию
-        payByCard(sumPayInCardCurrency, byProductOrService, pinCode);
+        payByCard(sumPayInCardCurrency, buyProductOrService, pinCode);
 
     }
 
@@ -237,11 +239,11 @@ public abstract class Card implements IPaySystem {
         transferTransaction.setBalance(payCardAccount.getBalance());
 
         // добавить и привязать транзакцию перевода к счету карты списания
-        payCardAccount.addTransferTransaction(transferTransaction);
+
     }
 
     // Перевести с карты на счет
-    public void transferCard2Account(SavingsAccount toAccount, float sumTransfer) {
+    public void transferCard2Account(Account toAccount, float sumTransfer) {
         // инициализировать транзакцию перевода
         TransferTransaction transferTransaction = new TransferTransaction();
         transferTransaction.setLocalDateTime(LocalDateTime.now());
@@ -311,7 +313,7 @@ public abstract class Card implements IPaySystem {
         // внести в транзакцию баланс карты после списания
         transferTransaction.setBalance(getPayCardAccount().getBalance());
         // добавить и привязать транзакцию перевода к счету карты списания
-        payCardAccount.addTransferTransaction(transferTransaction);
+
     }
 
     // внести наличные на карту
@@ -357,7 +359,7 @@ public abstract class Card implements IPaySystem {
     }
 
     // Пополнить карту со счета
-    public void depositingCardFromAccount(SavingsAccount fromAccount, float sumDepositing) {
+    public void depositingCardFromAccount(Account fromAccount, float sumDepositing) {
         // то есть перевести со счета на карту
         fromAccount.transferAccount2Card(this, sumDepositing);
     }

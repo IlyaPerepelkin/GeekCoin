@@ -33,7 +33,7 @@ public abstract class Account {
         return bank;
     }
 
-    public void setBank(Bank bank) {
+    public void setBank(IBankServicePhysicalPerson bank) {
         this.bank = bank;
     }
 
@@ -108,7 +108,7 @@ public abstract class Account {
         // инициализировать транзакцию перевода
         TransferTransaction transferTransaction = new TransferTransaction();
         transferTransaction.setLocalDateTime(LocalDateTime.now());
-        transferTransaction.setFromAccount((SavingsAccount) this);
+        transferTransaction.setFromAccount(this);
         transferTransaction.setToCard(toCard);
         transferTransaction.setSum(sumTransfer);
         transferTransaction.setCurrencySymbol(currencySymbol);
@@ -138,7 +138,7 @@ public abstract class Account {
                     // инициализировать транзакцию пополнения
                     DepositingTransaction depositingTransaction = new DepositingTransaction();
                     depositingTransaction.setLocalDateTime(LocalDateTime.now());
-                    depositingTransaction.setFromAccount((SavingsAccount) this);
+                    depositingTransaction.setFromAccount(this);
                     depositingTransaction.setToCard(toCard);
                     depositingTransaction.setTypeOperation("Перевод со счета");
                     depositingTransaction.setSum(sumTransfer);
@@ -149,7 +149,7 @@ public abstract class Account {
                     // сравнить валюты списания и зачисления
                     if (!fromCurrencyCode.equals(toCurrencyCode)) {
                         // если они не равны, то вызвать метод convertToCurrencyExchangeRateBank
-                        sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, currencyCode);
+                        sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
                     }
 
                     // зачислить на карту
@@ -179,14 +179,12 @@ public abstract class Account {
         // внести в транзакцию перевода баланс карты после списания
         transferTransaction.setBalance(getBalance());
 
-        // добавить и привязать транзакцию перевода к счету списания
-        addTransferTransaction(transferTransaction);
     }
 
-    public void transferAccount2Account(SavingsAccount toAccount, float sumTransfer) {
+    public void transferAccount2Account(Account toAccount, float sumTransfer) {
         TransferTransaction transferTransaction = new TransferTransaction();
         transferTransaction.setLocalDateTime(LocalDateTime.now());
-        transferTransaction.setFromAccount((SavingsAccount) this);
+        transferTransaction.setFromAccount(this);
         transferTransaction.setToAccount(toAccount);
         transferTransaction.setSum(sumTransfer);
         transferTransaction.setCurrencySymbol(currencySymbol);
@@ -209,7 +207,7 @@ public abstract class Account {
 
                     DepositingTransaction depositingTransaction = new DepositingTransaction();
                     depositingTransaction.setLocalDateTime(LocalDateTime.now());
-                    depositingTransaction.setFromAccount((SavingsAccount) this);
+                    depositingTransaction.setFromAccount(this);
                     depositingTransaction.setToAccount(toAccount);
                     depositingTransaction.setTypeOperation("Перевод со счета");
                     depositingTransaction.setSum(sumTransfer);
@@ -221,7 +219,7 @@ public abstract class Account {
                     // сравнить валюты списания и зачисления
                     if (!fromCurrencyCode.equals(toCurrencyCode)) {
                         // если они не равны, то вызвать метод convertToCurrencyExchangeRateBank
-                        sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, currencyCode);
+                        sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
                     }
 
                     boolean topUpStatus = toAccount.topUp(sumTransfer);
@@ -245,18 +243,16 @@ public abstract class Account {
 
         transferTransaction.setBalance(getBalance());
 
-        addTransferTransaction(transferTransaction);
-
     }
 
     // Пополнить счет с карты
     public void depositingAccountFromCard(Card fromCard, float sumDepositing) {
         // то есть перевести с карты на счет
-        fromCard.transferCard2Account((SavingsAccount) this, sumDepositing);
+        fromCard.transferCard2Account(this, sumDepositing);
     }
 
-    public void depositingAccountFromAccount(SavingsAccount fromAccount, float sumDepositing) {
-        fromAccount.transferAccount2Account((SavingsAccount) this, sumDepositing);
+    public void depositingAccountFromAccount(Account fromAccount, float sumDepositing) {
+        fromAccount.transferAccount2Account( this, sumDepositing);
     }
 
     // пополнить баланс

@@ -16,7 +16,7 @@ public class SberSavingsAccount extends SavingsAccount {
     }
 
     @Override
-    public void transferAccount2Account(SavingsAccount toAccount, float sumTransfer) {
+    public void transferAccount2Account(Account toAccount, float sumTransfer) {
         // вызываем родительскую версию метода
         super.transferAccount2Account(toAccount, sumTransfer);
 

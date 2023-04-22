@@ -54,12 +54,12 @@ public abstract class PayCardAccount extends Account {
         blockedSum -= sum;
         return true;
     }
-
+/*
     // Добавить транзакцию об оплате
     public void addPayTransaction(PayTransaction payTransaction) {
         payTransactions.add(payTransaction);
     }
-
+*/
     @Override
     // Вывести транзакции по счету
     public void displayAccountTransactions() {

@@ -123,15 +123,15 @@ public class PhysicalPerson {
         fromCard.transferCard2Card(toCard, sumTransfer);
     }
 
-    public void transferCard2Account(Card fromCard, SavingsAccount toAccount, float sumTransfer) {
+    public void transferCard2Account(Card fromCard, Account toAccount, float sumTransfer) {
         fromCard.transferCard2Account(toAccount, sumTransfer);
     }
 
-    public void transferAccount2Card(SavingsAccount fromAccount, Card toCard, float sumTransfer) {
+    public void transferAccount2Card(Account fromAccount, Card toCard, float sumTransfer) {
         fromAccount.transferAccount2Card(toCard, sumTransfer);
     }
 
-    public void transferAccount2Account(SavingsAccount fromAccount, SavingsAccount toAccount, float sumTransfer) {
+    public void transferAccount2Account(Account fromAccount, Account toAccount, float sumTransfer) {
         fromAccount.transferAccount2Account(toAccount, sumTransfer);
     }
 
@@ -139,15 +139,15 @@ public class PhysicalPerson {
         toCard.depositingCardFromCard(fromCard, sumDepositing);
     }
 
-    public void depositingCardFromAccount(Card toCard, SavingsAccount fromAccount, float sumDepositing) {
+    public void depositingCardFromAccount(Card toCard, Account fromAccount, float sumDepositing) {
         toCard.depositingCardFromAccount(fromAccount, sumDepositing);
     }
 
-    public void depositingAccountFromCard(SavingsAccount toAccount, Card fromCard, float sumDepositing) {
+    public void depositingAccountFromCard(Account toAccount, Card fromCard, float sumDepositing) {
         toAccount.depositingAccountFromCard(fromCard, sumDepositing);
     }
 
-    public void depositingAccountFromAccount(SavingsAccount toAccount, SavingsAccount fromAccount, float sumDepositing) {
+    public void depositingAccountFromAccount(Account toAccount, Account fromAccount, float sumDepositing) {
         toAccount.depositingAccountFromAccount(fromAccount, sumDepositing);
     }
 
