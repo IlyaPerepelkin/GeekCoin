@@ -3,6 +3,7 @@ package PhysicalPerson;
 import Account.Account;
 import Account.SberPayCardAccount;
 import Account.SavingsAccount;
+import Account.PayCardAccount;
 import Bank.IBankServicePhysicalPerson;
 import Card.IBonusCard;
 import Card.ICashbackCard;
@@ -91,8 +92,8 @@ public class PhysicalPerson {
         physicalPersonProfiles.add(bank.registerPhysicalPersonProfile(this));
     }
 
-    public Card openCard(IBankServicePhysicalPerson bank, Card card, String currencyCode, String pinCode) {
-        return bank.openCard(getPhysicalPersonProfile(bank), card, currencyCode, pinCode);
+    public Card openCard(IBankServicePhysicalPerson bank, Card card, PayCardAccount payCardAccount, String currencyCode, String pinCode) {
+        return bank.openCard(getPhysicalPersonProfile(bank), card, payCardAccount, currencyCode, pinCode);
     }
 
     public Account openAccount(IBankServicePhysicalPerson bank, Account account, String currencyCode) {
@@ -173,7 +174,7 @@ public class PhysicalPerson {
 
     public void displayProfileTransactions(IBankServicePhysicalPerson bank) {
         for (int i = 0; i < physicalPersonProfiles.size(); i++) {
-            physicalPersonProfiles.get(i).displayProfileTransactions();
+            getPhysicalPersonProfile(bank).displayProfileTransactions();
         }
     }
 

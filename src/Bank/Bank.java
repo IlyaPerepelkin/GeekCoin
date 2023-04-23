@@ -129,7 +129,7 @@ public abstract class Bank {
     }
 
     // Рассчитать комиссию за перевод на свою или чужую карту моего или другого банка
-    public float getCommission(ClientProfile clientProfile, String fromCurrencyCode, float sum, Account toAccount) {
+    public float getCommission(PhysicalPersonProfile clientProfile, String fromCurrencyCode, float sum, Account toAccount) {
         // запросить мой ли счет, на который выполняется перевод
         boolean isMyAccount = clientProfile.isClientAccount(toAccount);
         // запросить моего ли банка счет, на который выполняем перевод

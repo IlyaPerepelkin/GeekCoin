@@ -11,21 +11,21 @@ public interface IBankServicePhysicalPerson {
 
     PhysicalPersonProfile registerPhysicalPersonProfile(PhysicalPerson physicalPerson);
 
-    default Card openCard(PhysicalPersonProfile physicalPersonProfile, Card card, String currencyCode, String pinCode){
+    default Card openCard(PhysicalPersonProfile physicalPersonProfile, Card card, PayCardAccount payCardAccount, String currencyCode, String pinCode){
         // установить свойства карты
-        card.setBank(this);
-        card.setNumberCard(bank.generateNumberCard());
+        card.setBank(physicalPersonProfile.getBank());
+        card.setNumberCard(physicalPersonProfile.getBank().generateNumberCard());
         card.setCardHolder(physicalPersonProfile);
         card.setPinCode(pinCode);
 
         // открыть платежный счет
-        PayCardAccount payCardAccount = openAccount(physicalPersonProfile, new PayCardAccount(), currencyCode);
+        PayCardAccount cardAccount = (PayCardAccount) openAccount(physicalPersonProfile, payCardAccount, currencyCode);
 
         // привязать карту к платежному счету
         payCardAccount.getCards().add(card);
 
         // привязать платежный счет к карте
-        card.setPayCardAccount(payCardAccount);
+        card.setPayCardAccount(cardAccount);
         card.setStatusCard("Активна");
 
         return card;
@@ -33,8 +33,8 @@ public interface IBankServicePhysicalPerson {
 
     default Account openAccount(PhysicalPersonProfile physicalPersonProfile, Account account, String currencyCode) {
         // установить свойства платежного счета
-        account.setBank(this);
-        account.setNumberAccount(bank.generateNumberAccount());
+        account.setBank(physicalPersonProfile.getBank());
+        account.setNumberAccount(physicalPersonProfile.getBank().generateNumberAccount());
         account.setAccountHolder(physicalPersonProfile);
         account.setCurrencyCode(currencyCode);
         account.setCurrencySymbol(currencyCode);

@@ -1,35 +1,29 @@
 package Card;
 
-import Account.Account;
 import Account.PayCardAccount;
+
+import java.util.ArrayList;
 
 
 public interface IMulticurrencyCard {
 
-    Account multicurrencyAccounts;
+    PayCardAccount getPayCardAccount();
 
-    Account getPayCardAccount();
+    void setPayCardAccount(PayCardAccount payCardAccount);
 
-    void setPayCardAccount(Account payCardAccount);
+    ArrayList<PayCardAccount> getMulticurrencyAccounts();
 
+    void setMulticurrencyAccounts(ArrayList<PayCardAccount> multicurrencyAccounts);
 
-    default Account getMulticurrencyAccounts() {
-        return multicurrencyAccounts;
-    }
-
-    default void setMulticurrencyAccounts(Account multicurrencyAccounts) {
-        this.multicurrencyAccounts = multicurrencyAccounts;
-
-    }
 
     void addAccount(String currencyCodeAccount);
 
     default void switchAccount(String currencyCodeAccount) {
-        for (int i = 0; i < multicurrencyAccounts.length(); i++) {
-            PayCardAccount payCardAccount = multicurrencyAccounts.get(i);
+        for (int i = 0; i < getMulticurrencyAccounts().size(); i++) {
+            PayCardAccount payCardAccount = getMulticurrencyAccounts().get(i);
             if (payCardAccount.getCurrencyCode().equals(currencyCodeAccount)) {
-                multicurrencyAccounts.remove(payCardAccount);
-                multicurrencyAccounts.add(getPayCardAccount());
+                getMulticurrencyAccounts().remove(payCardAccount);
+                getMulticurrencyAccounts().add(getPayCardAccount());
                 setPayCardAccount(payCardAccount);
             }
         }

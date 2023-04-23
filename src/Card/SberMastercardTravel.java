@@ -1,23 +1,23 @@
 package Card;
 
-import Account.Account;
+import Account.PayCardAccount;
 import Account.SberPayCardAccount;
 import Bank.Sberbank;
 
+import java.util.ArrayList;
+
 public class SberMastercardTravel extends CardMastercard implements IMulticurrencyCard {
 
-    @Override
-    public void setPayCardAccount(Account payCardAccount) {
-        this.setPayCardAccount(payCardAccount);
-    }
+    ArrayList<PayCardAccount> multicurrencyAccounts = new ArrayList<>();
+
 
     @Override
-    public Account getMulticurrencyAccounts() {
+    public ArrayList<PayCardAccount> getMulticurrencyAccounts() {
         return multicurrencyAccounts;
     }
 
     @Override
-    public void setMulticurrencyAccounts(Account multicurrencyAccounts) {
+    public void setMulticurrencyAccounts(ArrayList<PayCardAccount> multicurrencyAccounts) {
         this.multicurrencyAccounts = multicurrencyAccounts;
     }
 

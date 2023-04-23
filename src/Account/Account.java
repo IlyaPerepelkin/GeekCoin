@@ -33,7 +33,7 @@ public abstract class Account {
         return bank;
     }
 
-    public void setBank(IBankServicePhysicalPerson bank) {
+    public void setBank(Bank bank) {
         this.bank = bank;
     }
 
@@ -179,6 +179,7 @@ public abstract class Account {
         // внести в транзакцию перевода баланс карты после списания
         transferTransaction.setBalance(getBalance());
 
+        getTransferTransactions().add(transferTransaction);
     }
 
     public void transferAccount2Account(Account toAccount, float sumTransfer) {
@@ -243,6 +244,7 @@ public abstract class Account {
 
         transferTransaction.setBalance(getBalance());
 
+        getTransferTransactions().add(transferTransaction);
     }
 
     // Пополнить счет с карты
@@ -259,13 +261,6 @@ public abstract class Account {
     public boolean topUp(float sum) {
         setBalance(balance + sum);
         return true;
-    }
-
-
-    // добавить транзакцию перевода
-    public void addTransferTransaction(TransferTransaction transferTransaction) {
-        transferTransactions.add(transferTransaction);
-
     }
 
     //  Проверить достаточно ли денег на балансе

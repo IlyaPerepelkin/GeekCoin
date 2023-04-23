@@ -1,31 +1,29 @@
 package Card;
 
-import Account.Account;
+import Account.PayCardAccount;
 import Account.TinkoffPayCardAccount;
 import Bank.Tinkoff;
 import ClientProfile.TinkoffPhysicalPersonProfile;
 import Transaction.PayMilesTransaction;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class TinkoffAirlinesMir extends CardMir implements IMulticurrencyCard, IAirlinesCard {
 
+    ArrayList<PayCardAccount> multicurrencyAccounts = new ArrayList<>();
+
 
     @Override
-    public void setPayCardAccount(Account payCardAccount) {
-
-    }
-
-    @Override
-    public Account getMulticurrencyAccounts() {
+    public ArrayList<PayCardAccount> getMulticurrencyAccounts() {
         return multicurrencyAccounts;
     }
 
     @Override
-    public void setMulticurrencyAccounts(Account multicurrencyAccounts) {
+    public void setMulticurrencyAccounts(ArrayList<PayCardAccount> multicurrencyAccounts) {
         this.multicurrencyAccounts = multicurrencyAccounts;
-
     }
+
 
     @Override
     public void addAccount(String currencyCodeAccount) {

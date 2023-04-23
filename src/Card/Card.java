@@ -130,7 +130,7 @@ public abstract class Card implements IPaySystem {
         payTransaction.setBalance(getPayCardAccount().getBalance());
 
         // добавить и привязать транзакцию оплаты к счету карты
-
+        getPayCardAccount().getPayTransactions().add(payTransaction);
     }
 
     // Оплата картой за рубежом
@@ -239,7 +239,7 @@ public abstract class Card implements IPaySystem {
         transferTransaction.setBalance(payCardAccount.getBalance());
 
         // добавить и привязать транзакцию перевода к счету карты списания
-
+        getPayCardAccount().getTransferTransactions().add(transferTransaction);
     }
 
     // Перевести с карты на счет
@@ -313,7 +313,7 @@ public abstract class Card implements IPaySystem {
         // внести в транзакцию баланс карты после списания
         transferTransaction.setBalance(getPayCardAccount().getBalance());
         // добавить и привязать транзакцию перевода к счету карты списания
-
+        getPayCardAccount().getTransferTransactions().add(transferTransaction);
     }
 
     // внести наличные на карту
@@ -349,7 +349,7 @@ public abstract class Card implements IPaySystem {
         depositingTransaction.setBalance(getPayCardAccount().getBalance());
 
         // добавить и привязать транзакцию пополнения к счету карты зачисления
-        payCardAccount.getDepositingTransactions().add(depositingTransaction);
+        getPayCardAccount().getDepositingTransactions().add(depositingTransaction);
     }
 
     // Пополнить карту с карты
@@ -370,7 +370,7 @@ public abstract class Card implements IPaySystem {
 
     // Вывести транзакции по счету карты
     public void displayCardTransactions () {
-        payCardAccount.displayAccountTransactions();
+        getPayCardAccount().displayAccountTransactions();
     }
 
 }
