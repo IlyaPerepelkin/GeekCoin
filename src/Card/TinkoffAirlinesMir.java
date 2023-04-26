@@ -50,7 +50,7 @@ public class TinkoffAirlinesMir extends CardMir implements IMulticurrencyCard, I
     }
 
     @Override
-    public void payByCardMiles(float sumPay, int milesPay, String byProductOrService, String pinCode) {
+    public void payByCardMiles(float sumPay, int milesPay, String buyProductOrService, String pinCode) {
         TinkoffPhysicalPersonProfile cardHolder = (TinkoffPhysicalPersonProfile) getCardHolder();
         int miles = cardHolder.getMiles();
 
@@ -59,7 +59,7 @@ public class TinkoffAirlinesMir extends CardMir implements IMulticurrencyCard, I
         payMilesTransaction.setFromCard(this);
         payMilesTransaction.setSum(sumPay);
         payMilesTransaction.setTypeOperation("Оплата милями ");
-        payMilesTransaction.setBuyProductOrService(byProductOrService);
+        payMilesTransaction.setBuyProductOrService(buyProductOrService);
 
         if (milesPay > sumPay) payMilesTransaction.setStatusOperation("Сумма оплаты милями больше, чем стоимость билета");
 
@@ -71,7 +71,7 @@ public class TinkoffAirlinesMir extends CardMir implements IMulticurrencyCard, I
         payMilesTransaction.setBalance(getPayCardAccount().getBalance());
         getPayCardAccount().getPayTransactions().add(payMilesTransaction);
 
-        payByCard(sumPay, byProductOrService, pinCode);
+        payByCard(sumPay, buyProductOrService, pinCode);
         cardHolder.setMiles(miles - milesPay);
 
     }

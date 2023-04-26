@@ -55,6 +55,7 @@ public class Main {
         SberVisaGold friendSberVisaGold1 = (SberVisaGold) friend.openCard(sberbank, new SberVisaGold(), new SberPayCardAccount(), "RUB", "1818");
 
         I.depositingCash2Card(sberMastercardTravel, 8300.00f);
+
         I.depositingCash2Card(tinkoffAirlinesMir, 7500.00f);
 
         I.depositingCash2Card(mySberVisaGold1, 7600.50f);
@@ -112,6 +113,7 @@ public class Main {
         // Вывод всех операций по всем картам и счетам профиля клиента с сортировкой по дате и времени
         I.displayProfileTransactions(sberbank);
         friend.displayProfileTransactions(sberbank);
-        
+        // I.displayAllProfileTransactions();
+        // friend.displayAllProfileTransactions();
     }
 }

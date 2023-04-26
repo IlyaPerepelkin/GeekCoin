@@ -30,9 +30,8 @@ public abstract class Bank {
     }
 
 
-    // Добавить профиль клиента
     public void addClientProfile(PhysicalPersonProfile clientProfile) {
-            clientProfiles.add(clientProfile);
+        clientProfiles.add(clientProfile);
     }
 
     // Сгенерировать номер карты 3546 0957 9843 7845

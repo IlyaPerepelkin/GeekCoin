@@ -5,7 +5,6 @@ import Account.PayCardAccount;
 import Card.Card;
 import ClientProfile.PhysicalPersonProfile;
 import PhysicalPerson.PhysicalPerson;
-import Bank.Bank;
 
 public interface IBankServicePhysicalPerson {
 
@@ -28,6 +27,8 @@ public interface IBankServicePhysicalPerson {
         card.setPayCardAccount(cardAccount);
         card.setStatusCard("Активна");
 
+        physicalPersonProfile.getCards().add(card);
+
         return card;
     }
 
@@ -38,6 +39,8 @@ public interface IBankServicePhysicalPerson {
         account.setAccountHolder(physicalPersonProfile);
         account.setCurrencyCode(currencyCode);
         account.setCurrencySymbol(currencyCode);
+
+        physicalPersonProfile.getAccounts().add(account);
 
         return account;
     }

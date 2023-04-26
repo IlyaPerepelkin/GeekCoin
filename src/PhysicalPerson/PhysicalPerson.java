@@ -173,9 +173,7 @@ public class PhysicalPerson {
     }
 
     public void displayProfileTransactions(IBankServicePhysicalPerson bank) {
-        for (int i = 0; i < physicalPersonProfiles.size(); i++) {
             getPhysicalPersonProfile(bank).displayProfileTransactions();
-        }
     }
 
     public void displayAllProfileTransactions() {
