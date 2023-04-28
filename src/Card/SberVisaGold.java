@@ -1,12 +1,19 @@
 package Card;
 
 import Account.Account;
+import Account.PayCardAccount;
+import Bank.Bank;
+import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
 import Transaction.PayBonusTransaction;
 
 import java.time.LocalDateTime;
 
 public class SberVisaGold extends CardVisa implements IBonusCard {
+
+    public SberVisaGold(Bank bank, PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
+        super(bank, cardHolder, payCardAccount, pinCode);
+    }
 
     @Override
     public void accumulateBonuses(float sumPay) {

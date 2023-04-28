@@ -80,6 +80,15 @@ public abstract class Card implements IPaySystem {
     }
 
 
+    public Card(Bank bank, PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
+        this.bank = bank;
+        this.cardHolder = cardHolder;
+        this.payCardAccount = payCardAccount;
+        setNumberCard(bank.generateNumberCard());
+        this.statusCard = "Активна";
+        this.pinCode = pinCode;
+    }
+
     // Оплата картой
     public void payByCard(float sumPay, String buyProductOrService, String pinCode) {
         // инициализировать транзакцию оплаты
