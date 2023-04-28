@@ -1,15 +1,11 @@
 package PhysicalPerson;
 
 import Account.Account;
-import Account.SberPayCardAccount;
-import Account.SavingsAccount;
 import Account.PayCardAccount;
+import Account.SavingsAccount;
+import Account.SberPayCardAccount;
 import Bank.IBankServicePhysicalPerson;
-import Card.IBonusCard;
-import Card.ICashbackCard;
-import Card.IAirlinesCard;
-import Card.Card;
-import Card.IMulticurrencyCard;
+import Card.*;
 import Card.IPaySystem.IPaySystem;
 import ClientProfile.PhysicalPersonProfile;
 

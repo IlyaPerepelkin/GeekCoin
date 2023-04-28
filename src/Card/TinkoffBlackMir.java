@@ -1,7 +1,7 @@
 package Card;
 
-import Transaction.DepositingTransaction;
 import ClientProfile.TinkoffPhysicalPersonProfile;
+import Transaction.DepositingTransaction;
 
 import java.time.LocalDateTime;
 
