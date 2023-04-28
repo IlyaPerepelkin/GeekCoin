@@ -213,14 +213,15 @@ public abstract class Bank {
 
     // Конвертировать в валюту по курсу банка
     public float convertToCurrencyExchangeRateBank(float sum, String fromCurrencyCode, String toCurrencyCode) {
-        float exchangeRateToCardCurrency = getExchangeRateBank(fromCurrencyCode, toCurrencyCode);
-        float sumInCardCurrency = sum * exchangeRateToCardCurrency;
-
-        return sumInCardCurrency;
+        if (!fromCurrencyCode.equalsIgnoreCase(toCurrencyCode)) {
+            ArrayList<Float> exchangeRateToCardCurrency = getExchangeRateBank(fromCurrencyCode, toCurrencyCode);
+            sum *= exchangeRateToCardCurrency.get(0);
+        }
+        return sum;
     }
 
     //  Предоставить обменный курс валют банка.
-    public abstract float getExchangeRateBank(String fromCurrencyCode, String toCurrencyCode);
+    public abstract ArrayList<Float> getExchangeRateBank(String fromCurrencyCode, String toCurrencyCode);
 
     public float round(float sum) {
         return Math.round(sum * 100.00f) / 100.00f;

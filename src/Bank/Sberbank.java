@@ -4,6 +4,8 @@ import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
 import PhysicalPerson.PhysicalPerson;
 
+import java.util.ArrayList;
+
 public class Sberbank extends Bank implements IBankServicePhysicalPerson {
 
     public static final String SBER;
@@ -49,14 +51,21 @@ public class Sberbank extends Bank implements IBankServicePhysicalPerson {
         return sberPhysicalPersonProfile;
     }
 
+    @Override
     // Предоставить обменный курс валют Сбера
-    public float getExchangeRateBank(String currency, String currencyExchangeRate) {
+    public ArrayList<Float> getExchangeRateBank(String currency, String currencyExchangeRate) {
         // TODO: Запрос к API банка
-        float exchangeRateBank = 0;
+        ArrayList<Float> exchangeRateBank = new ArrayList<>();
         // курс доллара к рублю
-        if (currency.equals("USD") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 60.30f;
+        if (currency.equals("USD") && currencyExchangeRate.equals("RUB")) {
+            exchangeRateBank.add(62.75f); // курс покупки
+            exchangeRateBank.add(60.48f); // курс продажи
+        }
         // курс евро к рублю
-        if (currency.equals("EUR") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 61.50f;
+        if (currency.equals("EUR") && currencyExchangeRate.equals("RUB")) {
+            exchangeRateBank.add(63.55f); // курс покупки
+            exchangeRateBank.add(61.35f); // курс продажи
+        }
         return  exchangeRateBank;
     }
 
