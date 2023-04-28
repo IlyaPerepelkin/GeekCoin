@@ -14,14 +14,12 @@ public class Main {
         PhysicalPerson friend = new PhysicalPerson("Герман", "Греф", "+79008203535", (byte)52, 'M');
 
         Sberbank sberbank = new Sberbank();
-        sberbank.setBankName("Сбер");
-
         Tinkoff tinkoff = new Tinkoff();
-        tinkoff.setBankName("Тинькофф");
 
         I.registerPhysicalPersonToBank(sberbank);
-        friend.registerPhysicalPersonToBank(sberbank);
         I.registerPhysicalPersonToBank(tinkoff);
+
+        friend.registerPhysicalPersonToBank(sberbank);
 
         SberVisaGold mySberVisaGold1 = (SberVisaGold) I.openCard(sberbank, new SberVisaGold(), new SberPayCardAccount(),"RUB", "1515");
         SberVisaGold mySberVisaGold2 = (SberVisaGold) I.openCard(sberbank, new SberVisaGold(), new SberPayCardAccount(), "RUB", "1717");
@@ -100,9 +98,9 @@ public class Main {
 */
 
         // Вывод всех операций по всем картам и счетам профиля клиента с сортировкой по дате и времени
-        I.displayProfileTransactions(sberbank);
-        friend.displayProfileTransactions(sberbank);
-        // I.displayAllProfileTransactions();
-        // friend.displayAllProfileTransactions();
+        // I.displayProfileTransactions(sberbank);
+        // friend.displayProfileTransactions(sberbank);
+        I.displayAllProfileTransactions();
+        friend.displayAllProfileTransactions();
     }
 }
