@@ -10,19 +10,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        PhysicalPerson I = new PhysicalPerson();
-        I.setFirstName("Илья");
-        I.setLastName("Перепелкин");
-        I.setTelephone("+905010833253");
-        I.setAge((byte)30);
-        I.setGender('M');
-
-        PhysicalPerson friend = new PhysicalPerson();
-        friend.setFirstName("Герман");
-        friend.setLastName("Греф");
-        friend.setTelephone("+79008203535");
-        friend.setAge((byte)52);
-        friend.setGender('M');
+        PhysicalPerson I = new PhysicalPerson("Илья", "Перепелкин", "+905010833253", (byte)30, 'M');
+        PhysicalPerson friend = new PhysicalPerson("Герман", "Греф", "+79008203535", (byte)52, 'M');
 
         Sberbank sberbank = new Sberbank();
         sberbank.setBankName("Сбер");

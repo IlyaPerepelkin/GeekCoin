@@ -74,6 +74,18 @@ public class PhysicalPerson {
         this.physicalPersonProfiles = physicalPersonProfiles;
     }
 
+    public PhysicalPerson(String firstName, String lastName, String telephone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.telephone = telephone;
+    }
+
+    public PhysicalPerson(String firstName, String lastName, String telephone, byte age, char gender) {
+        this(firstName, lastName, telephone);
+        this.age = age;
+        this.gender = gender;
+    }
+
     public PhysicalPersonProfile getPhysicalPersonProfile(IBankServicePhysicalPerson bank) {
         for (int i = 0; i < physicalPersonProfiles.size(); i++) {
             PhysicalPersonProfile physicalPersonProfile = physicalPersonProfiles.get(i);
