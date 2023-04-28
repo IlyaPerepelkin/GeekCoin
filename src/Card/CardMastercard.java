@@ -1,8 +1,14 @@
 package Card;
 
+import Account.PayCardAccount;
 import Card.IPaySystem.IMastercard;
+import ClientProfile.PhysicalPersonProfile;
 
 public abstract class CardMastercard extends Card implements IMastercard {
+
+    public CardMastercard(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
+        super(cardHolder, payCardAccount, pinCode);
+    }
 
     @Override
     // Запросим код валюты платежной системы

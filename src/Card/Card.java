@@ -1,7 +1,7 @@
 package Card;
 
-import Account.PayCardAccount;
 import Account.Account;
+import Account.PayCardAccount;
 import Bank.Bank;
 import Card.IPaySystem.IPaySystem;
 import ClientProfile.PhysicalPersonProfile;
@@ -79,6 +79,15 @@ public abstract class Card implements IPaySystem {
         this.pinCode = pinCode;
     }
 
+
+    public Card(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
+        this.bank = cardHolder.getBank();
+        this.cardHolder = cardHolder;
+        this.payCardAccount = payCardAccount;
+        setNumberCard(bank.generateNumberCard());
+        this.statusCard = "Активна";
+        this.pinCode = pinCode;
+    }
 
     // Оплата картой
     public void payByCard(float sumPay, String buyProductOrService, String pinCode) {

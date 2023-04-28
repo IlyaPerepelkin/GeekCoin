@@ -1,8 +1,15 @@
 package Card;
 
+import Account.PayCardAccount;
 import Card.IPaySystem.IMir;
+import ClientProfile.PhysicalPersonProfile;
 
 public abstract class CardMir extends Card implements IMir {
+
+
+    public CardMir(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
+        super(cardHolder, payCardAccount, pinCode);
+    }
 
     @Override
     // Запросим код валюты платежной системы

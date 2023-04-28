@@ -10,23 +10,23 @@ public interface IBankServicePhysicalPerson {
 
     PhysicalPersonProfile registerPhysicalPersonProfile(PhysicalPerson physicalPerson);
 
-    default Card openCard(PhysicalPersonProfile physicalPersonProfile, Card card, PayCardAccount payCardAccount, String currencyCode, String pinCode){
-        // установить свойства карты
-        card.setBank(physicalPersonProfile.getBank());
-        card.setNumberCard(physicalPersonProfile.getBank().generateNumberCard());
-        card.setCardHolder(physicalPersonProfile);
-        card.setPinCode(pinCode);
+    default Card openCard(PhysicalPersonProfile physicalPersonProfile, Class<? extends Card> classCard, PayCardAccount payCardAccount, String currencyCode, String pinCode){
 
         // открыть платежный счет
-        PayCardAccount cardAccount = (PayCardAccount) openAccount(physicalPersonProfile, payCardAccount, currencyCode);
+        PayCardAccount bankPayCardAccount = (PayCardAccount) openAccount(physicalPersonProfile, payCardAccount, currencyCode);
+
+        Card card = null;
+        try {
+            card = classCard.getConstructor(PhysicalPersonProfile.class, PayCardAccount.class, String.class)
+                    .newInstance(physicalPersonProfile, bankPayCardAccount, pinCode);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
         // привязать карту к платежному счету
-        payCardAccount.getCards().add(card);
+        bankPayCardAccount.getCards().add(card);
 
-        // привязать платежный счет к карте
-        card.setPayCardAccount(cardAccount);
-        card.setStatusCard("Активна");
-
+        //привязать карту к профилю клиента
         physicalPersonProfile.getCards().add(card);
 
         return card;

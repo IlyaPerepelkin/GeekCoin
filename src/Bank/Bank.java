@@ -30,8 +30,8 @@ public abstract class Bank {
     }
 
 
-    public void addClientProfile(PhysicalPersonProfile clientProfile) {
-        clientProfiles.add(clientProfile);
+    public Bank(String bankName) {
+        this.bankName = bankName;
     }
 
     // Сгенерировать номер карты 3546 0957 9843 7845

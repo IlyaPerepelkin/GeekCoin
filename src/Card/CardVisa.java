@@ -1,8 +1,14 @@
 package Card;
 
+import Account.PayCardAccount;
 import Card.IPaySystem.IVisa;
+import ClientProfile.PhysicalPersonProfile;
 
 public abstract class CardVisa extends Card implements IVisa {
+
+    public CardVisa(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
+        super(cardHolder, payCardAccount, pinCode);
+    }
 
     @Override
     // Запросим код валюты платежной системы

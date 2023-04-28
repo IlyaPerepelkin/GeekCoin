@@ -1,15 +1,11 @@
 package PhysicalPerson;
 
 import Account.Account;
-import Account.SberPayCardAccount;
-import Account.SavingsAccount;
 import Account.PayCardAccount;
+import Account.SavingsAccount;
+import Account.SberPayCardAccount;
 import Bank.IBankServicePhysicalPerson;
-import Card.IBonusCard;
-import Card.ICashbackCard;
-import Card.IAirlinesCard;
-import Card.Card;
-import Card.IMulticurrencyCard;
+import Card.*;
 import Card.IPaySystem.IPaySystem;
 import ClientProfile.PhysicalPersonProfile;
 
@@ -78,6 +74,18 @@ public class PhysicalPerson {
         this.physicalPersonProfiles = physicalPersonProfiles;
     }
 
+    public PhysicalPerson(String firstName, String lastName, String telephone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.telephone = telephone;
+    }
+
+    public PhysicalPerson(String firstName, String lastName, String telephone, byte age, char gender) {
+        this(firstName, lastName, telephone);
+        this.age = age;
+        this.gender = gender;
+    }
+
     public PhysicalPersonProfile getPhysicalPersonProfile(IBankServicePhysicalPerson bank) {
         for (int i = 0; i < physicalPersonProfiles.size(); i++) {
             PhysicalPersonProfile physicalPersonProfile = physicalPersonProfiles.get(i);
@@ -92,8 +100,8 @@ public class PhysicalPerson {
         physicalPersonProfiles.add(bank.registerPhysicalPersonProfile(this));
     }
 
-    public Card openCard(IBankServicePhysicalPerson bank, Card card, PayCardAccount payCardAccount, String currencyCode, String pinCode) {
-        return bank.openCard(getPhysicalPersonProfile(bank), card, payCardAccount, currencyCode, pinCode);
+    public Card openCard(IBankServicePhysicalPerson bank, Class<? extends Card> classCard, PayCardAccount payCardAccount, String currencyCode, String pinCode) {
+        return bank.openCard(getPhysicalPersonProfile(bank), classCard, payCardAccount, currencyCode, pinCode);
     }
 
     public Account openAccount(IBankServicePhysicalPerson bank, Account account, String currencyCode) {

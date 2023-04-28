@@ -10,49 +10,34 @@ public class Main {
 
     public static void main(String[] args) {
 
-        PhysicalPerson I = new PhysicalPerson();
-        I.setFirstName("Илья");
-        I.setLastName("Перепелкин");
-        I.setTelephone("+905010833253");
-        I.setAge((byte)30);
-        I.setGender('M');
-
-        PhysicalPerson friend = new PhysicalPerson();
-        friend.setFirstName("Герман");
-        friend.setLastName("Греф");
-        friend.setTelephone("+79008203535");
-        friend.setAge((byte)52);
-        friend.setGender('M');
+        PhysicalPerson I = new PhysicalPerson("Илья", "Перепелкин", "+905010833253", (byte)30, 'M');
+        PhysicalPerson friend = new PhysicalPerson("Герман", "Греф", "+79008203535", (byte)52, 'M');
 
         Sberbank sberbank = new Sberbank();
-        sberbank.setBankName("Сбер");
-
         Tinkoff tinkoff = new Tinkoff();
-        tinkoff.setBankName("Тинькофф");
 
         I.registerPhysicalPersonToBank(sberbank);
-        friend.registerPhysicalPersonToBank(sberbank);
         I.registerPhysicalPersonToBank(tinkoff);
 
-        SberVisaGold mySberVisaGold1 = (SberVisaGold) I.openCard(sberbank, new SberVisaGold(), new SberPayCardAccount(),"RUB", "1515");
-        SberVisaGold mySberVisaGold2 = (SberVisaGold) I.openCard(sberbank, new SberVisaGold(), new SberPayCardAccount(), "RUB", "1717");
+        friend.registerPhysicalPersonToBank(sberbank);
 
-        TinkoffBlackMir myTinkoffBlackMir1 = (TinkoffBlackMir) I.openCard(tinkoff, new TinkoffBlackMir(), new TinkoffPayCardAccount(), "RUB", "0011");
+        SberVisaGold mySberVisaGold1 = (SberVisaGold) I.openCard(sberbank, SberVisaGold.class, new SberPayCardAccount(),"RUB", "1515");
+        SberVisaGold mySberVisaGold2 = (SberVisaGold) I.openCard(sberbank, SberVisaGold.class, new SberPayCardAccount(), "RUB", "1717");
 
-        SberMastercardGold sberMastercardGold = (SberMastercardGold) I.openCard(sberbank, new SberMastercardGold(), new SberPayCardAccount(), "RUB", "2535");
+        TinkoffBlackMir myTinkoffBlackMir1 = (TinkoffBlackMir) I.openCard(tinkoff, TinkoffBlackMir.class, new TinkoffPayCardAccount(), "RUB", "0011");
 
-        SberMastercardTravel sberMastercardTravel = (SberMastercardTravel) I.openCard(sberbank, new SberMastercardTravel(), new SberPayCardAccount(), "RUB", "7895");
-        I.addAccountToMulticurrencyCard(sberMastercardTravel, "USD");
+        SberMastercardGold sberMastercardGold = (SberMastercardGold) I.openCard(sberbank, SberMastercardGold.class, new SberPayCardAccount(), "RUB", "2535");
+
+        SberMastercardTravel sberMastercardTravel = (SberMastercardTravel) I.openCard(sberbank, SberMastercardTravel.class, new SberPayCardAccount(), "RUB", "7895");
         I.switchAccountOfMulticurrencyCard(sberMastercardTravel, "USD");
 
-        TinkoffAirlinesMir tinkoffAirlinesMir = (TinkoffAirlinesMir) I.openCard(tinkoff, new TinkoffAirlinesMir(), new TinkoffPayCardAccount(), "RUB", "0022");
-        I.addAccountToMulticurrencyCard(tinkoffAirlinesMir, "USD");
+        TinkoffAirlinesMir tinkoffAirlinesMir = (TinkoffAirlinesMir) I.openCard(tinkoff, TinkoffAirlinesMir.class, new TinkoffPayCardAccount(), "RUB", "0022");
         I.switchAccountOfMulticurrencyCard(tinkoffAirlinesMir, "RUB");
 
         SberSavingsAccount mySberSavingsAccount1 = (SberSavingsAccount) I.openAccount (sberbank, new SberSavingsAccount(), "RUB");
         SberSavingsAccount mySberSavingsAccount2 = (SberSavingsAccount) I.openAccount (sberbank, new SberSavingsAccount(), "RUB");
 
-        SberVisaGold friendSberVisaGold1 = (SberVisaGold) friend.openCard(sberbank, new SberVisaGold(), new SberPayCardAccount(), "RUB", "1818");
+        SberVisaGold friendSberVisaGold1 = (SberVisaGold) friend.openCard(sberbank, SberVisaGold.class, new SberPayCardAccount(), "RUB", "1818");
 
         I.depositingCash2Card(sberMastercardTravel, 8300.00f);
 
@@ -111,9 +96,9 @@ public class Main {
 */
 
         // Вывод всех операций по всем картам и счетам профиля клиента с сортировкой по дате и времени
-        I.displayProfileTransactions(sberbank);
-        friend.displayProfileTransactions(sberbank);
-        // I.displayAllProfileTransactions();
-        // friend.displayAllProfileTransactions();
+        // I.displayProfileTransactions(sberbank);
+        // friend.displayProfileTransactions(sberbank);
+        I.displayAllProfileTransactions();
+        friend.displayAllProfileTransactions();
     }
 }
