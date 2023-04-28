@@ -1,14 +1,13 @@
 package Card;
 
 import Account.PayCardAccount;
-import Bank.Bank;
 import Card.IPaySystem.IVisa;
 import ClientProfile.PhysicalPersonProfile;
 
 public abstract class CardVisa extends Card implements IVisa {
 
-    public CardVisa(Bank bank, PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
-        super(bank, cardHolder, payCardAccount, pinCode);
+    public CardVisa(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
+        super(cardHolder, payCardAccount, pinCode);
     }
 
     @Override

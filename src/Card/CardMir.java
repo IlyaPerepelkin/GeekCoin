@@ -1,15 +1,14 @@
 package Card;
 
 import Account.PayCardAccount;
-import Bank.Bank;
 import Card.IPaySystem.IMir;
 import ClientProfile.PhysicalPersonProfile;
 
 public abstract class CardMir extends Card implements IMir {
 
 
-    public CardMir(Bank bank, PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
-        super(bank, cardHolder, payCardAccount, pinCode);
+    public CardMir(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
+        super(cardHolder, payCardAccount, pinCode);
     }
 
     @Override

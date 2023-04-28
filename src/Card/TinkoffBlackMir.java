@@ -1,7 +1,6 @@
 package Card;
 
 import Account.PayCardAccount;
-import Bank.Bank;
 import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.TinkoffPhysicalPersonProfile;
 import Transaction.DepositingTransaction;
@@ -10,8 +9,8 @@ import java.time.LocalDateTime;
 
 public class TinkoffBlackMir extends CardMir implements ICashbackCard {
 
-    public TinkoffBlackMir(Bank bank, PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
-        super(bank, cardHolder, payCardAccount, pinCode);
+    public TinkoffBlackMir(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
+        super(cardHolder, payCardAccount, pinCode);
     }
 
     @Override

@@ -2,7 +2,6 @@ package Card;
 
 import Account.PayCardAccount;
 import Account.TinkoffPayCardAccount;
-import Bank.Bank;
 import Bank.Tinkoff;
 import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.TinkoffPhysicalPersonProfile;
@@ -27,8 +26,8 @@ public class TinkoffAirlinesMir extends CardMir implements IMulticurrencyCard, I
     }
 
 
-    public TinkoffAirlinesMir(Bank bank, PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
-        super(bank, cardHolder, payCardAccount, pinCode);
+    public TinkoffAirlinesMir(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
+        super(cardHolder, payCardAccount, pinCode);
         addAccount("EUR");
     }
 

@@ -2,7 +2,6 @@ package Card;
 
 import Account.PayCardAccount;
 import Account.SberPayCardAccount;
-import Bank.Bank;
 import Bank.Sberbank;
 import ClientProfile.PhysicalPersonProfile;
 
@@ -24,8 +23,8 @@ public class SberMastercardTravel extends CardMastercard implements IMulticurren
     }
 
 
-    public SberMastercardTravel(Bank bank, PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
-        super(bank, cardHolder, payCardAccount, pinCode);
+    public SberMastercardTravel(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
+        super(cardHolder, payCardAccount, pinCode);
         addAccount("USD");
     }
 
