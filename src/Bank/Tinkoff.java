@@ -5,6 +5,8 @@ import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.TinkoffPhysicalPersonProfile;
 import PhysicalPerson.PhysicalPerson;
 
+import java.util.ArrayList;
+
 public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
 
     public Tinkoff() {
@@ -48,13 +50,19 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         return 0;
     }
 
-    public float getExchangeRateBank(String currency, String currencyExchangeRate) {
+    public ArrayList<Float> getExchangeRateBank(String currency, String currencyExchangeRate) {
         // TODO: Запрос к API банка
-        float exchangeRateBank = 0;
+        ArrayList<Float> exchangeRateBank = new ArrayList<>();
         // курс доллара к рублю
-        if (currency != null && currency.equals("USD") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 81.67f;
+        if (currency != null && currency.equals("USD") && currencyExchangeRate.equals("RUB")) {
+            exchangeRateBank.add(83.34f); // курс покупки
+            exchangeRateBank.add(81.67f); // курс продажи
+        }
         // курс евро к рублю
-        if (currency != null && currency.equals("EUR") && currencyExchangeRate.equals("RUB")) exchangeRateBank = 90.12f;
+        if (currency != null && currency.equals("EUR") && currencyExchangeRate.equals("RUB")) {
+            exchangeRateBank.add(85.12f); // курс покупки
+            exchangeRateBank.add(81.67f); // курс продажи
+        }
         return exchangeRateBank;
     }
 
