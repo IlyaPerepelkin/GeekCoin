@@ -84,7 +84,7 @@ public abstract class Card implements IPaySystem {
         this.bank = cardHolder.getBank();
         this.cardHolder = cardHolder;
         this.payCardAccount = payCardAccount;
-        setNumberCard(bank.generateNumberCard());
+        setNumberCard(Bank.generateNumberCard());
         this.statusCard = "Активна";
         this.pinCode = pinCode;
     }
