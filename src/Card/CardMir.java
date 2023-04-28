@@ -17,7 +17,7 @@ public abstract class CardMir extends Card implements IMir {
         // по умолчанию null, потому что не во всех странах может использоваться данная платежная система
         String billingCurrencyCode = null;
         // если покупка в Казахстане, то валюта биллинга в ₽
-        if (country.equalsIgnoreCase("Казахстан")) billingCurrencyCode = currencyCodePaySystemRUB;
+        if (country.equalsIgnoreCase("Казахстан")) billingCurrencyCode = CURRENCY_CODE_PAY_SYSTEM_RUB;
 
         return billingCurrencyCode;
     }

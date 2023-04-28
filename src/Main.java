@@ -13,6 +13,8 @@ public class Main {
         PhysicalPerson I = new PhysicalPerson("Илья", "Перепелкин", "+905010833253", (byte)30, 'M');
         PhysicalPerson friend = new PhysicalPerson("Герман", "Греф", "+79008203535", (byte)52, 'M');
 
+        System.out.println("Физ.лица в системе " + PhysicalPerson.personCount);
+
         Sberbank sberbank = new Sberbank();
         Tinkoff tinkoff = new Tinkoff();
 

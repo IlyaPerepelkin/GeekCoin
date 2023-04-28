@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 public class PhysicalPerson {
 
+    public static int personCount;
+
     private String firstName;
 
     private String lastName;
@@ -75,6 +77,7 @@ public class PhysicalPerson {
     }
 
     public PhysicalPerson(String firstName, String lastName, String telephone) {
+        personCount++;
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephone = telephone;
