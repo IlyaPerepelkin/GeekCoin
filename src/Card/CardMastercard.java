@@ -16,9 +16,9 @@ public abstract class CardMastercard extends Card implements IMastercard {
         // по умолчанию null, потому что не во всех странах может использоваться данная платежная система
         String billingCurrencyCode = null;
         // если покупка в Турции, то валюта биллинга в $
-        if (country.equalsIgnoreCase("Турция")) billingCurrencyCode = currencyCodePaySystemUSD;
+        if (country.equalsIgnoreCase("Турция")) billingCurrencyCode = CURRENCY_CODE_PAY_SYSTEM_USD;
         // если покупка во Франции, то есть в Еврозоне, то валюта биллинга в €
-        if (country.equalsIgnoreCase("Франция")) billingCurrencyCode = currencyCodePaySystemEurozone;
+        if (country.equalsIgnoreCase("Франция")) billingCurrencyCode = CURRENCY_CODE_PAY_SYSTEM_EUR;
 
         return billingCurrencyCode;
     }
