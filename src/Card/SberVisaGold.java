@@ -37,7 +37,7 @@ public class SberVisaGold extends CardVisa implements IBonusCard {
             payBonuses = 0; // бонусы не могут быть отрицательными
         }
         if (bonuses >= payBonuses) {
-            sumPay = sumPay - (float) payBonuses; // определяем остаток для оплаты картой
+            sumPay -= (float) payBonuses; // определяем остаток для оплаты картой
             cardHolder.setBonuses(bonuses - payBonuses); // уменьшаем количество бонусов на карте
             payBonusTransaction.setStatusOperation("Оплата бонусами прошла успешно");
         } else payBonusTransaction.setStatusOperation("Недостаточно бонусов");

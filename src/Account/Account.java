@@ -259,7 +259,7 @@ public abstract class Account {
 
     // пополнить баланс
     public boolean topUp(float sum) {
-        setBalance(balance + sum);
+        balance += sum;
         return true;
     }
 
