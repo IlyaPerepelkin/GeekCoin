@@ -12,6 +12,12 @@ import java.util.Arrays;
 
 public abstract class Account {
 
+    public Account(ArrayList<PhysicalPersonProfile> physicalPersonProfile, ArrayList<Account> account, String currencyCode) {
+        this.physicalPersonProfile = physicalPerson.getPhysicalPersonProfile();
+        this.account = physicalPersonProfile.getAccount();
+        this.currencyCode = account.getCurrencyCode();
+    }
+
     private Bank bank;
 
     private PhysicalPersonProfile accountHolder;

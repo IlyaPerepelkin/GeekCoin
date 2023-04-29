@@ -1,9 +1,16 @@
 package Account;
 
 import Card.Card;
+import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
 
+import java.util.ArrayList;
+
 public class SberPayCardAccount extends PayCardAccount {
+
+    public SberPayCardAccount(ArrayList<PhysicalPersonProfile> physicalPersonProfile, ArrayList<Account> account, String currencyCode) {
+        super(physicalPersonProfile, account, currencyCode);
+    }
 
     @Override
     public void transferAccount2Card(Card toCard, float sumTransfer) {

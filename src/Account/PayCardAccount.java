@@ -1,12 +1,17 @@
 package Account;
 
 import Card.Card;
+import ClientProfile.PhysicalPersonProfile;
 import Transaction.PayTransaction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public abstract class PayCardAccount extends Account {
+
+    public PayCardAccount(ArrayList<PhysicalPersonProfile> physicalPersonProfile, ArrayList<Account> account, String currencyCode) {
+        super(physicalPersonProfile, account, currencyCode);
+    }
 
     private ArrayList<Card> cards = new ArrayList<>();
 
