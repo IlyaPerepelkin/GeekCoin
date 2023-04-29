@@ -26,7 +26,7 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
 
     public PhysicalPersonProfile registerPhysicalPersonProfile(PhysicalPerson physicalPerson) {
         // создать профиль клиента
-        TinkoffPhysicalPersonProfile tinkoffPhysicalPersonProfile = new TinkoffPhysicalPersonProfile();
+        TinkoffPhysicalPersonProfile tinkoffPhysicalPersonProfile = new TinkoffPhysicalPersonProfile(this, physicalPerson);
         tinkoffPhysicalPersonProfile.setBank(this);
         tinkoffPhysicalPersonProfile.setPhysicalPerson(physicalPerson);
 

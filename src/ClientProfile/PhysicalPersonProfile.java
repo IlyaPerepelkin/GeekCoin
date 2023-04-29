@@ -1,6 +1,7 @@
 package ClientProfile;
 
 import Account.Account;
+import Bank.Bank;
 import Card.Card;
 import PhysicalPerson.PhysicalPerson;
 
@@ -8,6 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public abstract class PhysicalPersonProfile extends ClientProfile {
+
+    public PhysicalPersonProfile(Bank bank, PhysicalPerson physicalPerson) {
+        super(bank, physicalPerson);
+    }
 
     private PhysicalPerson physicalPerson;
 

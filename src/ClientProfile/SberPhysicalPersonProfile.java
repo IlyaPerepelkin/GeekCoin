@@ -1,9 +1,15 @@
 package ClientProfile;
 
 import Account.Account;
+import Bank.Bank;
 import Card.Card;
+import PhysicalPerson.PhysicalPerson;
 
 public class SberPhysicalPersonProfile extends PhysicalPersonProfile {
+
+    public SberPhysicalPersonProfile(Bank bank, PhysicalPerson physicalPerson) {
+        super(bank, physicalPerson);
+    }
 
     private int bonuses;
 
