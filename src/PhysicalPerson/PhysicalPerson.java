@@ -187,6 +187,10 @@ public class PhysicalPerson {
             getPhysicalPersonProfile(bank).displayProfileTransactions();
     }
 
+    public void displayMulticurrencyCardTransactions(IMulticurrencyCard multicurrencyCard) {
+        multicurrencyCard.displayMulticurrencyCardTransactions();
+    }
+
     public void displayAllProfileTransactions() {
         for (int i = 0; i < physicalPersonProfiles.size(); i++) {
             physicalPersonProfiles.get(i).displayProfileTransactions();
