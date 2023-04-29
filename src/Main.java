@@ -55,11 +55,11 @@ public class Main {
         I.payByCard(myTinkoffBlackMir1, 12500.00f, "iPhone", "0011");
 
         I.payByCard(tinkoffAirlinesMir, 3500.00f, "Ноутбук", "0022");
-        I.payByCardMiles(tinkoffAirlinesMir, 2000, 20, "Билет в Турцию", "0022");
+        I.payByCardMiles(tinkoffAirlinesMir, 2000, 30, "Билет в Турцию", "0022");
 
         I.payByCard(mySberVisaGold1, 110.00f, "Excursion", "Турция","1515");
         I.payByCard(sberMastercardGold, 200.00f, "Attraction", "Турция", "2535");
-        I.payByCardBonuses(mySberVisaGold1,157.00f, 1, "Starbucks", "1515");
+        I.payByCardBonuses(mySberVisaGold1,157.00f, 2, "Starbucks", "1515");
 
         I.transferCard2Card(mySberVisaGold1, mySberVisaGold2, 250.00f);
         I.transferCard2Card(mySberVisaGold1, friendSberVisaGold1, 55.00f);

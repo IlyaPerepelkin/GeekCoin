@@ -70,7 +70,7 @@ public class TinkoffAirlinesMir extends CardMir implements IMulticurrencyCard, I
         if (milesPay > sumPay) payMilesTransaction.setStatusOperation("Сумма оплаты милями больше, чем стоимость билета");
 
         if (miles >= milesPay) {
-            sumPay = (sumPay - milesPay);
+            sumPay -= milesPay;
             payMilesTransaction.setStatusOperation("Билет оплачен милями");
         } else payMilesTransaction.setStatusOperation("Недостаточно миль для оплаты билета бонусов");
 
