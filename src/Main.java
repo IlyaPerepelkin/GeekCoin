@@ -102,5 +102,10 @@ public class Main {
         // friend.displayProfileTransactions(sberbank);
         I.displayAllProfileTransactions();
         friend.displayAllProfileTransactions();
+
+        System.out.println("Количество карт: \n" + "SberMastercardGold" + ": " + SberMastercardGold.getCount() + "\n" + "SberMastercardTravel" + ": " +
+                SberMastercardTravel.getCount() + "\n" + "SberVisaGold" + ": " + SberVisaGold.getCount() + "\n" + "TinkoffAirlinesMir" + ": " + TinkoffAirlinesMir.getCount() +
+                "\n" + "TinkoffBlackMir" + ": " + TinkoffBlackMir.getCount());
     }
+
 }
