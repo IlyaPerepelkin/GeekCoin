@@ -26,6 +26,7 @@ public class SberMastercardTravel extends CardMastercard implements IMulticurren
     public SberMastercardTravel(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
         super(cardHolder, payCardAccount, pinCode);
         addAccount("USD");
+        addAccount("EUR");
     }
 
     @Override
