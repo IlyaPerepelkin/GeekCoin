@@ -7,7 +7,7 @@ import Transaction.DepositingTransaction;
 
 import java.time.LocalDateTime;
 
-public class TinkoffBlackMir extends CardMir implements ICashbackCard {
+public final class TinkoffBlackMir extends CardMir implements ICashbackCard {
 
     public TinkoffBlackMir(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
         super(cardHolder, payCardAccount, pinCode);
