@@ -7,7 +7,7 @@ import ClientProfile.PhysicalPersonProfile;
 
 import java.util.ArrayList;
 
-public class SberMastercardTravel extends CardMastercard implements IMulticurrencyCard {
+public final class SberMastercardTravel extends CardMastercard implements IMulticurrencyCard {
 
     ArrayList<PayCardAccount> multicurrencyAccounts = new ArrayList<>();
 
