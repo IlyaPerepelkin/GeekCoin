@@ -1,6 +1,13 @@
 package ClientProfile;
 
+import Bank.Bank;
+import PhysicalPerson.PhysicalPerson;
+
 public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
+
+    public TinkoffPhysicalPersonProfile(Bank bank, PhysicalPerson physicalPerson) {
+        super(bank, physicalPerson);
+    }
 
     private float cashback;
 

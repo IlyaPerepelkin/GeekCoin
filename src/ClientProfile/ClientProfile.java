@@ -1,10 +1,19 @@
 package ClientProfile;
 
 import Bank.Bank;
+import PhysicalPerson.PhysicalPerson;
 
 public abstract class ClientProfile {
 
+    public ClientProfile(Bank bank, PhysicalPerson physicalPerson) {
+        physicalPerson = new PhysicalPerson(physicalPerson.getFirstName(), physicalPerson.getLastName(), physicalPerson.getTelephone(), physicalPerson.getAge(), physicalPerson.getGender());
+        this.bank = bank;
+        this.physicalPerson = physicalPerson;
+    }
+
     private Bank bank;
+
+    private PhysicalPerson physicalPerson;
 
     private float limitPaymentsTransfersDayInRUB;
 
@@ -37,6 +46,14 @@ public abstract class ClientProfile {
 
     public void setBank(Bank bank) {
         this.bank = bank;
+    }
+
+    public PhysicalPerson getPhysicalPerson() {
+        return physicalPerson;
+    }
+
+    public void setPhysicalPerson(PhysicalPerson physicalPerson) {
+        this.physicalPerson = physicalPerson;
     }
 
     public float getLimitPaymentsTransfersDayInRUB() {
