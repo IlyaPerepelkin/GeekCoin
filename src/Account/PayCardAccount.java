@@ -9,8 +9,8 @@ import java.util.Arrays;
 
 public abstract class PayCardAccount extends Account {
 
-    public PayCardAccount(ArrayList<PhysicalPersonProfile> physicalPersonProfile, ArrayList<Account> account, String currencyCode) {
-        super(physicalPersonProfile, account, currencyCode);
+    public PayCardAccount(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Class<? extends PayCardAccount> payCardAccount, String currencyCode) {
+        super(physicalPersonProfile, payCardAccount, currencyCode);
     }
 
     private ArrayList<Card> cards = new ArrayList<>();
