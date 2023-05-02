@@ -12,9 +12,9 @@ import java.util.Arrays;
 
 public abstract class Account {
 
-    public Account(ArrayList<PhysicalPersonProfile> physicalPersonProfile, ArrayList<PayCardAccount> payCardAccount, String currencyCode) {
-        this.physicalPersonProfile = getPhysicalPersonProfile();
-        this.payCardAccount()= getPayCardAccount();
+    public Account(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Class<? extends PayCardAccount> classPayCardAccount, String currencyCode) {
+        this.physicalPersonProfile = physicalPersonProfile;
+        this.classPayCardAccount = classPayCardAccount;
         this.currencyCode = currencyCode;
     }
 

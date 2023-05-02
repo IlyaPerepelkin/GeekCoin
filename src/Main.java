@@ -36,8 +36,8 @@ public class Main {
         TinkoffAirlinesMir tinkoffAirlinesMir = (TinkoffAirlinesMir) I.openCard(tinkoff, TinkoffAirlinesMir.class, TinkoffPayCardAccount.class, "RUB", "0022");
         I.switchAccountOfMulticurrencyCard(tinkoffAirlinesMir, "RUB");
 
-        SberSavingsAccount mySberSavingsAccount1 = (SberSavingsAccount) I.openAccount (sberbank, new SberSavingsAccount(), "RUB");
-        SberSavingsAccount mySberSavingsAccount2 = (SberSavingsAccount) I.openAccount (sberbank, new SberSavingsAccount(), "RUB");
+        SberSavingsAccount mySberSavingsAccount1 = (SberSavingsAccount) I.openAccount (sberbank, SberSavingsAccount.class, "RUB");
+        SberSavingsAccount mySberSavingsAccount2 = (SberSavingsAccount) I.openAccount (sberbank, SberSavingsAccount.class, "RUB");
 
         SberVisaGold friendSberVisaGold1 = (SberVisaGold) friend.openCard(sberbank, SberVisaGold.class, SberPayCardAccount.class, "RUB", "1818");
 

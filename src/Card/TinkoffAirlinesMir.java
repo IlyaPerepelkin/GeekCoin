@@ -43,7 +43,7 @@ public final class TinkoffAirlinesMir extends CardMir implements IMulticurrencyC
 
     @Override
     public void addAccount(String currencyCodeAccount) {
-        TinkoffPayCardAccount tinkoffPayCardAccount = (TinkoffPayCardAccount) ((Tinkoff) this.getBank()).openAccount(this.getCardHolder(), new TinkoffPayCardAccount(), currencyCodeAccount);
+        TinkoffPayCardAccount tinkoffPayCardAccount = (TinkoffPayCardAccount) ((Tinkoff) this.getBank()).openAccount(this.getCardHolder(), TinkoffPayCardAccount.class, currencyCodeAccount);
         tinkoffPayCardAccount.getCards().add(this);
         getMulticurrencyAccounts().add(tinkoffPayCardAccount);
     }

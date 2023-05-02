@@ -107,8 +107,8 @@ public class PhysicalPerson {
         return bank.openCard(getPhysicalPersonProfile(bank), classCard, classPayCardAccount, currencyCode, pinCode);
     }
 
-    public Account openAccount(IBankServicePhysicalPerson bank, Account account, String currencyCode) {
-        return bank.openAccount(getPhysicalPersonProfile(bank), account, currencyCode);
+    public Account openAccount(IBankServicePhysicalPerson bank, Class<? extends Account> classAccount, String currencyCode) {
+        return bank.openAccount(getPhysicalPersonProfile(bank), classAccount, currencyCode);
     }
 
     public void depositingCash2Card(Card toCard, float sumDepositing) {

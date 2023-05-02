@@ -42,7 +42,7 @@ public final class SberMastercardTravel extends CardMastercard implements IMulti
     @Override
     public void addAccount(String currencyCodeAccount) {
         // Открываем новый счет
-        SberPayCardAccount sberPayCardAccount = (SberPayCardAccount) (((Sberbank) this.getBank()).openAccount(this.getCardHolder(), new SberPayCardAccount(), currencyCodeAccount));
+        SberPayCardAccount sberPayCardAccount = (SberPayCardAccount) (((Sberbank) this.getBank()).openAccount(this.getCardHolder(), SberPayCardAccount.class, currencyCodeAccount));
         // Связываем созданный счет с картой
         sberPayCardAccount.getCards().add(this);
         // Добавляем созданный счет в массив других счетов мультивалютной карты

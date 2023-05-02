@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class SberPayCardAccount extends PayCardAccount {
 
-    public SberPayCardAccount(ArrayList<PhysicalPersonProfile> physicalPersonProfile, ArrayList<Account> account, String currencyCode) {
-        super(physicalPersonProfile, account, currencyCode);
+    public SberPayCardAccount(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Class<? extends PayCardAccount> classPayCardAccount, String currencyCode) {
+        super(physicalPersonProfile, classPayCardAccount, currencyCode);
     }
 
     @Override
