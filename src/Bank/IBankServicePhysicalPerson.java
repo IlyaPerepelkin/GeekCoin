@@ -10,16 +10,16 @@ public interface IBankServicePhysicalPerson {
 
     PhysicalPersonProfile registerPhysicalPersonProfile(PhysicalPerson physicalPerson);
 
-    default Card openCard(PhysicalPersonProfile physicalPersonProfile, Class<? extends Card> classCard, PayCardAccount payCardAccount, String currencyCode, String pinCode){
+    default Card openCard(PhysicalPersonProfile physicalPersonProfile, Class<? extends Card> classCard, Class<? extends PayCardAccount> classPayCardAccount, String currencyCode, String pinCode) {
 
         // открыть платежный счет
-        PayCardAccount bankPayCardAccount = (PayCardAccount) openAccount(physicalPersonProfile, payCardAccount, currencyCode);
+        PayCardAccount bankPayCardAccount = (PayCardAccount) openAccount(physicalPersonProfile, classPayCardAccount, currencyCode);
 
         Card card = null;
         try {
             card = classCard.getConstructor(PhysicalPersonProfile.class, PayCardAccount.class, String.class)
                     .newInstance(physicalPersonProfile, bankPayCardAccount, pinCode);
-        } catch (Exception e) {
+            } catch (Exception e) {
             System.out.println(e);
         }
 
@@ -32,17 +32,25 @@ public interface IBankServicePhysicalPerson {
         return card;
     }
 
-    default Account openAccount(PhysicalPersonProfile physicalPersonProfile, Account account, String currencyCode) {
-        // установить свойства платежного счета
-        account.setBank(physicalPersonProfile.getBank());
-        account.setNumberAccount(Bank.generateNumberAccount());
-        account.setAccountHolder(physicalPersonProfile);
-        account.setCurrencyCode(currencyCode);
-        account.setCurrencySymbol(currencyCode);
+    default Account openAccount(PhysicalPersonProfile physicalPersonProfile, Class<? extends Account> classAccount, String currencyCode) {
+        Account account = null;
+        try {
+            account = classAccount.getConstructor(PhysicalPersonProfile.class, String.class).
+                    newInstance(physicalPersonProfile, currencyCode);
+            // установить свойства платежного счета
+            account.setBank(physicalPersonProfile.getBank());
+            account.setNumberAccount(Bank.generateNumberAccount());
+            account.setAccountHolder(physicalPersonProfile);
+            account.setCurrencyCode(currencyCode);
+            account.setCurrencySymbol(currencyCode);
 
-        physicalPersonProfile.getAccounts().add(account);
+            physicalPersonProfile.getAccounts().add(account);
+            } catch (Exception e) {
+            System.out.println(e);
+        }
 
         return account;
+
     }
 
 }

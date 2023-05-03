@@ -1,9 +1,14 @@
 package Account;
 
 import Card.Card;
+import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
 
 public class SberSavingsAccount extends SavingsAccount {
+
+    public SberSavingsAccount(PhysicalPersonProfile accountHolder, String currencyCode) {
+        super(accountHolder, currencyCode);
+    }
 
     @Override
     public void transferAccount2Card(Card toCard, float sumTransfer) {
