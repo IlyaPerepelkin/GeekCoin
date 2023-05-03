@@ -35,8 +35,8 @@ public interface IBankServicePhysicalPerson {
     default Account openAccount(PhysicalPersonProfile physicalPersonProfile, Class<? extends Account> classAccount, String currencyCode) {
         Account account = null;
         try {
-            account = classAccount.getConstructor(PhysicalPersonProfile.class, Account.class, String.class).
-                    newInstance(physicalPersonProfile, classAccount, currencyCode);
+            account = classAccount.getConstructor(PhysicalPersonProfile.class, String.class).
+                    newInstance(physicalPersonProfile, currencyCode);
             // установить свойства платежного счета
             account.setBank(physicalPersonProfile.getBank());
             account.setNumberAccount(Bank.generateNumberAccount());

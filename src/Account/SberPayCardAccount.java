@@ -4,12 +4,10 @@ import Card.Card;
 import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
 
-import java.util.ArrayList;
-
 public class SberPayCardAccount extends PayCardAccount {
 
-    public SberPayCardAccount(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Class<? extends PayCardAccount> classPayCardAccount, String currencyCode) {
-        super(physicalPersonProfile, classPayCardAccount, currencyCode);
+    public SberPayCardAccount(PhysicalPersonProfile accountHolder, String currencyCode) {
+        super(accountHolder, currencyCode);
     }
 
     @Override

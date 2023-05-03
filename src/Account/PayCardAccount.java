@@ -9,10 +9,6 @@ import java.util.Arrays;
 
 public abstract class PayCardAccount extends Account {
 
-    public PayCardAccount(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Class<? extends PayCardAccount> classPayCardAccount, String currencyCode) {
-        super(physicalPersonProfile, classPayCardAccount, currencyCode);
-    }
-
     private ArrayList<Card> cards = new ArrayList<>();
 
     private ArrayList<PayTransaction> payTransactions = new ArrayList<>();
@@ -44,6 +40,10 @@ public abstract class PayCardAccount extends Account {
         this.blockedSum = blockedSum;
     }
 
+
+    public PayCardAccount(PhysicalPersonProfile accountHolder, String currencyCode) {
+        super(accountHolder, currencyCode);
+    }
 
     // Блокировать сумму на счете карты
     public final boolean blockSum(float sum) {

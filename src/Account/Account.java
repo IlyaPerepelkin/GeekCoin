@@ -12,12 +12,6 @@ import java.util.Arrays;
 
 public abstract class Account {
 
-    public Account(ArrayList<PhysicalPersonProfile> physicalPersonProfile, Class<? extends PayCardAccount> classPayCardAccount, String currencyCode) {
-        this.physicalPersonProfile = physicalPersonProfile;
-        this.classPayCardAccount = classPayCardAccount;
-        this.currencyCode = currencyCode;
-    }
-
     private Bank bank;
 
     private PhysicalPersonProfile accountHolder;
@@ -108,6 +102,11 @@ public abstract class Account {
         this.depositingTransactions = depositingTransactions;
     }
 
+
+    public Account(PhysicalPersonProfile accountHolder, String currencyCode) {
+        this.accountHolder = accountHolder;
+        this.currencyCode = currencyCode;
+    }
     
     // Перевести со счета на карту
     public void transferAccount2Card(Card toCard, float sumTransfer) {
