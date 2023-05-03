@@ -4,6 +4,8 @@ import Account.PayCardAccount;
 import Card.IPaySystem.IVisa;
 import ClientProfile.PhysicalPersonProfile;
 
+import java.util.ArrayList;
+
 public abstract class CardVisa extends Card implements IVisa {
 
     public CardVisa(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
@@ -24,10 +26,15 @@ public abstract class CardVisa extends Card implements IVisa {
     // Запросить обменный курс валют платежной системы
     public float getExchangeRatePaySystem(String currency, String currencyExchangeRate) {
         // TODO: Запрос к API Visa
-        float exchangeRate = 0;
-        // курс лиры к доллару
-        if (currency.equals("TRY") && currencyExchangeRate.equals("USD")) exchangeRate = 0.056f;
-        return exchangeRate;
+
+        ArrayList<Float> exchangeRates = new ArrayList<>();
+        exchangeRates.add(0.056f); // курс лиры к доллару
+
+        if (currency.equals("TRY") && currencyExchangeRate.equals("USD")) {
+            return exchangeRates.get(0);
+        } else {
+            return 0;
+        }
     }
 
 }

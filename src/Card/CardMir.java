@@ -4,6 +4,8 @@ import Account.PayCardAccount;
 import Card.IPaySystem.IMir;
 import ClientProfile.PhysicalPersonProfile;
 
+import java.util.ArrayList;
+
 public abstract class CardMir extends Card implements IMir {
 
 
@@ -25,10 +27,16 @@ public abstract class CardMir extends Card implements IMir {
     // Запросить обменный курс валют платежной системы
     public float getExchangeRatePaySystem(String currency, String currencyExchangeRate) {
         // TODO: Запрос к API Mir
-        float exchangeRate = 0;
-        // курс тенге к рублю
-        if (currency.equals("KZT") && currencyExchangeRate.equals("RUB")) exchangeRate = 0.15f;
-        return exchangeRate;
+
+        ArrayList<Float> exchangeRates = new ArrayList<>();
+        exchangeRates.add(0.15f); // курс тенге к рублю
+
+        if (currency.equals("KZT") && currencyExchangeRate.equals("RUB")) {
+            return exchangeRates.get(0);
+        } else {
+            return 0;
+        }
+
     }
 
 }
