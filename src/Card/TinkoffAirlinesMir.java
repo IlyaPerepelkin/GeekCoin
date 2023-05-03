@@ -70,11 +70,7 @@ public final class TinkoffAirlinesMir extends CardMir implements IMulticurrencyC
         TinkoffPhysicalPersonProfile cardHolder = (TinkoffPhysicalPersonProfile) getCardHolder();
         int miles = cardHolder.getMiles();
 
-        PayMilesTransaction payMilesTransaction = new PayMilesTransaction();
-        payMilesTransaction.setLocalDateTime(LocalDateTime.now());
-        payMilesTransaction.setFromCard(this);
-        payMilesTransaction.setSum(sumPay);
-        payMilesTransaction.setTypeOperation("Оплата милями ");
+        PayMilesTransaction payMilesTransaction = new PayMilesTransaction(LocalDateTime.now(), this, "Оплата милями ", sumPay, getPayCardAccount().getCurrencySymbol());
         payMilesTransaction.setBuyProductOrService(buyProductOrService);
 
         if (milesPay > sumPay) payMilesTransaction.setStatusOperation("Сумма оплаты милями больше, чем стоимость билета");

@@ -36,12 +36,7 @@ public final class TinkoffBlackMir extends CardMir implements ICashbackCard {
     public void depositingCashback2Card() {
         TinkoffPhysicalPersonProfile cardHolder = (TinkoffPhysicalPersonProfile) getCardHolder();
         // инициализировать транзакцию пополнения
-        DepositingTransaction depositingTransaction = new DepositingTransaction();
-        depositingTransaction.setLocalDateTime(LocalDateTime.now());
-        depositingTransaction.setToCard(this);
-        depositingTransaction.setSum(cardHolder.getCashback());
-        depositingTransaction.setCurrencySymbol(getPayCardAccount().getCurrencySymbol());
-        depositingTransaction.setTypeOperation("Зачисление кэшбэка");
+        DepositingTransaction depositingTransaction = new DepositingTransaction(LocalDateTime.now(), this, "Зачисление кэшбэка", cardHolder.getCashback(), getPayCardAccount().getCurrencySymbol());
 
         boolean topUpStatus = getPayCardAccount().topUp(cardHolder.getCashback());
         if (topUpStatus) {
