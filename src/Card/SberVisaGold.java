@@ -34,10 +34,7 @@ public final class SberVisaGold extends CardVisa implements IBonusCard {
 
     @Override
     public void payByCardBonuses(float sumPay, int bonusesPay, String buyProductOrService, String pinCode) {
-        PayBonusTransaction payBonusTransaction = new PayBonusTransaction();
-        payBonusTransaction.setFromCard(this);
-        payBonusTransaction.setLocalDateTime(LocalDateTime.now());
-        payBonusTransaction.setTypeOperation("Оплата бонусами");
+        PayBonusTransaction payBonusTransaction = new PayBonusTransaction(LocalDateTime.now(), this, "Оплата бонусами", sumPay, getPayCardAccount().getCurrencySymbol());
         payBonusTransaction.setBuyProductOrService(buyProductOrService);
 
         SberPhysicalPersonProfile cardHolder = (SberPhysicalPersonProfile) getCardHolder();
