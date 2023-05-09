@@ -3,11 +3,12 @@ package Account;
 import Card.Card;
 import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
+import Bank.Bank;
 
 public class SberSavingsAccount extends SavingsAccount {
 
-    public SberSavingsAccount(PhysicalPersonProfile accountHolder, String currencyCode) {
-        super(accountHolder, currencyCode);
+    public SberSavingsAccount(PhysicalPersonProfile accountHolder, String currencyCode, Bank bank) {
+        super(accountHolder, currencyCode, bank);
     }
 
     @Override

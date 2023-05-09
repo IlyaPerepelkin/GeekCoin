@@ -5,44 +5,40 @@ import PhysicalPerson.PhysicalPerson;
 
 public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
 
-    public TinkoffPhysicalPersonProfile(Bank bank, PhysicalPerson physicalPerson) {
-        super(bank, physicalPerson);
-    }
-
     private float cashback;
 
     private float percentCashbackOfSumPay;
 
     private int miles;
 
-    private int costOfMileRUB;
+    private float costOfMileRUB;
 
-    private int costOfMileUSD;
+    private float costOfMileUSD;
 
-    private int costOfMileEUR;
+    private float costOfMileEUR;
 
 
-    public int getCostOfMileRUB() {
+    public float getCostOfMileRUB() {
         return costOfMileRUB;
     }
 
-    public void setCostOfMileRUB(int costOfMileRUB) {
+    public void setCostOfMileRUB(float costOfMileRUB) {
         this.costOfMileRUB = costOfMileRUB;
     }
 
-    public int getCostOfMileUSD() {
+    public float getCostOfMileUSD() {
         return costOfMileUSD;
     }
 
-    public void setCostOfMileUSD(int costOfMileUSD) {
+    public void setCostOfMileUSD(float costOfMileUSD) {
         this.costOfMileUSD = costOfMileUSD;
     }
 
-    public int getCostOfMileEUR() {
+    public float getCostOfMileEUR() {
         return costOfMileEUR;
     }
 
-    public void setCostOfMileEUR(int costOfMileEUR) {
+    public void setCostOfMileEUR(float costOfMileEUR) {
         this.costOfMileEUR = costOfMileEUR;
     }
 
@@ -71,6 +67,10 @@ public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
         this.percentCashbackOfSumPay = percentCashbackOfSumPay;
     }
 
+
+    public TinkoffPhysicalPersonProfile(Bank bank, PhysicalPerson physicalPerson) {
+        super(bank, physicalPerson);
+    }
 
     @Override
     // Вывод всех операций по всем картам и счетам профиля физического лица в Тинькове

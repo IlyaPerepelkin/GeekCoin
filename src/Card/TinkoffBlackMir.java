@@ -9,16 +9,7 @@ import java.time.LocalDateTime;
 
 public final class TinkoffBlackMir extends CardMir implements ICashbackCard {
 
-    private static int count = 0;
-
-
-    public static int getCount() {
-        return count;
-    }
-
-    public static void setCount(int count) {
-        TinkoffBlackMir.count = count;
-    }
+    public static int count;
 
     public TinkoffBlackMir(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
         super(cardHolder, payCardAccount, pinCode);

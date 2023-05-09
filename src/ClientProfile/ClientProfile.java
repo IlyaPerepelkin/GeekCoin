@@ -5,12 +5,6 @@ import PhysicalPerson.PhysicalPerson;
 
 public abstract class ClientProfile {
 
-    public ClientProfile(Bank bank, PhysicalPerson physicalPerson) {
-        physicalPerson = new PhysicalPerson(physicalPerson.getFirstName(), physicalPerson.getLastName(), physicalPerson.getTelephone(), physicalPerson.getAge(), physicalPerson.getGender());
-        this.bank = bank;
-        this.physicalPerson = physicalPerson;
-    }
-
     private Bank bank;
 
     private PhysicalPerson physicalPerson;
@@ -142,6 +136,12 @@ public abstract class ClientProfile {
 
     public void setLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(float limitCommissionTransferInUsdOrEquivalentInOtherCurrency) {
         this.limitCommissionTransferInUsdOrEquivalentInOtherCurrency = limitCommissionTransferInUsdOrEquivalentInOtherCurrency;
+    }
+
+
+    public ClientProfile(Bank bank, PhysicalPerson physicalPerson) {
+        this.bank = bank;
+        this.physicalPerson = physicalPerson;
     }
 
     // обнулять сумму оплаты и переводов каждые сутки

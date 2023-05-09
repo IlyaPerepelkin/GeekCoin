@@ -9,27 +9,27 @@ import java.time.LocalDateTime;
 public class DepositingTransaction extends Transaction {
 
     public DepositingTransaction(LocalDateTime localDateTime, Account fromAccount, Account toAccount, String typeOperation, float sum, char currencySymbol) {
-        super(localDateTime, fromAccount, toAccount, typeOperation, sum, currencySymbol);
+        super(localDateTime, fromAccount, null, toAccount, null, typeOperation, sum, currencySymbol);
     }
 
     public DepositingTransaction(LocalDateTime localDateTime, Account fromAccount, String typeOperation, float sum, char currencySymbol) {
-        super(localDateTime, fromAccount, typeOperation, sum, currencySymbol);
+        super(localDateTime, fromAccount, null, null, null, typeOperation, sum, currencySymbol);
     }
 
     public DepositingTransaction(LocalDateTime localDateTime, Card fromCard, Card toCard, String typeOperation, float sum, char currencySymbol) {
-        super(localDateTime, fromCard, toCard, typeOperation, sum, currencySymbol);
+        super(localDateTime, null, fromCard, null, toCard, typeOperation, sum, currencySymbol);
     }
 
     public DepositingTransaction(LocalDateTime localDateTime, Card fromCard, String typeOperation, float sum, char currencySymbol) {
-        super(localDateTime, fromCard, typeOperation, sum, currencySymbol);
+        super(localDateTime,null, fromCard, null, null, typeOperation, sum, currencySymbol);
     }
 
     public DepositingTransaction(LocalDateTime localDateTime, Card fromCard, Account toAccount, String typeOperation, float sum, char currencySymbol) {
-        super(localDateTime, fromCard, toAccount, typeOperation, sum, currencySymbol);
+        super(localDateTime, null, fromCard, toAccount, null, typeOperation, sum, currencySymbol);
     }
 
     public DepositingTransaction(LocalDateTime localDateTime, Account fromAccount, Card toCard, String typeOperation, float sum, char currencySymbol) {
-        super(localDateTime, fromAccount, toCard, typeOperation, sum, currencySymbol);
+        super(localDateTime, fromAccount, null, null, toCard, typeOperation, sum, currencySymbol);
     }
 
     @Override

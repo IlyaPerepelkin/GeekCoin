@@ -198,7 +198,7 @@ public abstract class Card implements IPaySystem {
                 // сравнить валюты списания и зачисления
                 if (!fromCurrencyCode.equals(toCurrencyCode)) {
                     // если они не равны, то вызвать метод convertToCurrencyExchangeRateBank
-                    sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode,toCurrencyCode);
+                    sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
                 }
 
                 // зачислить на карту
@@ -266,7 +266,7 @@ public abstract class Card implements IPaySystem {
                     // сравнить валюты списания и зачисления
                     if (!fromCurrencyCode.equals(toCurrencyCode)) {
                         // если они не равны, то вызвать метод convertToCurrencyExchangeRateBank
-                        sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode,toCurrencyCode);
+                        sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
                     }
 
                     // и зачислить на счет

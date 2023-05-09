@@ -6,6 +6,13 @@ public interface IPaySystem {
         float exchangeRateCurrencyToBillingCurrency = getExchangeRatePaySystem(fromCurrencyCode, toBillingCurrencyCode);
         float sumInBillingCurrency = sum * exchangeRateCurrencyToBillingCurrency;
 
+        String currencyPayCode = bank.getCurrencyCode(country);
+        String billingCurrencyCode = getCurrencyCodePaySystem(country);
+        float sumPayInBillingCurrency = !currencyPayCode.equals(billingCurrencyCode) ? convertToCurrencyExchangeRatePaySystem(sum, currencyPayCode, billingCurrencyCode) : sum;
+        String cardCurrencyCode = getPayCardAccount().getCurrencyCode();
+        float sumPayInCardCurrency = !billingCurrencyCode.equals(cardCurrencyCode) ? bank.convertToCurrencyExchangeRateBank(sumPayInBillingCurrency, billingCurrencyCode, cardCurrencyCode) : sumPayInBillingCurrency;
+        sumPayInCardCurrency = bank.round(sumPayInCardCurrency);
+
         return sumInBillingCurrency;
     }
 

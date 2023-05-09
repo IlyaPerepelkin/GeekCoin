@@ -14,7 +14,7 @@ public final class TinkoffAirlinesMir extends CardMir implements IMulticurrencyC
 
     ArrayList<PayCardAccount> multicurrencyAccounts = new ArrayList<>();
 
-    private static int count = 0;
+    public static int count;
 
 
     @Override
@@ -25,14 +25,6 @@ public final class TinkoffAirlinesMir extends CardMir implements IMulticurrencyC
     @Override
     public void setMulticurrencyAccounts(ArrayList<PayCardAccount> multicurrencyAccounts) {
         this.multicurrencyAccounts = multicurrencyAccounts;
-    }
-
-    public static int getCount() {
-        return count;
-    }
-
-    public static void setCount(int count) {
-        TinkoffAirlinesMir.count = count;
     }
 
     public TinkoffAirlinesMir(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {

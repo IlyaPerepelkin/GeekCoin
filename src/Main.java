@@ -103,9 +103,9 @@ public class Main {
         I.displayAllProfileTransactions();
         friend.displayAllProfileTransactions();
 
-        System.out.println("Количество карт: " + "\nSberMastercardGold" + ": " + SberMastercardGold.getCount() + "\nSberMastercardTravel" + ": " +
-                SberMastercardTravel.getCount() + "\nSberVisaGold" + ": " + SberVisaGold.getCount() + "\nTinkoffAirlinesMir" + ": " + TinkoffAirlinesMir.getCount() +
-                "\nTinkoffBlackMir" + ": " + TinkoffBlackMir.getCount());
+        System.out.println("Количество карт: " + "\nSberMastercardGold" + ": " + SberMastercardGold.count + "\nSberMastercardTravel" + ": " +
+                SberMastercardTravel.count + "\nSberVisaGold" + ": " + SberVisaGold.count + "\nTinkoffAirlinesMir" + ": " + TinkoffAirlinesMir.count +
+                "\nTinkoffBlackMir" + ": " + TinkoffBlackMir.count);
     }
 
 }

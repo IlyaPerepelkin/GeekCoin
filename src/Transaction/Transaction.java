@@ -128,53 +128,11 @@ public abstract class Transaction {
         this.fromAccount = fromAccount;
     }
 
-
-    public Transaction(LocalDateTime localDateTime, Account fromAccount, Account toAccount, String typeOperation, float sum, char currencySymbol) {
+    public Transaction(LocalDateTime localDateTime, Account fromAccount, Card fromCard, Account toAccount, Card toCard, String typeOperation, float sum, char currencySymbol) {
         this.localDateTime = localDateTime;
         this.fromAccount = fromAccount;
-        this.toAccount = toAccount;
-        this.typeOperation = typeOperation;
-        this.sum = sum;
-        this.currencySymbol = currencySymbol;
-    }
-
-    public Transaction(LocalDateTime localDateTime, Account fromAccount, String typeOperation, float sum, char currencySymbol) {
-        this.localDateTime = localDateTime;
-        this.fromAccount = fromAccount;
-        this.typeOperation = typeOperation;
-        this.sum = sum;
-        this.currencySymbol = currencySymbol;
-    }
-
-    public Transaction(LocalDateTime localDateTime, Card fromCard, Card toCard, String typeOperation, float sum, char currencySymbol) {
-        this.localDateTime = localDateTime;
-        this.fromCard = fromCard;
-        this.toCard = toCard;
-        this.typeOperation = typeOperation;
-        this.sum = sum;
-        this.currencySymbol = currencySymbol;
-    }
-
-    public Transaction(LocalDateTime localDateTime, Card fromCard, String typeOperation, float sum, char currencySymbol) {
-        this.localDateTime = localDateTime;
-        this.fromCard = fromCard;
-        this.typeOperation = typeOperation;
-        this.sum = sum;
-        this.currencySymbol = currencySymbol;
-    }
-
-    public Transaction(LocalDateTime localDateTime, Card fromCard, Account toAccount, String typeOperation, float sum, char currencySymbol) {
-        this.localDateTime = localDateTime;
         this.fromCard = fromCard;
         this.toAccount = toAccount;
-        this.typeOperation = typeOperation;
-        this.sum = sum;
-        this.currencySymbol = currencySymbol;
-    }
-
-    public Transaction(LocalDateTime localDateTime, Account fromAccount, Card toCard, String typeOperation, float sum, char currencySymbol) {
-        this.localDateTime = localDateTime;
-        this.fromAccount = fromAccount;
         this.toCard = toCard;
         this.typeOperation = typeOperation;
         this.sum = sum;

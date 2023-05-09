@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public abstract class Bank {
     private String bankName;
 
-    private ArrayList<PhysicalPersonProfile> clientProfiles = new ArrayList<>();
+    private ArrayList<ClientProfile> clientProfiles = new ArrayList<>();
 
 
     public String getBankName() {
@@ -21,11 +21,11 @@ public abstract class Bank {
         this.bankName = bankName;
     }
 
-    public ArrayList<PhysicalPersonProfile> getClientProfiles() {
+    public ArrayList<ClientProfile> getClientProfiles() {
         return clientProfiles;
     }
 
-    public void setClientProfiles(ArrayList<PhysicalPersonProfile> clientProfiles) {
+    public void setClientProfiles(ArrayList<ClientProfile> clientProfiles) {
         this.clientProfiles = clientProfiles;
     }
 

@@ -103,9 +103,12 @@ public abstract class Account {
     }
 
 
-    public Account(PhysicalPersonProfile accountHolder, String currencyCode) {
+    public Account(PhysicalPersonProfile accountHolder, String currencyCode, Bank bank) {
         this.accountHolder = accountHolder;
         this.currencyCode = currencyCode;
+        this.bank = bank;
+        setNumberAccount(Bank.generateNumberAccount());
+
     }
     
     // Перевести со счета на карту
