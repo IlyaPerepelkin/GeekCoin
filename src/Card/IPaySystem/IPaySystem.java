@@ -1,24 +1,24 @@
 package Card.IPaySystem;
 
+import java.util.ArrayList;
+
 public interface IPaySystem {
 
     default float convertToCurrencyExchangeRatePaySystem(float sum, String fromCurrencyCode, String toBillingCurrencyCode) {
-        float exchangeRateCurrencyToBillingCurrency = getExchangeRatePaySystem(fromCurrencyCode, toBillingCurrencyCode);
-        float sumInBillingCurrency = sum * exchangeRateCurrencyToBillingCurrency;
 
-        String currencyPayCode = bank.getCurrencyCode(country);
-        String billingCurrencyCode = getCurrencyCodePaySystem(country);
-        float sumPayInBillingCurrency = !currencyPayCode.equals(billingCurrencyCode) ? convertToCurrencyExchangeRatePaySystem(sum, currencyPayCode, billingCurrencyCode) : sum;
-        String cardCurrencyCode = getPayCardAccount().getCurrencyCode();
-        float sumPayInCardCurrency = !billingCurrencyCode.equals(cardCurrencyCode) ? bank.convertToCurrencyExchangeRateBank(sumPayInBillingCurrency, billingCurrencyCode, cardCurrencyCode) : sumPayInBillingCurrency;
-        sumPayInCardCurrency = bank.round(sumPayInCardCurrency);
-
-        return sumInBillingCurrency;
+        if (!fromCurrencyCode.equalsIgnoreCase(toBillingCurrencyCode)) {
+            // запросить курс валюты покупки к курсу валюты биллинга по курсу платёжной системы
+            ArrayList<Float> exchangeRateCurrencyToBillingCurrency = getExchangeRatePaySystem(fromCurrencyCode, toBillingCurrencyCode);
+            // получаем сумму покупки в валюте биллинга умножив сумму покупки на обменный курс валюты биллинга
+            sum *= exchangeRateCurrencyToBillingCurrency.get(0);
+        }
+        return sum;
     }
+
 
     // Запросим код валюты платежной системы
     String getCurrencyCodePaySystem(String country);
 
-    float getExchangeRatePaySystem(String currency, String currencyExchangeRate);
+    ArrayList<Float> getExchangeRatePaySystem(String currency, String currencyExchangeRate);
 
 }

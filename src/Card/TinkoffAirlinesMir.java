@@ -7,7 +7,6 @@ import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.TinkoffPhysicalPersonProfile;
 import Transaction.PayMilesTransaction;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public final class TinkoffAirlinesMir extends CardMir implements IMulticurrencyCard, IAirlinesCard {
@@ -62,7 +61,7 @@ public final class TinkoffAirlinesMir extends CardMir implements IMulticurrencyC
         TinkoffPhysicalPersonProfile cardHolder = (TinkoffPhysicalPersonProfile) getCardHolder();
         int miles = cardHolder.getMiles();
 
-        PayMilesTransaction payMilesTransaction = new PayMilesTransaction(LocalDateTime.now(), this, "Оплата милями ", sumPay, getPayCardAccount().getCurrencySymbol());
+        PayMilesTransaction payMilesTransaction = new PayMilesTransaction(this, "Оплата милями ", sumPay, getPayCardAccount().getCurrencySymbol());
         payMilesTransaction.setBuyProductOrService(buyProductOrService);
 
         if (milesPay > sumPay) payMilesTransaction.setStatusOperation("Сумма оплаты милями больше, чем стоимость билета");

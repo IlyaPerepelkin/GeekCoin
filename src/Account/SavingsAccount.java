@@ -1,7 +1,6 @@
 package Account;
 
 import ClientProfile.PhysicalPersonProfile;
-import Bank.Bank;
 
 public abstract class SavingsAccount extends Account {
 
@@ -19,8 +18,8 @@ public abstract class SavingsAccount extends Account {
     }
 
 
-    public SavingsAccount(PhysicalPersonProfile accountHolder, String currencyCode, Bank bank) {
-        super(accountHolder, currencyCode, bank);
+    public SavingsAccount(PhysicalPersonProfile accountHolder, String currencyCode) {
+        super(accountHolder, currencyCode);
     }
 
     // Рассчитать проценты на остаток в конце дня

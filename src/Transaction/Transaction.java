@@ -128,8 +128,8 @@ public abstract class Transaction {
         this.fromAccount = fromAccount;
     }
 
-    public Transaction(LocalDateTime localDateTime, Account fromAccount, Card fromCard, Account toAccount, Card toCard, String typeOperation, float sum, char currencySymbol) {
-        this.localDateTime = localDateTime;
+    public Transaction(Account fromAccount, Card fromCard, Account toAccount, Card toCard, String typeOperation, float sum, char currencySymbol) {
+        this.localDateTime = LocalDateTime.now();
         this.fromAccount = fromAccount;
         this.fromCard = fromCard;
         this.toAccount = toAccount;
@@ -137,6 +137,30 @@ public abstract class Transaction {
         this.typeOperation = typeOperation;
         this.sum = sum;
         this.currencySymbol = currencySymbol;
+    }
+
+    public Transaction(Account fromAccount, Account toAccount, String typeOperation, float sum, char currencySymbol) {
+        this(fromAccount, null, toAccount, null, typeOperation, sum, currencySymbol);
+    }
+
+    public Transaction(Account fromAccount, String typeOperation, float sum, char currencySymbol) {
+        this(fromAccount, null, null, null, typeOperation, sum, currencySymbol);
+    }
+
+    public Transaction(Card fromCard, Card toCard, String typeOperation, float sum, char currencySymbol) {
+        this(null, fromCard, null, toCard, typeOperation, sum, currencySymbol);
+    }
+
+    public Transaction(Card fromCard, String typeOperation, float sum, char currencySymbol) {
+        this(null, fromCard, null, null, typeOperation, sum, currencySymbol);
+    }
+
+    public Transaction(Card fromCard, Account toAccount, String typeOperation, float sum, char currencySymbol) {
+        this(null, fromCard, toAccount, null, typeOperation, sum, currencySymbol);
+    }
+
+    public Transaction(Account fromAccount, Card toCard, String typeOperation, float sum, char currencySymbol) {
+        this(fromAccount, null, null, toCard, typeOperation, sum, currencySymbol);
     }
 
     public String getRecipient() {

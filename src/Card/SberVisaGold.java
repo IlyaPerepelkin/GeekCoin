@@ -6,8 +6,6 @@ import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.SberPhysicalPersonProfile;
 import Transaction.PayBonusTransaction;
 
-import java.time.LocalDateTime;
-
 public final class SberVisaGold extends CardVisa implements IBonusCard {
 
     public static int count;
@@ -26,7 +24,7 @@ public final class SberVisaGold extends CardVisa implements IBonusCard {
 
     @Override
     public void payByCardBonuses(float sumPay, int bonusesPay, String buyProductOrService, String pinCode) {
-        PayBonusTransaction payBonusTransaction = new PayBonusTransaction(LocalDateTime.now(), this, "Оплата бонусами", sumPay, getPayCardAccount().getCurrencySymbol());
+        PayBonusTransaction payBonusTransaction = new PayBonusTransaction(this, "Оплата бонусами", sumPay, getPayCardAccount().getCurrencySymbol());
         payBonusTransaction.setBuyProductOrService(buyProductOrService);
 
         SberPhysicalPersonProfile cardHolder = (SberPhysicalPersonProfile) getCardHolder();

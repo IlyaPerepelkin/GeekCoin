@@ -25,16 +25,16 @@ public abstract class CardMir extends Card implements IMir {
     }
 
     // Запросить обменный курс валют платежной системы
-    public float getExchangeRatePaySystem(String currency, String currencyExchangeRate) {
+    public ArrayList<Float> getExchangeRatePaySystem(String currency, String currencyExchangeRate) {
         // TODO: Запрос к API Mir
 
         ArrayList<Float> exchangeRates = new ArrayList<>();
         exchangeRates.add(0.15f); // курс тенге к рублю
 
         if (currency.equals("KZT") && currencyExchangeRate.equals("RUB")) {
-            return exchangeRates.get(0);
+            return exchangeRates;
         } else {
-            return 0;
+            return new ArrayList<Float>();
         }
 
     }

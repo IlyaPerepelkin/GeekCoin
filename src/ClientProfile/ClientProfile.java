@@ -141,7 +141,6 @@ public abstract class ClientProfile {
 
     public ClientProfile(Bank bank, PhysicalPerson physicalPerson) {
         this.bank = bank;
-        this.physicalPerson = physicalPerson;
     }
 
     // обнулять сумму оплаты и переводов каждые сутки

@@ -3,7 +3,6 @@ package Account;
 import Card.Card;
 import ClientProfile.PhysicalPersonProfile;
 import Transaction.PayTransaction;
-import Bank.Bank;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,8 +41,8 @@ public abstract class PayCardAccount extends Account {
     }
 
 
-    public PayCardAccount(PhysicalPersonProfile accountHolder, String currencyCode, Bank bank) {
-        super(accountHolder, currencyCode, bank);
+    public PayCardAccount(PhysicalPersonProfile accountHolder, String currencyCode) {
+        super(accountHolder, currencyCode);
     }
 
     // Блокировать сумму на счете карты

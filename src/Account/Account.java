@@ -6,7 +6,6 @@ import ClientProfile.PhysicalPersonProfile;
 import Transaction.DepositingTransaction;
 import Transaction.TransferTransaction;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -103,18 +102,18 @@ public abstract class Account {
     }
 
 
-    public Account(PhysicalPersonProfile accountHolder, String currencyCode, Bank bank) {
+    public Account(PhysicalPersonProfile accountHolder, String currencyCode) {
         this.accountHolder = accountHolder;
         this.currencyCode = currencyCode;
-        this.bank = bank;
-        setNumberAccount(Bank.generateNumberAccount());
-
+        this.bank = accountHolder.getBank();
+        this.numberAccount = Bank.generateNumberAccount();
+        setCurrencySymbol(currencyCode);
     }
     
     // Перевести со счета на карту
     public void transferAccount2Card(Card toCard, float sumTransfer) {
         // инициализировать транзакцию перевода
-        TransferTransaction transferTransaction = new TransferTransaction(LocalDateTime.now(), this, toCard, "Перевод на карту" , sumTransfer, currencySymbol);
+        TransferTransaction transferTransaction = new TransferTransaction(this, toCard, "Перевод на карту" , sumTransfer, currencySymbol);
 
         //определяем валюту счета списания
         String fromCurrencyCode = getCurrencyCode();
@@ -138,7 +137,7 @@ public abstract class Account {
                     transferTransaction.setStatusOperation("Списание прошло успешно");
 
                     // инициализировать транзакцию пополнения
-                    DepositingTransaction depositingTransaction = new DepositingTransaction(LocalDateTime.now(), this, toCard, "Перевод со счета" , sumTransfer, toCard.getPayCardAccount().getCurrencySymbol());
+                    DepositingTransaction depositingTransaction = new DepositingTransaction(this, toCard, "Перевод со счета" , sumTransfer, toCard.getPayCardAccount().getCurrencySymbol());
 
                     // если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту карты зачисления по курсу банка
                     String toCurrencyCode = toCard.getPayCardAccount().getCurrencyCode();
@@ -179,7 +178,7 @@ public abstract class Account {
     }
 
     public void transferAccount2Account(Account toAccount, float sumTransfer) {
-        TransferTransaction transferTransaction = new TransferTransaction(LocalDateTime.now(), this, this, "Перевод на счет", sumTransfer, currencySymbol);
+        TransferTransaction transferTransaction = new TransferTransaction(this, this, "Перевод на счет", sumTransfer, currencySymbol);
 
         String fromCurrencyCode = getCurrencyCode();
 
@@ -196,7 +195,7 @@ public abstract class Account {
                     transferTransaction.setStatusOperation("Списание прошло успешно");
 
 
-                    DepositingTransaction depositingTransaction = new DepositingTransaction(LocalDateTime.now(), this, this, "Перевод со счета", sumTransfer, toAccount.getCurrencySymbol());
+                    DepositingTransaction depositingTransaction = new DepositingTransaction(this, this, "Перевод со счета", sumTransfer, toAccount.getCurrencySymbol());
 
                     // если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту карты зачисления по курсу банка
 

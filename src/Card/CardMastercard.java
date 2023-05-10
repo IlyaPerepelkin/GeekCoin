@@ -26,7 +26,7 @@ public abstract class CardMastercard extends Card implements IMastercard {
     }
 
     // Запросить обменный курс валют платежной системы
-    public float getExchangeRatePaySystem(String currency, String currencyExchangeRate) {
+    public ArrayList<Float> getExchangeRatePaySystem(String currency, String currencyExchangeRate) {
         // TODO: Запрос к API Mastercard
 
         ArrayList<Float> exchangeRates = new ArrayList<>();
@@ -34,12 +34,10 @@ public abstract class CardMastercard extends Card implements IMastercard {
         exchangeRates.add(0.059f); //курс лиры к евро
 
         if (currency.equals("TRY") && currencyExchangeRate.equals("USD")) {
-            return exchangeRates.get(0);
+            return exchangeRates;
         } else if (currency.equals("TRY") && currencyExchangeRate.equals("EUR")) {
-            return exchangeRates.get(1);
-        } else {
-            return 0;
+            return exchangeRates;
         }
-
+        return new ArrayList<>();
     }
 }
