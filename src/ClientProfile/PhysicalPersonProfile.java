@@ -43,7 +43,8 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
 
 
     public PhysicalPersonProfile(Bank bank, PhysicalPerson physicalPerson) {
-        super(bank, physicalPerson);
+        super(bank);
+        this.physicalPerson = physicalPerson;
     }
 
     // проверить привязана ли карта к профилю клиента

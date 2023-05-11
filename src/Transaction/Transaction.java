@@ -128,39 +128,45 @@ public abstract class Transaction {
         this.fromAccount = fromAccount;
     }
 
-    public Transaction(Account fromAccount, Card fromCard, Account toAccount, Card toCard, String typeOperation, float sum, char currencySymbol) {
+    public Transaction(String typeOperation, float sum, char currencySymbol) {
         this.localDateTime = LocalDateTime.now();
-        this.fromAccount = fromAccount;
-        this.fromCard = fromCard;
-        this.toAccount = toAccount;
-        this.toCard = toCard;
         this.typeOperation = typeOperation;
         this.sum = sum;
         this.currencySymbol = currencySymbol;
     }
 
     public Transaction(Account fromAccount, Account toAccount, String typeOperation, float sum, char currencySymbol) {
-        this(fromAccount, null, toAccount, null, typeOperation, sum, currencySymbol);
+        this(typeOperation, sum, currencySymbol);
+        this.fromAccount = fromAccount;
+        this.toAccount = toAccount;
     }
 
     public Transaction(Account fromAccount, String typeOperation, float sum, char currencySymbol) {
-        this(fromAccount, null, null, null, typeOperation, sum, currencySymbol);
+        this(typeOperation, sum, currencySymbol);
+        this.fromAccount = fromAccount;
     }
 
     public Transaction(Card fromCard, Card toCard, String typeOperation, float sum, char currencySymbol) {
-        this(null, fromCard, null, toCard, typeOperation, sum, currencySymbol);
+        this(typeOperation, sum, currencySymbol);
+        this.fromCard = fromCard;
+        this.toCard = toCard;
     }
 
     public Transaction(Card fromCard, String typeOperation, float sum, char currencySymbol) {
-        this(null, fromCard, null, null, typeOperation, sum, currencySymbol);
+        this(typeOperation, sum, currencySymbol);
+        this.fromCard = fromCard;
     }
 
     public Transaction(Card fromCard, Account toAccount, String typeOperation, float sum, char currencySymbol) {
-        this(null, fromCard, toAccount, null, typeOperation, sum, currencySymbol);
+        this(typeOperation, sum, currencySymbol);
+        this.fromCard = fromCard;
+        this.toAccount = toAccount;
     }
 
     public Transaction(Account fromAccount, Card toCard, String typeOperation, float sum, char currencySymbol) {
-        this(fromAccount, null, null, toCard, typeOperation, sum, currencySymbol);
+        this(typeOperation, sum, currencySymbol);
+        this.fromAccount = fromAccount;
+        this.toCard = toCard;
     }
 
     public String getRecipient() {

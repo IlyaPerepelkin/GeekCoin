@@ -139,7 +139,7 @@ public abstract class ClientProfile {
     }
 
 
-    public ClientProfile(Bank bank, PhysicalPerson physicalPerson) {
+    public ClientProfile(Bank bank) {
         this.bank = bank;
     }
 
