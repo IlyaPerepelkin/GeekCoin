@@ -10,10 +10,6 @@ import java.util.Arrays;
 
 public abstract class PhysicalPersonProfile extends ClientProfile {
 
-    public PhysicalPersonProfile(Bank bank, PhysicalPerson physicalPerson) {
-        super(bank, physicalPerson);
-    }
-
     private PhysicalPerson physicalPerson;
 
     private ArrayList<Card> cards = new ArrayList<>();
@@ -45,6 +41,11 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
         this.accounts = accounts;
     }
 
+
+    public PhysicalPersonProfile(Bank bank, PhysicalPerson physicalPerson) {
+        super(bank);
+        this.physicalPerson = physicalPerson;
+    }
 
     // проверить привязана ли карта к профилю клиента
     public boolean isClientCard(Card card) {

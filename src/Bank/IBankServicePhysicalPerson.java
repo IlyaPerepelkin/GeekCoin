@@ -35,16 +35,10 @@ public interface IBankServicePhysicalPerson {
     default Account openAccount(PhysicalPersonProfile physicalPersonProfile, Class<? extends Account> classAccount, String currencyCode) {
         Account account = null;
         try {
-            account = classAccount.getConstructor(PhysicalPersonProfile.class, String.class).
-                    newInstance(physicalPersonProfile, currencyCode);
-            // установить свойства платежного счета
-            account.setBank(physicalPersonProfile.getBank());
-            account.setNumberAccount(Bank.generateNumberAccount());
-            account.setAccountHolder(physicalPersonProfile);
-            account.setCurrencyCode(currencyCode);
-            account.setCurrencySymbol(currencyCode);
+            account = classAccount.getConstructor(PhysicalPersonProfile.class, String.class)
+                    .newInstance(physicalPersonProfile, currencyCode);
 
-            physicalPersonProfile.getAccounts().add(account);
+                physicalPersonProfile.getAccounts().add(account);
             } catch (Exception e) {
             System.out.println(e);
         }

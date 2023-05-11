@@ -9,8 +9,6 @@ import Transaction.DepositingTransaction;
 import Transaction.PayTransaction;
 import Transaction.TransferTransaction;
 
-import java.time.LocalDateTime;
-
 public abstract class Card implements IPaySystem {
 
     private Bank bank;
@@ -92,7 +90,7 @@ public abstract class Card implements IPaySystem {
     // Оплата картой
     public void payByCard(final float sumPay, String buyProductOrService, final String pinCode) {
         // инициализировать транзакцию оплаты
-        PayTransaction payTransaction = new PayTransaction(LocalDateTime.now(), this, "Покупка ", sumPay, payCardAccount.getCurrencySymbol());
+        PayTransaction payTransaction = new PayTransaction(this, "Покупка ", sumPay, payCardAccount.getCurrencySymbol());
         payTransaction.setTypeOperation("Покупка ");
         payTransaction.setBuyProductOrService(buyProductOrService);
 
@@ -166,7 +164,7 @@ public abstract class Card implements IPaySystem {
     // Перевести с карты на карту
     public void transferCard2Card(Card toCard, float sumTransfer) {
         // инициализировать транзакцию перевода
-        TransferTransaction transferTransaction = new TransferTransaction(LocalDateTime.now(), this, this, "Перевод на карту", sumTransfer, payCardAccount.getCurrencySymbol());
+        TransferTransaction transferTransaction = new TransferTransaction(this, this, "Перевод на карту", sumTransfer, payCardAccount.getCurrencySymbol());
 
         String fromCurrencyCode = payCardAccount.getCurrencyCode();
         // рассчитать комиссию за перевод на свою или чужую карту моего или другого банка
@@ -190,7 +188,7 @@ public abstract class Card implements IPaySystem {
                 transferTransaction.setStatusOperation("Списание прошло успешно");
 
                 // инициализировать транзакцию пополнения
-                DepositingTransaction depositingTransaction = new DepositingTransaction(LocalDateTime.now(), this, this, "Пополнение с карты", sumTransfer, toCard.getPayCardAccount().getCurrencySymbol());
+                DepositingTransaction depositingTransaction = new DepositingTransaction(this, this, "Пополнение с карты", sumTransfer, toCard.getPayCardAccount().getCurrencySymbol());
                 depositingTransaction.setAuthorizationCode(authorizationCode);
 
                 // если валюта списания и зачисления не совпадают, то конвертировать сумму перевода в валюту карты зачисления по курсу банка
@@ -198,7 +196,7 @@ public abstract class Card implements IPaySystem {
                 // сравнить валюты списания и зачисления
                 if (!fromCurrencyCode.equals(toCurrencyCode)) {
                     // если они не равны, то вызвать метод convertToCurrencyExchangeRateBank
-                    sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode,toCurrencyCode);
+                    sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
                 }
 
                 // зачислить на карту
@@ -238,7 +236,7 @@ public abstract class Card implements IPaySystem {
     // Перевести с карты на счет
     public void transferCard2Account(Account toAccount, float sumTransfer) {
         // инициализировать транзакцию перевода
-        TransferTransaction transferTransaction = new TransferTransaction(LocalDateTime.now(), this, toAccount, "Перевод на счет", sumTransfer, payCardAccount.getCurrencySymbol());
+        TransferTransaction transferTransaction = new TransferTransaction(this, toAccount, "Перевод на счет", sumTransfer, payCardAccount.getCurrencySymbol());
 
         String fromCurrencyCode = payCardAccount.getCurrencyCode();
         // рассчитать комиссию за перевод на свой или чужой счет моего или другого банка
@@ -259,14 +257,14 @@ public abstract class Card implements IPaySystem {
                     // внести в транзакцию статус списания
                     transferTransaction.setStatusOperation("Списание прошло успешно");
                     // инициализировать транзакцию пополнения
-                    DepositingTransaction depositingTransaction = new DepositingTransaction(LocalDateTime.now(), this, toAccount, "Пополнение с карты", sumTransfer, toAccount.getCurrencySymbol());
+                    DepositingTransaction depositingTransaction = new DepositingTransaction(this, toAccount, "Пополнение с карты", sumTransfer, toAccount.getCurrencySymbol());
 
                     // если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту счета зачисления по курсу банка
                     String toCurrencyCode = toAccount.getCurrencyCode();
                     // сравнить валюты списания и зачисления
                     if (!fromCurrencyCode.equals(toCurrencyCode)) {
                         // если они не равны, то вызвать метод convertToCurrencyExchangeRateBank
-                        sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode,toCurrencyCode);
+                        sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
                     }
 
                     // и зачислить на счет
@@ -300,7 +298,7 @@ public abstract class Card implements IPaySystem {
     // внести наличные на карту
     public void depositingCash2Card(float sumDepositing) {
         // инициализировать транзакцию пополнения
-        DepositingTransaction depositingTransaction = new DepositingTransaction(LocalDateTime.now(), this, "Внесение наличных", sumDepositing, payCardAccount.getCurrencySymbol());
+        DepositingTransaction depositingTransaction = new DepositingTransaction(this, "Внесение наличных", sumDepositing, payCardAccount.getCurrencySymbol());
 
         // запросить разрешение банка на проведение операции с проверкой статуса карты
         final String authorization = bank.authorizationStatusCard(this);

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public final class SberMastercardTravel extends CardMastercard implements IMulticurrencyCard {
 
-    private static int count = 0;
+    public static int count;
 
     ArrayList<PayCardAccount> multicurrencyAccounts = new ArrayList<>();
 
@@ -22,14 +22,6 @@ public final class SberMastercardTravel extends CardMastercard implements IMulti
     @Override
     public void setMulticurrencyAccounts(ArrayList<PayCardAccount> multicurrencyAccounts) {
         this.multicurrencyAccounts = multicurrencyAccounts;
-    }
-
-    public static int getCount() {
-        return count;
-    }
-
-    public static void setCount(int count) {
-        SberMastercardTravel.count = count;
     }
 
     public SberMastercardTravel(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {

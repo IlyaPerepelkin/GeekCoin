@@ -27,8 +27,6 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
     public PhysicalPersonProfile registerPhysicalPersonProfile(PhysicalPerson physicalPerson) {
         // создать профиль клиента
         TinkoffPhysicalPersonProfile tinkoffPhysicalPersonProfile = new TinkoffPhysicalPersonProfile(this, physicalPerson);
-        tinkoffPhysicalPersonProfile.setBank(this);
-        tinkoffPhysicalPersonProfile.setPhysicalPerson(physicalPerson);
 
         tinkoffPhysicalPersonProfile.setPercentCashbackOfSumPay(0.01f);
 
@@ -46,9 +44,9 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         tinkoffPhysicalPersonProfile.setLimitCommissionTransferInRUB(3000.00f);
         tinkoffPhysicalPersonProfile.setLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(100.00f);
 
-        tinkoffPhysicalPersonProfile.setCostOfMileRUB(60);
-        tinkoffPhysicalPersonProfile.setCostOfMileUSD(1);
-        tinkoffPhysicalPersonProfile.setCostOfMileEUR(1);
+        tinkoffPhysicalPersonProfile.setCostOfMileRUB(60.00f);
+        tinkoffPhysicalPersonProfile.setCostOfMileUSD(1.00f);
+        tinkoffPhysicalPersonProfile.setCostOfMileEUR(1.00f);
 
         return tinkoffPhysicalPersonProfile;
     }

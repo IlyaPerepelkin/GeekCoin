@@ -7,10 +7,6 @@ import PhysicalPerson.PhysicalPerson;
 
 public class SberPhysicalPersonProfile extends PhysicalPersonProfile {
 
-    public SberPhysicalPersonProfile(Bank bank, PhysicalPerson physicalPerson) {
-        super(bank, physicalPerson);
-    }
-
     private int bonuses;
 
     private float percentBonusOfSumPay;
@@ -52,6 +48,10 @@ public class SberPhysicalPersonProfile extends PhysicalPersonProfile {
         this.totalTransfersToClientSberWithoutCommissionMonthInRUB = totalTransfersToClientSberWithoutCommissionMonthInRUB;
     }
 
+
+    public SberPhysicalPersonProfile(Bank bank, PhysicalPerson physicalPerson) {
+        super(bank, physicalPerson);
+    }
 
     //  проверить не превышен ли лимит по переводам клиентам Сбера в месяц
     public boolean exceededLimitTransfersToClientSberWithoutCommissionMonthInRUB(float sumTransfer) {

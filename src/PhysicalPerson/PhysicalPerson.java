@@ -167,7 +167,7 @@ public class PhysicalPerson {
         toCard.depositingCashback2Card();
     }
 
-    public float getExchangeRatePaySystem(IPaySystem paySystemCard, String currency, String currencyExchangeRate) {
+    public ArrayList<Float> getExchangeRatePaySystem(IPaySystem paySystemCard, String currency, String currencyExchangeRate) {
         return paySystemCard.getExchangeRatePaySystem(currency, currencyExchangeRate);
     }
 

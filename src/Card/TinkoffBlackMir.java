@@ -5,20 +5,9 @@ import ClientProfile.PhysicalPersonProfile;
 import ClientProfile.TinkoffPhysicalPersonProfile;
 import Transaction.DepositingTransaction;
 
-import java.time.LocalDateTime;
-
 public final class TinkoffBlackMir extends CardMir implements ICashbackCard {
 
-    private static int count = 0;
-
-
-    public static int getCount() {
-        return count;
-    }
-
-    public static void setCount(int count) {
-        TinkoffBlackMir.count = count;
-    }
+    public static int count;
 
     public TinkoffBlackMir(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
         super(cardHolder, payCardAccount, pinCode);
@@ -36,7 +25,7 @@ public final class TinkoffBlackMir extends CardMir implements ICashbackCard {
     public void depositingCashback2Card() {
         TinkoffPhysicalPersonProfile cardHolder = (TinkoffPhysicalPersonProfile) getCardHolder();
         // инициализировать транзакцию пополнения
-        DepositingTransaction depositingTransaction = new DepositingTransaction(LocalDateTime.now(), this, "Зачисление кэшбэка", cardHolder.getCashback(), getPayCardAccount().getCurrencySymbol());
+        DepositingTransaction depositingTransaction = new DepositingTransaction(this, "Зачисление кэшбэка", cardHolder.getCashback(), getPayCardAccount().getCurrencySymbol());
 
         boolean topUpStatus = getPayCardAccount().topUp(cardHolder.getCashback());
         if (topUpStatus) {

@@ -3,7 +3,6 @@ package Card;
 import Account.PayCardAccount;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public interface IMulticurrencyCard {
@@ -31,6 +30,13 @@ public interface IMulticurrencyCard {
     }
 
     default void displayMulticurrencyCardTransactions() {
+        getPayCardAccount().displayAccountTransactions();
+        for (int i = 0; i < getMulticurrencyAccounts().size(); i++) {
+            getMulticurrencyAccounts().get(i).displayAccountTransactions();
+        }
+    }
+    /*
+    default void displayMulticurrencyCardTransactions() {
         int countAllTransactions = 0;
         for (int idAccount = 0; idAccount < getMulticurrencyAccounts().size(); idAccount++) {
             countAllTransactions += getMulticurrencyAccounts().get(idAccount).getAllAccountTransactions().length;
@@ -51,5 +57,5 @@ public interface IMulticurrencyCard {
         }
         System.out.println();
     }
-
+*/
 }
