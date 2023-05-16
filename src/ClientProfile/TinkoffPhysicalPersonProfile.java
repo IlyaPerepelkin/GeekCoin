@@ -2,6 +2,7 @@ package ClientProfile;
 
 import Bank.Bank;
 import PhysicalPerson.PhysicalPerson;
+import java.io.*;
 
 public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
 
@@ -82,6 +83,8 @@ public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
         System.out.println("Накопленный кэшбэк: " + getCashback());
 
         System.out.println("Накопленные милли: " + getMiles());
+
+        IOFile.write(getPathToTransactionHistoryFile(), allTransactions, false);
 
         // и вызываем родительскую версию метода
         super.displayProfileTransactions();

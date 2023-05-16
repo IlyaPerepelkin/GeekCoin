@@ -1,6 +1,11 @@
 import java.io.*;
+import Bank.Bank;
+import PhysicalPerson.PhysicalPerson;
 
 public class IOFile {
+
+    private static final String DIR_FINANCE = "Finance";
+
 
     public static void write(String pathToFile, String text, boolean append) {
 
@@ -35,6 +40,14 @@ public class IOFile {
         }
 
         return stringBuffer.toString();
+    }
+
+    public String getPathToTransactionHistoryFile() {
+        File dirFinance = new File(DIR_FINANCE);
+        if (!dirFinance.exists()) dirFinance.mkdir();
+        String fileName = bank.getBankName() + "_" + physicalPerson.getFirstName() + "_" + physicalPerson.getLastName() + ".txt";
+        String pathToTransactionHistoryFile = DIR_FINANCE + File.separator + fileName;
+        return pathToTransactionHistoryFile;
     }
 
 }

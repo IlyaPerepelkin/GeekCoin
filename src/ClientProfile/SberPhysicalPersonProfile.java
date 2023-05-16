@@ -94,6 +94,8 @@ public class SberPhysicalPersonProfile extends PhysicalPersonProfile {
 
         System.out.println(getBank().getBankName() + "Бонусов:" + getBonuses());
 
+        IOFile.write(getPathToTransactionHistoryFile(), allTransactions, false);
+
         // и вызываем родительскую версию метода
         super.displayProfileTransactions();
     }
