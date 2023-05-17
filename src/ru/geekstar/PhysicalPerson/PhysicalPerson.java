@@ -187,6 +187,14 @@ public class PhysicalPerson {
             getPhysicalPersonProfile(bank).displayProfileTransactions();
     }
 
+    public void displayTransactionHistory(IBankServicePhysicalPerson bank) {
+        getPhysicalPersonProfile(bank).displayTransactionHistory();
+    }
+
+    public void clearTransactionHistory(IBankServicePhysicalPerson bank) {
+        getPhysicalPersonProfile(bank).clearTransactionHistory();
+    }
+
     public void displayMulticurrencyCardTransactions(IMulticurrencyCard multicurrencyCard) {
         multicurrencyCard.displayMulticurrencyCardTransactions();
     }

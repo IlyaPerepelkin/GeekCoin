@@ -102,8 +102,15 @@ public class Main {
         // Вывод всех операций по всем картам и счетам профиля клиента с сортировкой по дате и времени
         // I.displayProfileTransactions(sberbank);
         // friend.displayProfileTransactions(sberbank);
+
+        // I.displayTransactionHistory(sberbank);
+        // I.clearTransactionHistory(sberbank);
+        // I.displayTransactionHistory(tinkoff);
+        // I.clearTransactionHistory(tinkoff);
+
         I.displayAllProfileTransactions();
         friend.displayAllProfileTransactions();
+
 
         System.out.println("Количество карт: " + "\nSberMastercardGold" + ": " + SberMastercardGold.count + "\nSberMastercardTravel" + ": " +
                 SberMastercardTravel.count + "\nSberVisaGold" + ": " + SberVisaGold.count + "\nTinkoffAirlinesMir" + ": " + TinkoffAirlinesMir.count +
