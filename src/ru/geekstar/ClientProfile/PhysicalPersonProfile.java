@@ -3,9 +3,12 @@ package ru.geekstar.ClientProfile;
 import ru.geekstar.Account.Account;
 import ru.geekstar.Bank.Bank;
 import ru.geekstar.Card.Card;
+import ru.geekstar.IOFile;
 import ru.geekstar.PhysicalPerson.PhysicalPerson;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -120,6 +123,29 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
         String fileName = getBank().getBankName() + "_" + physicalPerson.getFirstName() + "_" + physicalPerson.getLastName() + ".txt";
         String pathToTransactionHistoryFile = DIR_FINANCE + File.separator + fileName;
         return pathToTransactionHistoryFile;
+    }
+
+    public void displayTransactionHistory() {
+        String profileFileName = getPathToTransactionHistoryFile();
+
+        String transactionHistory = IOFile.reader(profileFileName);
+
+        System.out.println("История транзакций для профиля " + getPhysicalPerson().getFirstName() + " " + getPhysicalPerson().getLastName() + ":");
+        System.out.println(transactionHistory);
+    }
+
+    public void clearTransactionHistory() {
+        String profileFileName = getPathToTransactionHistoryFile();
+
+        try {
+            File file = new File(profileFileName);
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write("");
+            fileWriter.close();
+            System.out.println("История транзакций для профиля " + getPhysicalPerson().getFirstName() + " " + getPhysicalPerson().getLastName() + " очищена.");
+        } catch (IOException ioEx) {
+            System.out.println("Не удалось очистить историю транзакций для профиля " + getPhysicalPerson().getFirstName() + " " + getPhysicalPerson().getLastName());
+        }
     }
 
 }
