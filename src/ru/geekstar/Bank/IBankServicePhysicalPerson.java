@@ -19,8 +19,23 @@ public interface IBankServicePhysicalPerson {
         try {
             card = classCard.getConstructor(PhysicalPersonProfile.class, PayCardAccount.class, String.class)
                     .newInstance(physicalPersonProfile, bankPayCardAccount, pinCode);
+            } catch (NoSuchMethodException NoSuchMethodException) {
+            System.out.println("NoSuchMethodException");
+            } catch (SecurityException SecurityException) {
+            System.out.println("SecurityException");
+            } catch (InstantiationException InstantiationException) {
+            System.out.println("InstantiationException");
+            } catch (IllegalAccessException IllegalAccessException) {
+            System.out.println("IllegalAccessException");
+            } catch (IllegalArgumentException IllegalArgumentException) {
+            System.out.println("IllegalArgumentException");
+            } catch (java.lang.reflect.InvocationTargetException InvocationTargetException) {
+            System.out.println("java.lang.reflect.InvocationTargetException");
+            } catch (ExceptionInInitializerError ExceptionInInitializerError) {
+            System.out.println("ExceptionInInitializerError");
             } catch (Exception e) {
             System.out.println(e);
+
         }
 
         // привязать карту к платежному счету
@@ -39,6 +54,20 @@ public interface IBankServicePhysicalPerson {
                     .newInstance(physicalPersonProfile, currencyCode);
 
                 physicalPersonProfile.getAccounts().add(account);
+            } catch (NoSuchMethodException NoSuchMethodException) {
+                System.out.println("NoSuchMethodException");
+            } catch (SecurityException SecurityException) {
+                System.out.println("SecurityException");
+            } catch (InstantiationException InstantiationException) {
+                System.out.println("InstantiationException");
+            } catch (IllegalAccessException IllegalAccessException) {
+                System.out.println("IllegalAccessException");
+            } catch (IllegalArgumentException IllegalArgumentException) {
+                System.out.println("IllegalArgumentException");
+            } catch (java.lang.reflect.InvocationTargetException InvocationTargetException) {
+            System.out.println("java.lang.reflect.InvocationTargetException");
+            } catch (ExceptionInInitializerError ExceptionInInitializerError) {
+            System.out.println("ExceptionInInitializerError");
             } catch (Exception e) {
             System.out.println(e);
         }
