@@ -2,8 +2,6 @@ package ru.geekstar.PhysicalPerson;
 
 import ru.geekstar.Account.Account;
 import ru.geekstar.Account.PayCardAccount;
-import ru.geekstar.Account.SavingsAccount;
-import ru.geekstar.Account.SberPayCardAccount;
 import ru.geekstar.Bank.IBankServicePhysicalPerson;
 import ru.geekstar.Card.*;
 import ru.geekstar.Card.IPaySystem.IPaySystem;
@@ -175,11 +173,7 @@ public class PhysicalPerson {
         card.displayCardTransactions();
     }
 
-    public void displayAccountTransactions(SavingsAccount account) {
-        account.displayAccountTransactions();
-    }
-
-    public void displayAccountTransactions(SberPayCardAccount account) {
+    public void displayAccountTransactions(Account account) {
         account.displayAccountTransactions();
     }
 
