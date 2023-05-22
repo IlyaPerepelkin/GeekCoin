@@ -86,6 +86,8 @@ public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
 
         String headerProfileTransactions = allOperations + allCashback + allMiles;
 
+        System.out.println(headerProfileTransactions);
+
         IOFile.write(getPathToTransactionHistoryFile(), headerProfileTransactions, true);
 
         // и вызываем родительскую версию метода

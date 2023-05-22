@@ -20,21 +20,13 @@ public interface IBankServicePhysicalPerson {
             card = classCard.getConstructor(PhysicalPersonProfile.class, PayCardAccount.class, String.class)
                     .newInstance(physicalPersonProfile, bankPayCardAccount, pinCode);
             } catch (NoSuchMethodException NoSuchMethodException) {
-            System.out.println("NoSuchMethodException");
-            } catch (SecurityException SecurityException) {
-            System.out.println("SecurityException");
-            } catch (InstantiationException InstantiationException) {
-            System.out.println("InstantiationException");
+                System.out.println("NoSuchMethodException");
             } catch (IllegalAccessException IllegalAccessException) {
-            System.out.println("IllegalAccessException");
-            } catch (IllegalArgumentException IllegalArgumentException) {
-            System.out.println("IllegalArgumentException");
-            } catch (java.lang.reflect.InvocationTargetException InvocationTargetException) {
-            System.out.println("java.lang.reflect.InvocationTargetException");
-            } catch (ExceptionInInitializerError ExceptionInInitializerError) {
-            System.out.println("ExceptionInInitializerError");
+                System.out.println("IllegalAccessException");
+            } catch (InstantiationException e) {
+                System.out.println("InstantiationException");
             } catch (Exception e) {
-            System.out.println(e);
+                System.out.println(e);
 
         }
 
@@ -54,21 +46,13 @@ public interface IBankServicePhysicalPerson {
                     .newInstance(physicalPersonProfile, currencyCode);
 
                 physicalPersonProfile.getAccounts().add(account);
-            } catch (NoSuchMethodException NoSuchMethodException) {
-                System.out.println("NoSuchMethodException");
-            } catch (SecurityException SecurityException) {
-                System.out.println("SecurityException");
-            } catch (InstantiationException InstantiationException) {
-                System.out.println("InstantiationException");
-            } catch (IllegalAccessException IllegalAccessException) {
-                System.out.println("IllegalAccessException");
-            } catch (IllegalArgumentException IllegalArgumentException) {
-                System.out.println("IllegalArgumentException");
-            } catch (java.lang.reflect.InvocationTargetException InvocationTargetException) {
-            System.out.println("java.lang.reflect.InvocationTargetException");
-            } catch (ExceptionInInitializerError ExceptionInInitializerError) {
-            System.out.println("ExceptionInInitializerError");
-            } catch (Exception e) {
+        } catch (NoSuchMethodException NoSuchMethodException) {
+            System.out.println("NoSuchMethodException");
+        } catch (IllegalAccessException IllegalAccessException) {
+            System.out.println("IllegalAccessException");
+        } catch (InstantiationException e) {
+            System.out.println("InstantiationException");
+        } catch (Exception e) {
             System.out.println(e);
         }
 

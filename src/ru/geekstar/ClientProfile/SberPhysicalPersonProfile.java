@@ -97,6 +97,8 @@ public class SberPhysicalPersonProfile extends PhysicalPersonProfile {
 
         String headerProfileTransactions = allOperations + allTransfers + allBonuses;
 
+        System.out.println(headerProfileTransactions);
+
         IOFile.write(getPathToTransactionHistoryFile(), headerProfileTransactions, true);
 
         // и вызываем родительскую версию метода
