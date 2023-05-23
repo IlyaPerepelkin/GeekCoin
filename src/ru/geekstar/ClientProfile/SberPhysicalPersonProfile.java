@@ -95,7 +95,7 @@ public class SberPhysicalPersonProfile extends PhysicalPersonProfile {
 
         String allBonuses = getBank().getBankName() + "Бонусов:" + getBonuses();
 
-        String headerProfileTransactions = allOperations + allTransfers + allBonuses;
+        String headerProfileTransactions = allOperations + "\n" + allTransfers + "\n" + allBonuses;
 
         System.out.println(headerProfileTransactions);
 

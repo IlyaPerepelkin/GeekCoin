@@ -84,7 +84,7 @@ public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
 
         String allMiles = "Накопленные милли: " + getMiles();
 
-        String headerProfileTransactions = allOperations + allCashback + allMiles;
+        String headerProfileTransactions = allOperations + "\n" + allCashback + "\n" + allMiles;
 
         System.out.println(headerProfileTransactions);
 

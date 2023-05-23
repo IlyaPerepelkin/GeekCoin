@@ -80,9 +80,12 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
     @Override
     // Вывод всех операций по всем картам и счетам профиля физического лица
     public void displayProfileTransactions() {
-        System.out.println("Платежей и переводов за текущие сутки выполнено на сумму: " + getTotalPaymentsTransfersDayInRUB() +
+        String nameTransactions = "Платежей и переводов за текущие сутки выполнено на сумму: " + getTotalPaymentsTransfersDayInRUB() +
                 "₽ Доступный лимит: " + (getLimitPaymentsTransfersDayInRUB() - getTotalPaymentsTransfersDayInRUB()) + "₽ из " +
-                getLimitPaymentsTransfersDayInRUB() + "₽");
+                getLimitPaymentsTransfersDayInRUB() + "₽";
+
+        System.out.println(nameTransactions);
+        IOFile.write(getPathToTransactionHistoryFile(), nameTransactions, true);
 
         // для подсчета всех транзакций по всем счетам и картам клиента
         int countAllTransactions = 0;
@@ -109,7 +112,7 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
         // и осталось вывести все транзакции
         for (int idTransaction = 0; idTransaction < countAllTransactions; idTransaction++) {
             System.out.println("#" + (idTransaction + 1) + " " + allTransactions[idTransaction]);
-            IOFile.write(getPathToTransactionHistoryFile(), "#" + (idTransaction + 1) + " " + allTransactions[idTransaction], true);
+            IOFile.write(getPathToTransactionHistoryFile(),"#" + (idTransaction + 1) + " " + allTransactions[idTransaction], true);
         }
 
         System.out.println();

@@ -19,14 +19,14 @@ public interface IBankServicePhysicalPerson {
         try {
             card = classCard.getConstructor(PhysicalPersonProfile.class, PayCardAccount.class, String.class)
                     .newInstance(physicalPersonProfile, bankPayCardAccount, pinCode);
-            } catch (NoSuchMethodException NoSuchMethodException) {
-                System.out.println("NoSuchMethodException");
-            } catch (IllegalAccessException IllegalAccessException) {
-                System.out.println("IllegalAccessException");
-            } catch (InstantiationException e) {
-                System.out.println("InstantiationException");
-            } catch (Exception e) {
-                System.out.println(e);
+        } catch (NoSuchMethodException NoSuchMethodException) {
+            System.out.println("NoSuchMethodException");
+        } catch (IllegalAccessException IllegalAccessException) {
+            System.out.println("IllegalAccessException");
+        } catch (InstantiationException e) {
+            System.out.println("InstantiationException");
+        } catch (java.lang.reflect.InvocationTargetException InvocationTargetException) {
+            System.out.println("java.lang.reflect.InvocationTargetException");
 
         }
 
@@ -52,8 +52,8 @@ public interface IBankServicePhysicalPerson {
             System.out.println("IllegalAccessException");
         } catch (InstantiationException e) {
             System.out.println("InstantiationException");
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (java.lang.reflect.InvocationTargetException InvocationTargetException) {
+            System.out.println("java.lang.reflect.InvocationTargetException");
         }
 
         return account;
