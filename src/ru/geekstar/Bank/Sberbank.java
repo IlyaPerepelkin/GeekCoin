@@ -1,12 +1,12 @@
 package ru.geekstar.Bank;
-import ru.geekstar.ClientProfile.ClientProfile;
+
 import ru.geekstar.ClientProfile.PhysicalPersonProfile;
 import ru.geekstar.ClientProfile.SberPhysicalPersonProfile;
 import ru.geekstar.PhysicalPerson.PhysicalPerson;
 
 import java.util.ArrayList;
 
-public class Sberbank extends Bank implements IBankServicePhysicalPerson {
+public class Sberbank extends Bank implements IBankServicePhysicalPersons {
 
     public static final String SBER;
 
@@ -46,6 +46,9 @@ public class Sberbank extends Bank implements IBankServicePhysicalPerson {
         sberPhysicalPersonProfile.setLimitCommissionTransferInRUB(3000.00f);
         sberPhysicalPersonProfile.setLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(100.00f);
 
+        // и привязать профиль клиента к банку
+        getClientProfiles().add(sberPhysicalPersonProfile);
+
         return sberPhysicalPersonProfile;
     }
 
@@ -69,7 +72,7 @@ public class Sberbank extends Bank implements IBankServicePhysicalPerson {
 
 
     // Рассчитать комиссию за перевод клиенту моего банка Сбер
-    public float getCommissionOfTransferToClientBank(ClientProfile clientProfile, float sum, String fromCurrencyCode) {
+    public float getCommissionOfTransferToClientBank(PhysicalPersonProfile clientProfile, float sum, String fromCurrencyCode) {
         // по умолчанию комиссия 0
         float commission = 0;
         // если сумма перевода в рублях

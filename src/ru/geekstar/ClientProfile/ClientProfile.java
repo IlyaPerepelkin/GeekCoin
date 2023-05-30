@@ -1,13 +1,10 @@
 package ru.geekstar.ClientProfile;
 
 import ru.geekstar.Bank.Bank;
-import ru.geekstar.PhysicalPerson.PhysicalPerson;
 
 public abstract class ClientProfile {
 
     private Bank bank;
-
-    private PhysicalPerson physicalPerson;
 
     private float limitPaymentsTransfersDayInRUB;
 
@@ -40,14 +37,6 @@ public abstract class ClientProfile {
 
     public void setBank(Bank bank) {
         this.bank = bank;
-    }
-
-    public PhysicalPerson getPhysicalPerson() {
-        return physicalPerson;
-    }
-
-    public void setPhysicalPerson(PhysicalPerson physicalPerson) {
-        this.physicalPerson = physicalPerson;
     }
 
     public float getLimitPaymentsTransfersDayInRUB() {
@@ -167,5 +156,5 @@ public abstract class ClientProfile {
     }
 
     // Вывод всех операций по всем картам и счетам профиля клиента. Переопределим в дочерних классах
-    public abstract void displayProfileTransactions();
+    public abstract String displayProfileTransactions();
 }

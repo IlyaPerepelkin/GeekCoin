@@ -79,15 +79,19 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
 
     @Override
     // Вывод всех операций по всем картам и счетам профиля физического лица
-    public void displayProfileTransactions() {
-        String nameTransactions = "Платежей и переводов за текущие сутки выполнено на сумму: " + getTotalPaymentsTransfersDayInRUB() +
+    public String displayProfileTransactions() {
+        StringBuffer profileTransactionsBuffer = new StringBuffer();
+
+        String paymentsTransfersDayInRUB = "Платежей и переводов за текущие сутки выполнено на сумму: " + getTotalPaymentsTransfersDayInRUB() +
                 "₽ Доступный лимит: " + (getLimitPaymentsTransfersDayInRUB() - getTotalPaymentsTransfersDayInRUB()) + "₽ из " +
-                getLimitPaymentsTransfersDayInRUB() + "₽";
+                getLimitPaymentsTransfersDayInRUB() + "₽\n";
 
-        System.out.println(nameTransactions);
-        IOFile.write(getPathToTransactionHistoryFile(), nameTransactions, true);
+        profileTransactionsBuffer.append(paymentsTransfersDayInRUB);
 
-        // для подсчета всех транзакций по всем счетам и картам клиента
+        System.out.println(paymentsTransfersDayInRUB);
+        IOFile.write(getPathToTransactionHistoryFile(), paymentsTransfersDayInRUB, true);
+
+        // для подсчёта всех транзакций по всем счетам и картам клиента
         int countAllTransactions = 0;
 
         // подсчитать общее количество всех транзакций по всем счетам
@@ -95,7 +99,7 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
             countAllTransactions += accounts.get(idAccount).getAllAccountTransactions().length;
         }
 
-        // и объявить массив всех транзакций профиля клиента длинной равной количеству всех транзакций
+        // и объявить массив всех транзакций профиля клиента длиной равной количеству всех транзакций
         String[] allTransactions = new String[countAllTransactions];
 
         // теперь нужно перебрать все счета
@@ -111,20 +115,12 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
 
         // и осталось вывести все транзакции
         for (int idTransaction = 0; idTransaction < countAllTransactions; idTransaction++) {
-            System.out.println("#" + (idTransaction + 1) + " " + allTransactions[idTransaction]);
-            IOFile.write(getPathToTransactionHistoryFile(),"#" + (idTransaction + 1) + " " + allTransactions[idTransaction], true);
+            String transaction = "#" + (idTransaction + 1) + " " + allTransactions[idTransaction];
+            profileTransactionsBuffer.append("\n" + transaction + "\n");
         }
+        profileTransactionsBuffer.append("\n");
 
-        System.out.println();
-
-    }
-
-    public String getPathToTransactionHistoryFile() {
-        File dirFinance = new File(DIR_FINANCE);
-        if (!dirFinance.exists()) dirFinance.mkdir();
-        String fileName = getBank().getBankName() + "_" + physicalPerson.getFirstName() + "_" + physicalPerson.getLastName() + ".txt";
-        String pathToTransactionHistoryFile = DIR_FINANCE + File.separator + fileName;
-        return pathToTransactionHistoryFile;
+        return profileTransactionsBuffer.toString();
     }
 
     public void displayTransactionHistory() {
@@ -133,6 +129,14 @@ public abstract class PhysicalPersonProfile extends ClientProfile {
 
     public void clearTransactionHistory() {
         IOFile.write(getPathToTransactionHistoryFile(), "", false);
+    }
+
+    public String getPathToTransactionHistoryFile() {
+        File dirFinance = new File(DIR_FINANCE);
+        if (!dirFinance.exists()) dirFinance.mkdir();
+        String pathToTransactionHistoryFile = DIR_FINANCE + File.separator + getBank().getBankName() + "_" +
+                physicalPerson.getFirstName() + "_" + physicalPerson.getLastName() +".txt";
+        return pathToTransactionHistoryFile;
     }
 
 }

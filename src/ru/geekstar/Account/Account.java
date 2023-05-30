@@ -113,9 +113,9 @@ public abstract class Account {
     // Перевести со счета на карту
     public void transferAccount2Card(Card toCard, float sumTransfer) {
         // инициализировать транзакцию перевода
-        TransferTransaction transferTransaction = new TransferTransaction(this, toCard, "Перевод на карту" , sumTransfer, currencySymbol);
+        TransferTransaction transferTransaction = new TransferTransaction(this, toCard, "Перевод на карту", sumTransfer, currencySymbol);
 
-        //определяем валюту счета списания
+        // определяем валюту счёта списания
         String fromCurrencyCode = getCurrencyCode();
 
         // рассчитать комиссию за перевод на свою или чужую карту моего или другого банка
@@ -124,28 +124,25 @@ public abstract class Account {
         // внести в транзакцию перевода данные о комиссии
         transferTransaction.setCommission(commission);
 
-        // проверить баланс счета и достаточно ли денег
+        // проверить баланс счёта и достаточно ли денег
         boolean checkBalance = checkBalance(sumTransfer + commission);
         if (checkBalance) {
             // проверить не превышен ли лимит по оплатам и переводам в сутки
             boolean exceededLimitPaymentsTransfersDay = accountHolder.exceededLimitPaymentsTransfersDay(sumTransfer, fromCurrencyCode);
             if (!exceededLimitPaymentsTransfersDay) {
-                // если не превышен, то выполнить списание суммы и комиссии со счета
+                // если не превышен, то выполнить списание суммы и комиссии со счёта
                 boolean withdrawalStatus = withdrawal(sumTransfer + commission);
                 if (withdrawalStatus) {
                     // внести в транзакцию перевода статус списания
                     transferTransaction.setStatusOperation("Списание прошло успешно");
 
                     // инициализировать транзакцию пополнения
-                    DepositingTransaction depositingTransaction = new DepositingTransaction(this, toCard, "Перевод со счета" , sumTransfer, toCard.getPayCardAccount().getCurrencySymbol());
+                    DepositingTransaction depositingTransaction = new DepositingTransaction(this, toCard, "Перевод со счёта", sumTransfer, toCard.getPayCardAccount().getCurrencySymbol());
 
-                    // если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту карты зачисления по курсу банка
+                    // определяем валюту карты зачисления
                     String toCurrencyCode = toCard.getPayCardAccount().getCurrencyCode();
-                    // сравнить валюты списания и зачисления
-                    if (!fromCurrencyCode.equals(toCurrencyCode)) {
-                        // если они не равны, то вызвать метод convertToCurrencyExchangeRateBank
-                        sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
-                    }
+                    // если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту карты зачисления по курсу банка
+                    sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
 
                     // зачислить на карту
                     boolean topUpStatus = toCard.getPayCardAccount().topUp(sumTransfer);
@@ -156,17 +153,18 @@ public abstract class Account {
                         // внести в транзакцию баланс карты после пополнения
                         depositingTransaction.setBalance(toCard.getPayCardAccount().getBalance());
 
-                        // добавить и привязать транзакцию пополнения к счету карты зачисления
+                        // добавить и привязать транзакцию пополнения к счёту карты зачисления
                         toCard.getPayCardAccount().getDepositingTransactions().add(depositingTransaction);
 
                         // внести в транзакцию статус перевода
-                        transferTransaction.setStatusOperation("Перевод прошел успешно");
+                        transferTransaction.setStatusOperation("Перевод прошёл успешно");
 
-                        // прибавить сумму перевода к общей сумме совершенных оплат и переводов за сутки, чтобы контролировать лимиты
+                        // прибавить сумму перевода к общей сумме совершённых оплат и переводов за сутки, чтобы контролировать лимиты
                         getAccountHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toCard);
 
-                        // TODO: перевести комиссию на счет банка
-                    } else transferTransaction.setStatusOperation("Перевод не прошел");
+                        // TODO: и перевести комиссию на счёт банка
+
+                    } else transferTransaction.setStatusOperation("Перевод не прошёл");
                 } else transferTransaction.setStatusOperation("Списание не прошло");
             } else transferTransaction.setStatusOperation("Превышен лимит по сумме операций в сутки");
         } else transferTransaction.setStatusOperation("Недостаточно средств");
@@ -174,60 +172,72 @@ public abstract class Account {
         // внести в транзакцию перевода баланс карты после списания
         transferTransaction.setBalance(getBalance());
 
-        getTransferTransactions().add(transferTransaction);
+        // добавить и привязать транзакцию перевода к счёту списания
+        transferTransactions.add(transferTransaction);
     }
 
     public void transferAccount2Account(Account toAccount, float sumTransfer) {
-        TransferTransaction transferTransaction = new TransferTransaction(this, this, "Перевод на счет", sumTransfer, currencySymbol);
+        // инициализировать транзакцию перевода
+        TransferTransaction transferTransaction = new TransferTransaction(this, toAccount, "Перевод на счёт", sumTransfer, currencySymbol);
 
+        // определяем валюту счёта списания
         String fromCurrencyCode = getCurrencyCode();
 
+        // рассчитать комиссию за перевод на свой или чужой счёт моего или другого банка
         float commission = bank.getCommission(accountHolder, fromCurrencyCode, sumTransfer, toAccount);
-
+        // внести в транзакцию данные о комиссии
         transferTransaction.setCommission(commission);
 
+        // проверяем баланс счёта и хватит ли денег
         boolean checkBalance = checkBalance(sumTransfer + commission);
         if (checkBalance) {
+            // проверить не превышен ли лимит по оплатам и переводам в сутки
             boolean exceededLimitPaymentsTransfersDay = accountHolder.exceededLimitPaymentsTransfersDay(sumTransfer, fromCurrencyCode);
             if (!exceededLimitPaymentsTransfersDay) {
+                // если не превышен, то выполнить списание суммы и комиссии со счёта
                 boolean withdrawalStatus = withdrawal(sumTransfer + commission);
                 if (withdrawalStatus) {
+                    // внести в транзакцию статус списания
                     transferTransaction.setStatusOperation("Списание прошло успешно");
 
+                    // инициализировать транзакцию пополнения
+                    DepositingTransaction depositingTransaction = new DepositingTransaction(this, toAccount, "Перевод со счёта", sumTransfer, toAccount.getCurrencySymbol());
 
-                    DepositingTransaction depositingTransaction = new DepositingTransaction(this, this, "Перевод со счета", sumTransfer, toAccount.getCurrencySymbol());
-
-                    // если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту карты зачисления по курсу банка
-
+                    // определяем валюту счёта зачисления
                     String toCurrencyCode = toAccount.getCurrencyCode();
-                    // сравнить валюты списания и зачисления
-                    if (!fromCurrencyCode.equals(toCurrencyCode)) {
-                        // если они не равны, то вызвать метод convertToCurrencyExchangeRateBank
-                        sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
-                    }
+                    // если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту счёта зачисления по курсу банка
+                    sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
 
+                    // зачислить на счёт
                     boolean topUpStatus = toAccount.topUp(sumTransfer);
                     if (topUpStatus) {
-
+                        // внести в транзакцию статус пополнения
                         depositingTransaction.setStatusOperation("Пополнение прошло успешно");
 
+                        // внести в транзакцию баланс счёта после пополнения
                         depositingTransaction.setBalance(toAccount.getBalance());
 
+                        // добавить и привязать транзакцию пополнения к счёту зачисления
                         toAccount.getDepositingTransactions().add(depositingTransaction);
 
-                        transferTransaction.setStatusOperation("Перевод прошел успешно");
+                        // внести в транзакцию статус перевода
+                        transferTransaction.setStatusOperation("Перевод прошёл успешно");
 
+                        // прибавить сумму перевода к общей сумме совершённых оплат и переводов за сутки, чтобы контролировать лимиты
                         getAccountHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toAccount);
 
-                        // TODO: перевести комиссию на счет банка
-                    } else transferTransaction.setStatusOperation("Перевод не прошел");
+                        // TODO: и перевести комиссию на счёт банка
+
+                    } else transferTransaction.setStatusOperation("Перевод не прошёл");
                 } else transferTransaction.setStatusOperation("Списание не прошло");
             } else transferTransaction.setStatusOperation("Превышен лимит по сумме операций в сутки");
         } else transferTransaction.setStatusOperation("Недостаточно средств");
 
+        // внести в транзакцию баланс карты после списания
         transferTransaction.setBalance(getBalance());
 
-        getTransferTransactions().add(transferTransaction);
+        // добавить и привязать транзакцию перевода к счёту списания
+        transferTransactions.add(transferTransaction);
     }
 
     // Пополнить счет с карты
@@ -240,13 +250,13 @@ public abstract class Account {
         fromAccount.transferAccount2Account( this, sumDepositing);
     }
 
-    // пополнить баланс
+    // Пополнить баланс
     public final boolean topUp(float sum) {
-        balance += sum;
+        setBalance(balance + sum);
         return true;
     }
 
-    //  Проверить достаточно ли денег на балансе
+    // Проверить достаточно ли денег на балансе
     public boolean checkBalance(float sum) {
         if (sum <= balance) return true;
         return false;

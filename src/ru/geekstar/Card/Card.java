@@ -90,35 +90,33 @@ public abstract class Card implements IPaySystem {
     // Оплата картой
     public void payByCard(final float sumPay, String buyProductOrService, final String pinCode) {
         // инициализировать транзакцию оплаты
-        PayTransaction payTransaction = new PayTransaction(this, "Покупка ", sumPay, payCardAccount.getCurrencySymbol());
-        payTransaction.setTypeOperation("Покупка ");
-        payTransaction.setBuyProductOrService(buyProductOrService);
+        PayTransaction payTransaction = new PayTransaction(this, "Покупка", sumPay, buyProductOrService);
 
         // рассчитать комиссию при оплате
         float commission = bank.getCommission(cardHolder, sumPay, buyProductOrService);
 
-        // внести в транзакции данные о комиссии
+        // внести в транзакцию данные о комиссии
         payTransaction.setCommission(commission);
 
         // запросить разрешение банка на проведение операции с блокированием суммы оплаты и комиссии
         final String authorization = bank.authorization(this, payTransaction.getTypeOperation(), sumPay, commission, pinCode);
-        // извлекаем массив строк разделяя их символом "@"
+        // извлекаем массив строк разделяя их символом @
         String[] authorizationData = authorization.split("@");
         // извлекаем код авторизации
         String authorizationCode = authorizationData[0];
         payTransaction.setAuthorizationCode(authorizationCode);
         // извлекаем сообщение авторизации
-        String authorizationMessage = authorizationData[1]; // "Success: Авторизация прошла успешно"
+        String authorizationMessage = authorizationData[1];  // "Success: Авторизация прошла успешно"
         // извлекаем статус из сообщения авторизации
         String authorizationStatus = authorizationMessage.substring(0, authorizationMessage.indexOf(":"));
-        // если разрешение получено, то выполняем списание зарезервированной суммы и комиссии со счета карты
+        // если разрешение получено, то выполняем списание зарезервированной суммы и комиссии со счёта карты
         if (authorizationStatus.equalsIgnoreCase("Success")) {
             boolean writeOffBlockedSum = payCardAccount.writeOffBlockedSum(sumPay + commission);
             if (writeOffBlockedSum) {
                 // внести в транзакцию статус оплаты
                 payTransaction.setStatusOperation("Оплата прошла успешно");
 
-                // TODO: перевести сумму на счет магазина, а комиссию на счет банка
+                // TODO: перевести сумму на счёт магазина, а комиссию на счёт банка
 
                 // прибавить сумму оплаты к общей сумме совершенных оплат и переводов за сутки, чтобы контролировать лимиты
                 getCardHolder().updateTotalPaymentsTransfersDay(sumPay, payCardAccount.getCurrencyCode());
@@ -129,28 +127,28 @@ public abstract class Card implements IPaySystem {
             payTransaction.setStatusOperation(authorizationStatusMessage);
         }
 
-        // внести в транзакцию баланс счета карты после оплаты
+        // внести в транзакцию баланс счёта картв после оплаты
         payTransaction.setBalance(getPayCardAccount().getBalance());
 
-        // добавить и привязать транзакцию оплаты к счету карты
-        getPayCardAccount().getPayTransactions().add(payTransaction);
+        // добавить и привязать транзакцию оплаты к счёту карты
+        payCardAccount.getPayTransactions().add(payTransaction);
     }
 
     // Оплата картой за рубежом
     public void payByCard(final float sumPay, String buyProductOrService, final String pinCode, String country) {
         // по названию страны определяем валюту покупки
         String currencyPayCode = bank.getCurrencyCode(country);
-        // по названию страны определяем название биллинга - это валюта платежной системы
+        // по названию страны определяем валюту биллинга - это валюта платёжной системы
         String billingCurrencyCode = getCurrencyCodePaySystem(country);
 
-        // если валюта покупки и валюта биллинга НЕ совпадают, то конвертируем сумму покупки и валюту платежной системы по курсу платежной системы
+        // если валюта покупки и валюта биллинга НЕ совпадают, то конвертируем сумму покупки в валюту платёжной системы по курсу платёжной системы
         // если валюты совпадают, то конвертация не выполняется
-        float sumPayInBillingCurrency = !currencyPayCode.equals(billingCurrencyCode) ? convertToCurrencyExchangeRatePaySystem(sumPay, currencyPayCode, billingCurrencyCode) : sumPay;
+        float sumPayInBillingCurrency = convertToCurrencyExchangeRatePaySystem(sumPay, currencyPayCode, billingCurrencyCode);
 
-        // если валюта биллинга и валюта счета карты не совпадают, то конвертируем сумму покупки в валюте биллинга в валюту карты по курсу нашего банка
+        // если валюта биллинга и валюта счёта карты не совпадают, то конвертируем сумму покупки в валюте биллинга в валюту карты по курсу нашего банка
         // если валюты совпадают, то конвертация не выполняется
         String cardCurrencyCode = getPayCardAccount().getCurrencyCode();
-        float sumPayInCardCurrency = !billingCurrencyCode.equals(cardCurrencyCode) ? bank.convertToCurrencyExchangeRateBank(sumPayInBillingCurrency, billingCurrencyCode, cardCurrencyCode) : sumPayInBillingCurrency;
+        float sumPayInCardCurrency = bank.convertToCurrencyExchangeRateBank(sumPayInBillingCurrency, billingCurrencyCode, cardCurrencyCode);
 
         // округлим дробную часть до двух знаков после запятой
         sumPayInCardCurrency = bank.round(sumPayInCardCurrency);
@@ -164,7 +162,7 @@ public abstract class Card implements IPaySystem {
     // Перевести с карты на карту
     public void transferCard2Card(Card toCard, float sumTransfer) {
         // инициализировать транзакцию перевода
-        TransferTransaction transferTransaction = new TransferTransaction(this, this, "Перевод на карту", sumTransfer, payCardAccount.getCurrencySymbol());
+        TransferTransaction transferTransaction = new TransferTransaction(this, toCard, "Перевод на карту", sumTransfer, payCardAccount.getCurrencySymbol());
 
         String fromCurrencyCode = payCardAccount.getCurrencyCode();
         // рассчитать комиссию за перевод на свою или чужую карту моего или другого банка
@@ -180,7 +178,7 @@ public abstract class Card implements IPaySystem {
         String authorizationMessage = authorizationData[1];
         String authorizationStatus = authorizationMessage.substring(0, authorizationMessage.indexOf(":"));
 
-        // если разрешение получено, то выполняем списание зарезервированной суммы перевода и комиссии со счета карты
+        // если разрешение получено, то выполняем списание зарезервированной суммы перевода и комиссии со счёта карты
         if (authorizationStatus.equalsIgnoreCase("Success")) {
             boolean writeOffReservedAmountStatus = payCardAccount.writeOffBlockedSum(sumTransfer + commission);
             if (writeOffReservedAmountStatus) {
@@ -188,58 +186,54 @@ public abstract class Card implements IPaySystem {
                 transferTransaction.setStatusOperation("Списание прошло успешно");
 
                 // инициализировать транзакцию пополнения
-                DepositingTransaction depositingTransaction = new DepositingTransaction(this, this, "Пополнение с карты", sumTransfer, toCard.getPayCardAccount().getCurrencySymbol());
+                DepositingTransaction depositingTransaction = new DepositingTransaction(this, toCard, "Пополнение с карты", sumTransfer, toCard.payCardAccount.getCurrencySymbol());
                 depositingTransaction.setAuthorizationCode(authorizationCode);
 
-                // если валюта списания и зачисления не совпадают, то конвертировать сумму перевода в валюту карты зачисления по курсу банка
+                // определяем валюту карты зачисления
                 String toCurrencyCode = toCard.getPayCardAccount().getCurrencyCode();
-                // сравнить валюты списания и зачисления
-                if (!fromCurrencyCode.equals(toCurrencyCode)) {
-                    // если они не равны, то вызвать метод convertToCurrencyExchangeRateBank
-                    sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
-                }
+                // если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту карты зачисления по курсу банка
+                sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
 
                 // зачислить на карту
                 boolean topUpStatus = toCard.getPayCardAccount().topUp(sumTransfer);
                 if (topUpStatus) {
-
                     // внести в транзакцию пополнения статус пополнения
                     depositingTransaction.setStatusOperation("Пополнение прошло успешно");
                     // внести в транзакцию пополнения баланс карты после пополнения
                     depositingTransaction.setBalance(toCard.getPayCardAccount().getBalance());
-                    // добавить и привязать транзакцию пополнения к счету карты зачисления
+                    // добавить и привязать транзакцию пополнения к счёту карты зачисления
                     toCard.getPayCardAccount().getDepositingTransactions().add(depositingTransaction);
 
                     // внести в транзакцию перевода статус перевода
-                    transferTransaction.setStatusOperation("Перевод прошел успешно");
+                    transferTransaction.setStatusOperation("Перевод прошёл успешно");
 
                     // прибавить сумму перевода к общей сумме совершенных оплат и переводов за сутки, чтобы контролировать лимиты
                     getCardHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toCard);
 
-                    // TODO: и перевести комиссию на счет банка
+                    // TODO: и перевести комиссию на счёт банка
 
-                } else transferTransaction.setStatusOperation("Перевод не прошел");
+                } else transferTransaction.setStatusOperation("Перевод не прошёл");
             } else transferTransaction.setStatusOperation("Списание не прошло");
         } else {
             // иначе выводим сообщение о статусе авторизации, чтобы понимать что пошло не так
-            String authorizationStatusMessage = authorizationMessage.substring(authorizationMessage.indexOf(":") + 1);
+            String authorizationStatusMessage = authorizationMessage.substring(authorizationMessage.indexOf(":") + 2);
             transferTransaction.setStatusOperation(authorizationStatusMessage);
         }
 
         // внести в транзакцию перевода баланс карты после списания
-        transferTransaction.setBalance(payCardAccount.getBalance());
+        transferTransaction.setBalance(getPayCardAccount().getBalance());
 
-        // добавить и привязать транзакцию перевода к счету карты списания
-        getPayCardAccount().getTransferTransactions().add(transferTransaction);
+        // добавить и привязать транзакцию перевода к счёту карты списания
+        payCardAccount.getTransferTransactions().add(transferTransaction);
     }
 
     // Перевести с карты на счет
     public void transferCard2Account(Account toAccount, float sumTransfer) {
         // инициализировать транзакцию перевода
-        TransferTransaction transferTransaction = new TransferTransaction(this, toAccount, "Перевод на счет", sumTransfer, payCardAccount.getCurrencySymbol());
+        TransferTransaction transferTransaction = new TransferTransaction(this, toAccount, "Перевод на счёт", sumTransfer, payCardAccount.getCurrencySymbol());
 
         String fromCurrencyCode = payCardAccount.getCurrencyCode();
-        // рассчитать комиссию за перевод на свой или чужой счет моего или другого банка
+        // рассчитать комиссию за перевод на свой или чужой счёт моего или другого банка
         float commission = bank.getCommission(cardHolder, fromCurrencyCode, sumTransfer, toAccount);
 
         // внести в транзакцию данные о комиссии
@@ -251,7 +245,7 @@ public abstract class Card implements IPaySystem {
             // проверить не превышен ли лимит по оплатам и переводам в сутки
             boolean exceededLimitPaymentsTransfersDay = cardHolder.exceededLimitPaymentsTransfersDay(sumTransfer, fromCurrencyCode);
             if (!exceededLimitPaymentsTransfersDay) {
-                // если не превышен, то выполняем списание суммы перевода и комиссии со счета карты
+                // если не превышен, то выполняем списание суммы перевода и комиссии со счёта карты
                 boolean withdrawalStatus = payCardAccount.withdrawal(sumTransfer + commission);
                 if (withdrawalStatus) {
                     // внести в транзакцию статус списания
@@ -259,92 +253,99 @@ public abstract class Card implements IPaySystem {
                     // инициализировать транзакцию пополнения
                     DepositingTransaction depositingTransaction = new DepositingTransaction(this, toAccount, "Пополнение с карты", sumTransfer, toAccount.getCurrencySymbol());
 
-                    // если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту счета зачисления по курсу банка
+                    // определяем валюту счёта зачисления
                     String toCurrencyCode = toAccount.getCurrencyCode();
-                    // сравнить валюты списания и зачисления
-                    if (!fromCurrencyCode.equals(toCurrencyCode)) {
-                        // если они не равны, то вызвать метод convertToCurrencyExchangeRateBank
-                        sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
-                    }
+                    // если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту счёта зачисления по курсу банка
+                    sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
 
-                    // и зачислить на счет
+                    // и зачислить на счёт
                     boolean topUpStatus = toAccount.topUp(sumTransfer);
                     if (topUpStatus) {
                         // внести в транзакцию пополнения статус зачисления
                         depositingTransaction.setStatusOperation("Пополнение прошло успешно");
-                        // внести в транзакцию пополнения баланс счета после зачисления
+                        // внести в транзакцию пополнения баланс счёта после зачисления
                         depositingTransaction.setBalance(toAccount.getBalance());
-                        // добавить и привязать транзакцию пополнения к счету зачисления
+                        // добавить и привязать транзакцию пополнения к счёту зачисления
                         toAccount.getDepositingTransactions().add(depositingTransaction);
 
-                        // внести в транзакцию перевода, статус перевода
-                        transferTransaction.setStatusOperation("Перевод прошел успешно");
-                        // прибавить сумму перевода к общей сумме совершенных оплат и переводов за сутки, чтобы контролировать лимиты
+                        // внести в транзакцию перевода статус перевода
+                        transferTransaction.setStatusOperation("Перевод прошёл успешно");
+                        // прибавить сумму перевода к общей сумме совершённых оплат и переводов за сутки, чтобы контролировать лимиты
                         getCardHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toAccount);
 
-                        // TODO: и перевести комиссию на счет банка
+                        // TODO: и перевести комиссию на счёт банка
 
-                    } else transferTransaction.setStatusOperation("Перевод не прошел");
+                    } else transferTransaction.setStatusOperation("Перевод не прошёл");
                 } else transferTransaction.setStatusOperation("Списание не прошло");
             } else transferTransaction.setStatusOperation("Лимит по сумме операций в день превышен");
         } else transferTransaction.setStatusOperation("Недостаточно средств");
 
         // внести в транзакцию баланс карты после списания
         transferTransaction.setBalance(getPayCardAccount().getBalance());
-        // добавить и привязать транзакцию перевода к счету карты списания
-        getPayCardAccount().getTransferTransactions().add(transferTransaction);
+        // добавить и привязать транзакцию перевода к счёту карты списания
+        payCardAccount.getTransferTransactions().add(transferTransaction);
     }
 
     // внести наличные на карту
     public void depositingCash2Card(float sumDepositing) {
         // инициализировать транзакцию пополнения
-        DepositingTransaction depositingTransaction = new DepositingTransaction(this, "Внесение наличных", sumDepositing, payCardAccount.getCurrencySymbol());
+        DepositingTransaction depositingTransaction = new DepositingTransaction(this, "Внесение наличных", sumDepositing);
 
         // запросить разрешение банка на проведение операции с проверкой статуса карты
         final String authorization = bank.authorizationStatusCard(this);
 
+        // извлекаем массив строк разделяя их символом @
         String[] authorizationData = authorization.split("@");
+        // извлекаем код авторизации
         String authorizationCode = authorizationData[0];
+        // вносим в транзакцию код авторизации
         depositingTransaction.setAuthorizationCode(authorizationCode);
+        // извлекаем сообщение из авторизации
         String authorizationMessage = authorizationData[1];
+        // извлекаем статус из сообщения авторизации
         String authorizationStatus = authorizationMessage.substring(0, authorizationMessage.indexOf(":"));
 
+        // если разрешение получено, то выполняем пополнение
         if (authorizationStatus.equalsIgnoreCase("Success")) {
             boolean topUpStatus = payCardAccount.topUp(sumDepositing);
             if (topUpStatus) {
+                // внести в транзакцию статус пополнения
                 depositingTransaction.setStatusOperation("Внесение наличных прошло успешно");
             } else depositingTransaction.setStatusOperation("Внесение наличных не прошло");
         } else {
+            // иначе выводим сообщение о статусе авторизации, чтобы понимать что пошло не так
             String authorizationStatusMessage = authorizationMessage.substring(authorizationMessage.indexOf(":"));
             depositingTransaction.setStatusOperation(authorizationStatusMessage);
         }
-        
+
         // внести в транзакцию баланс карты после пополнения
         depositingTransaction.setBalance(getPayCardAccount().getBalance());
 
-        // добавить и привязать транзакцию пополнения к счету карты зачисления
-        getPayCardAccount().getDepositingTransactions().add(depositingTransaction);
+        // добавить и привязать транзакцию пополнения к счёту карты зачисления
+        payCardAccount.getDepositingTransactions().add(depositingTransaction);
     }
 
     // Пополнить карту с карты
     public void depositingCardFromCard(Card fromCard, float sumDepositing) {
-        // то есть перевести с карты на карты
+        // то есть перевести с карты на карту
         fromCard.transferCard2Card(this, sumDepositing);
     }
 
-    // Пополнить карту со счета
+    // Пополнить карту со счёта
     public void depositingCardFromAccount(Account fromAccount, float sumDepositing) {
-        // то есть перевести со счета на карту
+        // то есть перевести со счёта на карту
         fromAccount.transferAccount2Card(this, sumDepositing);
     }
 
-    public void depositingCashback2Card(Card toCard, float sumDepositing){
-        toCard.transferCard2Card(this, sumDepositing);
+    // Вывести транзакции по счёту карты
+    public void displayCardTransactions() {
+        payCardAccount.displayAccountTransactions();
     }
 
-    // Вывести транзакции по счету карты
-    public void displayCardTransactions () {
-        getPayCardAccount().displayAccountTransactions();
+    @Override
+    public String toString() {
+        return "Карта " + this.getClass().getSimpleName() + " ⦁⦁" + getNumberCard().split(" ")[3] + " "
+                + getPayCardAccount().getBalance() + " " + getPayCardAccount().getCurrencySymbol();
     }
 
 }

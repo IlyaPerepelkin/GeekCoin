@@ -2,11 +2,13 @@ package ru.geekstar.PhysicalPerson;
 
 import ru.geekstar.Account.Account;
 import ru.geekstar.Account.PayCardAccount;
-import ru.geekstar.Bank.IBankServicePhysicalPerson;
+import ru.geekstar.Bank.Bank;
+import ru.geekstar.Bank.IBankServicePhysicalPersons;
 import ru.geekstar.Card.*;
 import ru.geekstar.Card.IPaySystem.IPaySystem;
 import ru.geekstar.ClientProfile.PhysicalPersonProfile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class PhysicalPerson {
@@ -19,7 +21,7 @@ public class PhysicalPerson {
 
     private String telephone;
 
-    private byte age;
+    private LocalDate dateOfBirth;;
 
     private char gender;
 
@@ -50,12 +52,12 @@ public class PhysicalPerson {
         this.telephone = telephone;
     }
 
-    public byte getAge() {
-        return age;
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setAge(byte age) {
-        this.age = age;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public char getGender() {
@@ -81,31 +83,40 @@ public class PhysicalPerson {
         this.telephone = telephone;
     }
 
-    public PhysicalPerson(String firstName, String lastName, String telephone, byte age, char gender) {
+    public PhysicalPerson(String firstName, String lastName, String telephone, LocalDate dateOfBirth, char gender) {
         this(firstName, lastName, telephone);
-        this.age = age;
+        this.dateOfBirth = dateOfBirth;
         this.gender = gender;
     }
 
-    public PhysicalPersonProfile getPhysicalPersonProfile(IBankServicePhysicalPerson bank) {
-        for (int i = 0; i < physicalPersonProfiles.size(); i++) {
-            PhysicalPersonProfile physicalPersonProfile = physicalPersonProfiles.get(i);
-            if (physicalPersonProfile.getBank() == bank) {
-                return physicalPersonProfile;
-            }
+    public PhysicalPersonProfile getPhysicalPersonProfile(Class<? extends Bank> classBank) {
+        for (int idProfile = 0; idProfile < physicalPersonProfiles.size(); idProfile++) {
+            PhysicalPersonProfile profile = physicalPersonProfiles.get(idProfile);
+            // если объект банка является инстансом (экземпляром класса) classBank, то возвращаем найденный профиль
+            if (classBank.isInstance(profile.getBank())) return profile;
         }
         return null;
     }
 
-    public void registerPhysicalPersonToBank(IBankServicePhysicalPerson bank) {
-        physicalPersonProfiles.add(bank.registerPhysicalPersonProfile(this));
+    public PhysicalPersonProfile getPhysicalPersonProfile(IBankServicePhysicalPersons bank) {
+        for (int idProfile = 0; idProfile < physicalPersonProfiles.size(); idProfile++) {
+            PhysicalPersonProfile profile = physicalPersonProfiles.get(idProfile);
+            if (profile.getBank().equals(bank)) return profile;
+        }
+        return null;
     }
 
-    public Card openCard(IBankServicePhysicalPerson bank, Class<? extends Card> classCard, Class<? extends PayCardAccount> classPayCardAccount, String currencyCode, String pinCode) {
+    public PhysicalPersonProfile registerPhysicalPersonToBank(IBankServicePhysicalPersons bank) {
+        PhysicalPersonProfile physicalPersonProfile = bank.registerPhysicalPersonProfile(this);
+        physicalPersonProfiles.add(physicalPersonProfile);
+        return physicalPersonProfile;
+    }
+
+    public Card openCard(IBankServicePhysicalPersons bank, Class<? extends Card> classCard, Class<? extends PayCardAccount> classPayCardAccount, String currencyCode, String pinCode) {
         return bank.openCard(getPhysicalPersonProfile(bank), classCard, classPayCardAccount, currencyCode, pinCode);
     }
 
-    public Account openAccount(IBankServicePhysicalPerson bank, Class<? extends Account> classAccount, String currencyCode) {
+    public Account openAccount(IBankServicePhysicalPersons bank, Class<? extends Account> classAccount, String currencyCode) {
         return bank.openAccount(getPhysicalPersonProfile(bank), classAccount, currencyCode);
     }
 
@@ -121,7 +132,7 @@ public class PhysicalPerson {
         card.payByCard(sumPay, byProductOrService, pinCode, country);
     }
 
-    public void payByCardMiles(IAirlinesCard airlinesCard, int sumPay, int milesPay, String byProductOrService, String pinCode) {
+    public void payByCardMiles(IAirlinesCard airlinesCard, float sumPay, int milesPay, String byProductOrService, String pinCode) {
         airlinesCard.payByCardMiles(sumPay, milesPay, byProductOrService, pinCode);
     }
 
@@ -177,15 +188,15 @@ public class PhysicalPerson {
         account.displayAccountTransactions();
     }
 
-    public void displayProfileTransactions(IBankServicePhysicalPerson bank) {
+    public void displayProfileTransactions(IBankServicePhysicalPersons bank) {
             getPhysicalPersonProfile(bank).displayProfileTransactions();
     }
 
-    public void displayTransactionHistory(IBankServicePhysicalPerson bank) {
+    public void displayTransactionHistory(IBankServicePhysicalPersons bank) {
         getPhysicalPersonProfile(bank).displayTransactionHistory();
     }
 
-    public void clearTransactionHistory(IBankServicePhysicalPerson bank) {
+    public void clearTransactionHistory(IBankServicePhysicalPersons bank) {
         getPhysicalPersonProfile(bank).clearTransactionHistory();
     }
 
@@ -208,5 +219,8 @@ public class PhysicalPerson {
         multicurrencyCard.switchAccount(currencyCodeAccount);
     }
 
+    public String toString() {
+        return lastName + " " + firstName;
+    }
 
 }
