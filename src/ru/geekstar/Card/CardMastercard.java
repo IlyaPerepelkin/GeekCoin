@@ -20,7 +20,7 @@ public abstract class CardMastercard extends Card implements IMastercard {
         // если покупка в Турции, то валюта биллинга в $
         if (country.equalsIgnoreCase("Турция")) billingCurrencyCode = CURRENCY_CODE_PAY_SYSTEM_USD;
         // если покупка во Франции, то есть в Еврозоне, то валюта биллинга в €
-        if (country.equalsIgnoreCase("Франция")) billingCurrencyCode = CURRENCY_CODE_PAY_SYSTEM_EUR;
+        if (country.equalsIgnoreCase("Франция")) billingCurrencyCode = CURRENCY_CODE_PAY_SYSTEM_EUROZONE;
 
         return billingCurrencyCode;
     }
@@ -28,16 +28,17 @@ public abstract class CardMastercard extends Card implements IMastercard {
     // Запросить обменный курс валют платежной системы
     public ArrayList<Float> getExchangeRatePaySystem(String currency, String currencyExchangeRate) {
         // TODO: Запрос к API Mastercard
-
-        ArrayList<Float> exchangeRates = new ArrayList<>();
-        exchangeRates.add(0.056f); // курс лиры к доллару
-        exchangeRates.add(0.059f); //курс лиры к евро
-
+        ArrayList<Float> exchangeRatePaySystem = new ArrayList<>();
+        // курс лиры к доллару
         if (currency.equals("TRY") && currencyExchangeRate.equals("USD")) {
-            return exchangeRates;
-        } else if (currency.equals("TRY") && currencyExchangeRate.equals("EUR")) {
-            return exchangeRates;
+            exchangeRatePaySystem.add(0.057f); // курс покупки
+            exchangeRatePaySystem.add(0.047f); // курс продажи
         }
-        return new ArrayList<>();
+        // курс лиры к евро
+        if (currency.equals("TRY") && currencyExchangeRate.equals("EUR")) {
+            exchangeRatePaySystem.add(0.059f); // курс покупки
+            exchangeRatePaySystem.add(0.048f); // курс продажи
+        }
+        return exchangeRatePaySystem;
     }
 }

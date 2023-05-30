@@ -98,7 +98,7 @@ public abstract class PayCardAccount extends Account {
 
     private String[] getAllPayTransactions() {
         // объявить массив транзакций оплаты по платежному счету длиной равной количеству транзакций
-        String[] allPayTransactions = new String[getPayTransactions().size()];
+        String[] allPayTransactions = new String[payTransactions.size()];
 
         int countAllPayTransactions = 0;
         // перебираем транзакции оплаты и добавляем их в массив в человеко-читаемом формате
@@ -107,5 +107,10 @@ public abstract class PayCardAccount extends Account {
         }
 
         return allPayTransactions;
+    }
+
+    @Override
+    public String toString() {
+        return "Платёжный счёт ⦁⦁" + this.getNumberAccount().substring(20) + " " + getBalance() + " " + getCurrencySymbol();
     }
 }

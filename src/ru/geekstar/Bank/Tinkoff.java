@@ -1,13 +1,12 @@
 package ru.geekstar.Bank;
 
-import ru.geekstar.ClientProfile.ClientProfile;
 import ru.geekstar.ClientProfile.PhysicalPersonProfile;
 import ru.geekstar.ClientProfile.TinkoffPhysicalPersonProfile;
 import ru.geekstar.PhysicalPerson.PhysicalPerson;
 
 import java.util.ArrayList;
 
-public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
+public class Tinkoff extends Bank implements IBankServicePhysicalPersons {
 
     public static final String TINKOFF;
 
@@ -28,12 +27,16 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         // создать профиль клиента
         TinkoffPhysicalPersonProfile tinkoffPhysicalPersonProfile = new TinkoffPhysicalPersonProfile(this, physicalPerson);
 
-        tinkoffPhysicalPersonProfile.setPercentCashbackOfSumPay(0.01f);
-
         // установить лимиты
         tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInRUB(1000000.00f);
         tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInUSD(50000.00f);
         tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInEUR(3500.00f);
+
+        tinkoffPhysicalPersonProfile.setPercentCashbackOfSumPay(1.00f);
+
+        tinkoffPhysicalPersonProfile.setCostOf1MileRUB(60.00f);
+        tinkoffPhysicalPersonProfile.setCostOf1MileUSD(1.00f);
+        tinkoffPhysicalPersonProfile.setCostOf1MileEUR(1.00f);
 
         // установить проценты комиссий
         tinkoffPhysicalPersonProfile.setPercentOfCommissionForPayHousingCommunalServices(1.8f);
@@ -44,14 +47,14 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         tinkoffPhysicalPersonProfile.setLimitCommissionTransferInRUB(3000.00f);
         tinkoffPhysicalPersonProfile.setLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(100.00f);
 
-        tinkoffPhysicalPersonProfile.setCostOfMileRUB(60.00f);
-        tinkoffPhysicalPersonProfile.setCostOfMileUSD(1.00f);
-        tinkoffPhysicalPersonProfile.setCostOfMileEUR(1.00f);
+        // и привязать профиль клиента к банку
+        getClientProfiles().add(tinkoffPhysicalPersonProfile);
 
         return tinkoffPhysicalPersonProfile;
     }
 
-    public float getCommissionOfTransferToClientBank(ClientProfile clientProfile, float sum, String fromCurrencyCode) {
+
+    public float getCommissionOfTransferToClientBank(PhysicalPersonProfile clientProfile, float sum, String fromCurrencyCode) {
         return 0;
     }
 
@@ -59,12 +62,12 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPerson {
         // TODO: Запрос к API банка
         ArrayList<Float> exchangeRateBank = new ArrayList<>();
         // курс доллара к рублю
-        if (currency != null && currency.equals("USD") && currencyExchangeRate.equals("RUB")) {
+        if (currency.equals("USD") && currencyExchangeRate.equals("RUB")) {
             exchangeRateBank.add(83.34f); // курс покупки
             exchangeRateBank.add(81.67f); // курс продажи
         }
         // курс евро к рублю
-        if (currency != null && currency.equals("EUR") && currencyExchangeRate.equals("RUB")) {
+        if (currency.equals("EUR") && currencyExchangeRate.equals("RUB")) {
             exchangeRateBank.add(85.12f); // курс покупки
             exchangeRateBank.add(81.67f); // курс продажи
         }

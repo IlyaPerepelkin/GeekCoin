@@ -8,12 +8,15 @@ import ru.geekstar.Bank.Tinkoff;
 import ru.geekstar.Card.*;
 import ru.geekstar.PhysicalPerson.PhysicalPerson;
 
+import java.time.LocalDate;
+
+
 public class Main {
 
     public static void main(String[] args) {
 
-        PhysicalPerson I = new PhysicalPerson("Илья", "Перепелкин", "+905010833253", (byte)30, 'M');
-        PhysicalPerson friend = new PhysicalPerson("Герман", "Греф", "+79008203535", (byte)52, 'M');
+        PhysicalPerson I = new PhysicalPerson("Илья", "Перепелкин", "+79238653253", LocalDate.of(1992, 7, 15), 'M');
+        PhysicalPerson friend = new PhysicalPerson("Герман", "Греф", "+79008203535", LocalDate.of(1964, 2, 8), 'M');
 
         System.out.println("Физ.лица в системе " + PhysicalPerson.personCount);
 
@@ -85,6 +88,15 @@ public class Main {
         I.depositingAccountFromAccount(mySberSavingsAccount1, mySberSavingsAccount2, 25.00f);
 
         I.depositingCashback2Card(myTinkoffBlackMir1);
+
+        I.displayAllProfileTransactions();
+        friend.displayAllProfileTransactions();
+
+
+        System.out.println("Количество карт: " + "\nSberMastercardGold" + ": " + SberMastercardGold.countCards + "\nSberMastercardTravel" + ": " +
+                SberMastercardTravel.countCards + "\nSberVisaGold" + ": " + SberVisaGold.countCards + "\nTinkoffAirlinesMir" + ": " +
+                TinkoffAirlinesMir.countCards + "\nTinkoffBlackMir" + ": " + TinkoffBlackMir.countCards);
+
 /*
         System.out.println("Вывод операции по карте " + sberMastercardGold.getNumberCard());
         I.displayCardTransactions(sberMastercardGold);
@@ -108,13 +120,7 @@ public class Main {
         // I.displayTransactionHistory(tinkoff);
         // I.clearTransactionHistory(tinkoff);
 
-        I.displayAllProfileTransactions();
-        friend.displayAllProfileTransactions();
 
-
-        System.out.println("Количество карт: " + "\nSberMastercardGold" + ": " + SberMastercardGold.count + "\nSberMastercardTravel" + ": " +
-                SberMastercardTravel.count + "\nSberVisaGold" + ": " + SberVisaGold.count + "\nTinkoffAirlinesMir" + ": " + TinkoffAirlinesMir.count +
-                "\nTinkoffBlackMir" + ": " + TinkoffBlackMir.count);
     }
 
 }

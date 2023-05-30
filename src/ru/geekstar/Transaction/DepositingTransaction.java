@@ -6,28 +6,24 @@ import ru.geekstar.PhysicalPerson.PhysicalPerson;
 
 public class DepositingTransaction extends Transaction {
 
-    public DepositingTransaction(Account fromAccount, Account toAccount, String typeOperation, float sum, char currencySymbol) {
-        super(fromAccount, toAccount, typeOperation, sum, currencySymbol);
-    }
-
-    public DepositingTransaction(Account fromAccount, String typeOperation, float sum, char currencySymbol) {
-        super(fromAccount, typeOperation, sum, currencySymbol);
-    }
-
     public DepositingTransaction(Card fromCard, Card toCard, String typeOperation, float sum, char currencySymbol) {
         super(fromCard, toCard, typeOperation, sum, currencySymbol);
-    }
-
-    public DepositingTransaction(Card fromCard, String typeOperation, float sum, char currencySymbol) {
-        super(fromCard, typeOperation, sum, currencySymbol);
     }
 
     public DepositingTransaction(Card fromCard, Account toAccount, String typeOperation, float sum, char currencySymbol) {
         super(fromCard, toAccount, typeOperation, sum, currencySymbol);
     }
 
+    public DepositingTransaction(Account fromAccount, Account toAccount, String typeOperation, float sum, char currencySymbol) {
+        super(fromAccount, toAccount, typeOperation, sum, currencySymbol);
+    }
+
     public DepositingTransaction(Account fromAccount, Card toCard, String typeOperation, float sum, char currencySymbol) {
         super(fromAccount, toCard, typeOperation, sum, currencySymbol);
+    }
+
+    public DepositingTransaction(Card toCard, String typeOperation, float sum) {
+        super(typeOperation, toCard, sum);
     }
 
     @Override
@@ -61,8 +57,8 @@ public class DepositingTransaction extends Transaction {
     @Override
     public String getStringTransaction() {
 
-        String transaction = getLocalDateTime() + " " + getRecipient() + getTypeOperation() + (!getSender().isEmpty() ? " " + getSender() : "") + ": " + getSum() + getCurrencySymbol() +
-                " Статус: " + getStatusOperation() + " Баланс: " + getBalance() + getCurrencySymbol() + " Комиссия составила: " + getCommission() +
+        String transaction = getLocalDateTime() + " " + getRecipient() + "\n" + getTypeOperation() + (!getSender().isEmpty() ? " " + getSender() : "") + ": +" + getSum() + getCurrencySymbol() +
+                "\nСтатус: " +  getStatusOperation() + "\nБаланс: " + getBalance() + getCurrencySymbol() + "\nКомиссия составила: " + getCommission() +
                 getCurrencySymbol() + (getAuthorizationCode() != null ? " Код авторизации: " + getAuthorizationCode() : "");
 
         return transaction;

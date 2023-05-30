@@ -56,6 +56,13 @@ public abstract class Bank {
         return numberAccountBuffer.toString();
     }
 
+    public static String generatePinCode() {
+        byte lengthPinCode = 4;
+        StringBuffer pinCodeBuffer = new StringBuffer();
+        for (byte i = 1; i <= lengthPinCode; i++) pinCodeBuffer.append((byte) (Math.random() * 10));
+        return pinCodeBuffer.toString();
+    }
+
     // Вынесем из метода authorization генерацию кода авторизации и проверку статуса карты в отдельный метод authorizationStatusCard()
     public String authorizationStatusCard(Card card) {
         // Сгенерировать код авторизации
@@ -75,29 +82,35 @@ public abstract class Bank {
 
     //  Провести авторизацию и выдать разрешение на проведение операции
     public String authorization(Card card, String typeOperation, float sum, float commission, String pinCode) {
+        // провести авторизацию в части проверки статуса карты
+        String authorizationStatusCard = authorizationStatusCard(card);
+        // извлекаем код авторизации
+        String authorizationCode = authorizationStatusCard.split("@")[0];
+        // извлекаем сообщение авторизации
+        String authorizationMessage = authorizationStatusCard.split("@")[1];
+        // извлекаем статус из сообщения авторизации
+        String authorizationStatus = authorizationMessage.substring(0, authorizationMessage.indexOf(":"));
 
-        String[] authorizationStatus = authorizationStatusCard(card).split("@");
-        String authorizationCode = authorizationStatus[0];
-        String authorizationMessage = authorizationStatus[1];
+        if (authorizationStatus.equalsIgnoreCase("Success")) {
+            // тип операции может быть либо покупка, либо перевод, так как авторизацию при пополнении мы уже вынесли в метод authorizationStatusCard()
 
-        if (authorizationMessage.contains("Success")) {
+            // если тип операции покупка и набранный пин-код не соответствует пин-коду карты, то авторизация завершается с ошибкой и операция не выполняется
+            if (typeOperation.contains("Покупка") && !pinCode.equals(card.getPinCode())) return authorizationCode + "@" + "Failed: Неверный пин-код";
 
-                if (typeOperation.contains("Покупка") && !card.getPinCode().equals(pinCode)) return authorizationCode + "@" + "Failed: Неверный пин код";
-
-                // проверяем баланс и хватит ли нам денег с учетом комиссии
-                boolean checkBalance = card.getPayCardAccount().checkBalance(sum + commission);
-                if (checkBalance) {
-                    // проверяем не превышен ли лимит по оплатам и переводам в сутки
-                    boolean exceededLimitPaymentsTransfersDay = card.getCardHolder().exceededLimitPaymentsTransfersDay(sum, card.getPayCardAccount().getCurrencyCode());
-                    if (!exceededLimitPaymentsTransfersDay) {
-                        // блокируем сумму операции и комиссию на балансе счета карты
-                        boolean reserveAmountStatus = card.getPayCardAccount().blockSum(sum + commission);
-                        authorizationMessage = reserveAmountStatus ? "Success: Авторизация прошла успешно" : "Failed: Сбой авторизации";
-                    } else authorizationMessage = "Failed: Превышен лимит по оплатам и переводам в сутки";
-                } else authorizationMessage = "Failed: Недостаточно средств, пополните карту";
+            // проверяем баланс, достаточно ли денег с учётом комиссии и блокируем сумму покупки или перевода с комиссией
+            boolean checkBalance = card.getPayCardAccount().checkBalance(sum + commission);
+            if (checkBalance) {
+                // проверяем не превышен ли лимит по оплатам и переводам в сутки
+                boolean exceededLimitPaymentsTransfersDay = card.getCardHolder().exceededLimitPaymentsTransfersDay(sum, card.getPayCardAccount().getCurrencyCode());
+                if (!exceededLimitPaymentsTransfersDay) {
+                    // блокируем сумму операции и комиссию на балансе счёта карты
+                    boolean reserveAmountStatus = card.getPayCardAccount().blockSum(sum + commission);
+                    authorizationMessage = reserveAmountStatus ? "Success: Авторизация прошла успешно, сумма операции заблокирована" : "Failed: Сбой авторизации";
+                } else authorizationMessage = "Failed: Превышен лимит по оплатам и переводам в сутки";
+            } else authorizationMessage = "Failed: Недостаточно средств, пополните карту";
         }
 
-        // вернуть код и сообщение о статусе авторизации
+        // возвращаем код и сообщение о статусе авторизации
         return authorizationCode + "@" + authorizationMessage;
     }
 
@@ -117,11 +130,11 @@ public abstract class Bank {
 
         float commission = 0;
         // если карта зачисления не моя, но моего банка, то вычисляем комиссию за перевод клиенту моего банка
-        if (!isMyCard && isCardMyBank) commission = getCommissionOfTransferToClientBank(clientProfile, sum, fromCurrencyCode); // clientProfile, sum, fromCurrencyCode
+        if (!isMyCard && isCardMyBank) commission = getCommissionOfTransferToClientBank(clientProfile, sum, fromCurrencyCode);
         // если карта зачисления не моя и не моего банка, то вычисляем комиссию за перевод клиенту другого банка
         if (!isMyCard && !isCardMyBank) commission = getCommissionOfTransferToClientAnotherBank(clientProfile, sum, fromCurrencyCode);
 
-    // Проверить превышен ли лимит на сумму комиссии. Если да, то ограничим сумму комиссии заданным лимитом
+        // Проверить превышен ли лимит на сумму комиссии. Если да, то ограничим сумму комиссии заданным лимитом
         commission = exceededLimitCommission(clientProfile, fromCurrencyCode, commission);
 
         return commission;
@@ -147,39 +160,32 @@ public abstract class Bank {
     }
 
     // Проверить превышен ли лимит на сумму комиссии?
-    private float exceededLimitCommission(ClientProfile clientProfile, String fromCurrencyCode, float commission) {
-        // Если нет, то комиссия равна себе
-        if (fromCurrencyCode.equals("RUB") && commission <= clientProfile.getLimitCommissionTransferInRUB()) return commission;
-        else if (fromCurrencyCode.equals("USD") && commission <= clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency())
-            return commission;
-        else { // Если да, то ограничим сумму комиссии лимитом
-            // если комиссия превышает лимит за перевод в рублях, то ограничим комиссию в рублях, то есть максимально возможной суммой комиссии установленной банком
-            if (fromCurrencyCode.equals("RUB") && commission > clientProfile.getLimitCommissionTransferInRUB())
-                commission = clientProfile.getLimitCommissionTransferInRUB();
-                // иначе если комиссия превышает лимит за перевод в $, то ограничим комиссию лимитом в $
-            else if (fromCurrencyCode.equals("USD") && commission > clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency())
-                commission = clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency();
-                // иначе если другая валюта, то по аналоги
-            else {
-                // рассчитать лимит комиссии в другой валюте путем конвертации лимита в $ в эквивалентную сумму в другой валюте
-                float limitCommissionTransferInCurrency = convertToCurrencyExchangeRateBank(
-                        clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(),
-                        "USD",
-                        fromCurrencyCode);
-                // если комиссия превышает лимит за перевод в другой валюте, то ограничим комиссию лимитом в этой валюте
-                if (commission > limitCommissionTransferInCurrency) commission = limitCommissionTransferInCurrency;
-            }
+    private float exceededLimitCommission(PhysicalPersonProfile clientProfile, String fromCurrencyCode, float commission) {
+        // если комиссия превышает лимит за перевод в рублях, то ограничим комиссию лимитом в рублях, то есть максимально возможной суммой комиссии установленной банком
+        if (fromCurrencyCode.equals("RUB") && commission > clientProfile.getLimitCommissionTransferInRUB()) commission = clientProfile.getLimitCommissionTransferInRUB();
+        // иначе если комиссия превышает лимит за перевод в $, то ограничим комиссию лимитом в $
+        if (fromCurrencyCode.equals("USD") && commission > clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency())
+            commission = clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency();
+        // иначе если другая валюта, то по аналогии
+        if (!fromCurrencyCode.equals("RUB") && !fromCurrencyCode.equals("USD")) {
+            // рассчитать лимит комиссии в другой валюте путём конвертации лимита в $ в эквивалентную сумму в другой валюте
+            float limitCommissionTransferInCurrency = convertToCurrencyExchangeRateBank(
+                    clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(),
+                    "USD",
+                    fromCurrencyCode
+            );
+            // если комиссия превышает лимит за перевод в другой валюте, то ограничим комиссию лимитом в этой валюте
+            if (commission > limitCommissionTransferInCurrency) commission = limitCommissionTransferInCurrency;
         }
 
         return commission;
-
     }
 
     // Рассчитать комиссию за перевод клиенту моего банка.
-    public abstract float getCommissionOfTransferToClientBank(ClientProfile clientProfile, float sum, String fromCurrencyCode);
+    public abstract float getCommissionOfTransferToClientBank(PhysicalPersonProfile clientProfile, float sum, String fromCurrencyCode);
 
     // Рассчитать комиссию за перевод клиенту другого банка
-    private float getCommissionOfTransferToClientAnotherBank(ClientProfile clientProfile, float sum, String fromCurrencyCode) {
+    private float getCommissionOfTransferToClientAnotherBank(PhysicalPersonProfile clientProfile, float sum, String fromCurrencyCode) {
         // можно не инициализировать, так как в любом случае будет результат благодаря ветке else
         float commission;
         // рассчитаем комиссию за перевод в рублях
@@ -221,7 +227,7 @@ public abstract class Bank {
     }
 
     //  Предоставить обменный курс валют банка.
-    public abstract ArrayList<Float> getExchangeRateBank(String fromCurrencyCode, String toCurrencyCode);
+    public abstract ArrayList<Float> getExchangeRateBank(String currency, String currencyExchangeRate);
 
     public float round(float sum) {
         return Math.round(sum * 100.00f) / 100.00f;

@@ -24,10 +24,14 @@ public class SberSavingsAccount extends SavingsAccount {
     public void transferAccount2Account(Account toAccount, float sumTransfer) {
         // вызываем родительскую версию метода
         super.transferAccount2Account(toAccount, sumTransfer);
-
         // и дополняем метод уникальным поведением
         // прибавим сумму перевода к общей сумме всех переводов клиентам Сбера без комиссии за месяц для контроля лимита
         ((SberPhysicalPersonProfile) getAccountHolder()).updateTotalTransfersToClientSberWithoutCommissionMonthInRUB(toAccount, sumTransfer);
+    }
+
+    @Override
+    public String toString() {
+        return "Сберегательный счёт ⦁⦁" + this.getNumberAccount().substring(20) + " " + getBalance() + " " + getCurrencySymbol();
     }
 
 }

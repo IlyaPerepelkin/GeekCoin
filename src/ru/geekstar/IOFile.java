@@ -5,12 +5,13 @@ import java.io.*;
 public class IOFile {
 
     public static void write(String pathToFile, String text, boolean append) {
-
         try {
             File file = new File(pathToFile);
             FileWriter fileWriter = new FileWriter(file, append);
             fileWriter.write(text + "\n");
             fileWriter.close();
+        } catch (FileNotFoundException fileNotFoundEx) {
+            System.out.println("Файл не найден " + fileNotFoundEx.getMessage());
         } catch (IOException ioEx) {
             System.out.println("Не удалось записать в файл " + ioEx.getMessage());
         }

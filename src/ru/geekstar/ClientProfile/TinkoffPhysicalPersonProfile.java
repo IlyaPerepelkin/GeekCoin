@@ -12,35 +12,35 @@ public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
 
     private int miles;
 
-    private float costOfMileRUB;
+    private float costOf1MileRUB;
 
-    private float costOfMileUSD;
+    private float costOf1MileUSD;
 
-    private float costOfMileEUR;
+    private float costOf1MileEUR;
 
 
-    public float getCostOfMileRUB() {
-        return costOfMileRUB;
+    public float getCostOf1MileRUB() {
+        return costOf1MileRUB;
     }
 
-    public void setCostOfMileRUB(float costOfMileRUB) {
-        this.costOfMileRUB = costOfMileRUB;
+    public void setCostOf1MileRUB(float costOf1MileRUB) {
+        this.costOf1MileRUB = costOf1MileRUB;
     }
 
-    public float getCostOfMileUSD() {
-        return costOfMileUSD;
+    public float getCostOf1MileUSD() {
+        return costOf1MileUSD;
     }
 
-    public void setCostOfMileUSD(float costOfMileUSD) {
-        this.costOfMileUSD = costOfMileUSD;
+    public void setCostOf1MileUSD(float costOf1MileUSD) {
+        this.costOf1MileUSD = costOf1MileUSD;
     }
 
-    public float getCostOfMileEUR() {
-        return costOfMileEUR;
+    public float getCostOf1MileEUR() {
+        return costOf1MileEUR;
     }
 
-    public void setCostOfMileEUR(float costOfMileEUR) {
-        this.costOfMileEUR = costOfMileEUR;
+    public void setCostOf1MileEUR(float costOf1MileEUR) {
+        this.costOf1MileEUR = costOf1MileEUR;
     }
 
     public int getMiles() {
@@ -75,23 +75,22 @@ public class TinkoffPhysicalPersonProfile extends PhysicalPersonProfile {
 
     @Override
     // Вывод всех операций по всем картам и счетам профиля физического лица в Тинькове
-    public void displayProfileTransactions() {
-        // дополним метод уникальной информацией, присуще только Тинькову
-        String allOperations = "Все операции по картам и счетам клиента " + getPhysicalPerson().getFirstName() + " " + getPhysicalPerson().getLastName() +
+    public String displayProfileTransactions() {
+        // дополним метод уникальной информацией, присуще только Сберу
+        String allTransactionsPhysicalPerson = "Все операции по картам и счетам клиента " + getPhysicalPerson().getFirstName() + " " + getPhysicalPerson().getLastName() +
                 " в " + getBank().getBankName() + "Банке";
 
-        String allCashback = "Накопленный кэшбэк: " + getCashback();
+        String cashback = "Накоплено кэшбэка: " + getCashback();
+        String balanceMiles = "Накоплено миль: " + getMiles();
 
-        String allMiles = "Накопленные милли: " + getMiles();
+        String headerProfileTransactions = allTransactionsPhysicalPerson + "\n" + cashback + "\n" + balanceMiles;
 
-        String headerProfileTransactions = allOperations + "\n" + allCashback + "\n" + allMiles;
+        String profileTransactions = headerProfileTransactions + "\n" + super.displayProfileTransactions();
 
-        System.out.println(headerProfileTransactions);
+        System.out.println(profileTransactions);
+        IOFile.write(getPathToTransactionHistoryFile(), profileTransactions, true);
 
-        IOFile.write(getPathToTransactionHistoryFile(), headerProfileTransactions, true);
-
-        // и вызываем родительскую версию метода
-        super.displayProfileTransactions();
+        return profileTransactions;
     }
 
 }

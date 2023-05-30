@@ -26,15 +26,13 @@ public abstract class CardVisa extends Card implements IVisa {
     // Запросить обменный курс валют платежной системы
     public ArrayList<Float> getExchangeRatePaySystem(String currency, String currencyExchangeRate) {
         // TODO: Запрос к API Visa
-
-        ArrayList<Float> exchangeRates = new ArrayList<>();
-        exchangeRates.add(0.056f); // курс лиры к доллару
-
+        ArrayList<Float> exchangeRatePaySystem = new ArrayList<>();
+        // курс лиры к доллару
         if (currency.equals("TRY") && currencyExchangeRate.equals("USD")) {
-            return exchangeRates;
-        } else {
-            return new ArrayList<Float>();
+            exchangeRatePaySystem.add(0.056f); // курс покупки
+            exchangeRatePaySystem.add(0.046f); // курс продажи
         }
+        return exchangeRatePaySystem;
     }
 
 }

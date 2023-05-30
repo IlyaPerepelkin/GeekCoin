@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public interface IPaySystem {
 
     default float convertToCurrencyExchangeRatePaySystem(float sum, String fromCurrencyCode, String toBillingCurrencyCode) {
-
         if (!fromCurrencyCode.equalsIgnoreCase(toBillingCurrencyCode)) {
             // запросить курс валюты покупки к курсу валюты биллинга по курсу платёжной системы
             ArrayList<Float> exchangeRateCurrencyToBillingCurrency = getExchangeRatePaySystem(fromCurrencyCode, toBillingCurrencyCode);

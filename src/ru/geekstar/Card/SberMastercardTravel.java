@@ -9,10 +9,9 @@ import java.util.ArrayList;
 
 public final class SberMastercardTravel extends CardMastercard implements IMulticurrencyCard {
 
-    public static int count;
+    public static int countCards;
 
-    ArrayList<PayCardAccount> multicurrencyAccounts = new ArrayList<>();
-
+    private ArrayList<PayCardAccount> multicurrencyAccounts = new ArrayList<>();
 
     @Override
     public ArrayList<PayCardAccount> getMulticurrencyAccounts() {
@@ -28,17 +27,17 @@ public final class SberMastercardTravel extends CardMastercard implements IMulti
         super(cardHolder, payCardAccount, pinCode);
         addAccount("USD");
         addAccount("EUR");
-        count++;
+        countCards++;
     }
 
     @Override
     public void addAccount(String currencyCodeAccount) {
-        // Открываем новый счет
-        SberPayCardAccount sberPayCardAccount = (SberPayCardAccount) (((Sberbank) this.getBank()).openAccount(this.getCardHolder(), SberPayCardAccount.class, currencyCodeAccount));
-        // Связываем созданный счет с картой
-        sberPayCardAccount.getCards().add(this);
-        // Добавляем созданный счет в массив других счетов мультивалютной карты
-        getMulticurrencyAccounts().add(sberPayCardAccount);
+        // Открываем новый счёт
+        PayCardAccount payCardAccount = (PayCardAccount) ((Sberbank) this.getBank()).openAccount(this.getCardHolder(), SberPayCardAccount.class, currencyCodeAccount);
+        // Связываем созданный счёт с картой
+        payCardAccount.getCards().add(this);
+        // Добавляем созданный счёт в массив других счетов мультивалютной карты
+        getMulticurrencyAccounts().add(payCardAccount);
     }
 
 }

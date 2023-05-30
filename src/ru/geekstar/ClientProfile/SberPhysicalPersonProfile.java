@@ -83,25 +83,25 @@ public class SberPhysicalPersonProfile extends PhysicalPersonProfile {
 
     @Override
     // Вывод всех операций по всем картам и счетам профиля физического лица в Сбере
-    public void displayProfileTransactions() {
+    public String displayProfileTransactions() {
         // дополним метод уникальной информацией, присуще только Сберу
-        String allOperations = "Все операции по картам и счетам клиента " + getPhysicalPerson().getFirstName() + " " + getPhysicalPerson().getLastName() +
+        String allTransactionsPhysicalPerson = "Все операции по картам и счетам клиента " + getPhysicalPerson().getFirstName() + " " + getPhysicalPerson().getLastName() +
                 " в " + getBank().getBankName() + "Банке";
 
-        String allTransfers = "Переводы клиентам " + getBank().getBankName() +
+        String transfersToClientSberWithoutCommissionMonthInRUB = "Переводы клиентам " + getBank().getBankName() +
                 " без комиссии за текущий месяц: " + getTotalTransfersToClientSberWithoutCommissionMonthInRUB() + "₽ Доступный лимит: " +
                 (getLimitTransfersToClientSberWithoutCommissionMonthInRUB() - getTotalTransfersToClientSberWithoutCommissionMonthInRUB()) + "₽ из " +
                 getLimitTransfersToClientSberWithoutCommissionMonthInRUB() + "₽";
 
-        String allBonuses = getBank().getBankName() + "Бонусов:" + getBonuses();
+        String balanceBonuses = getBank().getBankName() + "Бонусов: " + getBonuses();
 
-        String headerProfileTransactions = allOperations + "\n" + allTransfers + "\n" + allBonuses;
+        String headerProfileTransactions = allTransactionsPhysicalPerson + "\n" + transfersToClientSberWithoutCommissionMonthInRUB + "\n" + balanceBonuses;
 
-        System.out.println(headerProfileTransactions);
+        String profileTransactions = headerProfileTransactions + "\n" + super.displayProfileTransactions();
 
-        IOFile.write(getPathToTransactionHistoryFile(), headerProfileTransactions, true);
+        System.out.println(profileTransactions);
+        IOFile.write(getPathToTransactionHistoryFile(), profileTransactions, true);
 
-        // и вызываем родительскую версию метода
-        super.displayProfileTransactions();
+        return profileTransactions;
     }
 }

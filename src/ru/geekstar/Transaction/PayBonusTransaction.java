@@ -1,6 +1,5 @@
 package ru.geekstar.Transaction;
 
-import ru.geekstar.Account.Account;
 import ru.geekstar.Card.Card;
 
 public class PayBonusTransaction extends PayTransaction {
@@ -26,37 +25,22 @@ public class PayBonusTransaction extends PayTransaction {
         this.balanceBonuses = balanceBonuses;
     }
 
-    public PayBonusTransaction(Account fromAccount, Account toAccount, String typeOperation, float sum, char currencySymbol) {
-        super(fromAccount, toAccount, typeOperation, sum, currencySymbol);
-    }
 
-    public PayBonusTransaction(Account fromAccount, String typeOperation, float sum, char currencySymbol) {
-        super(fromAccount, typeOperation, sum, currencySymbol);
-    }
-
-    public PayBonusTransaction(Card fromCard, Card toCard, String typeOperation, float sum, char currencySymbol) {
-        super(fromCard, toCard, typeOperation, sum, currencySymbol);
-    }
-
-    public PayBonusTransaction(Card fromCard, String typeOperation, float sum, char currencySymbol) {
-        super(fromCard, typeOperation, sum, currencySymbol);
-    }
-
-    public PayBonusTransaction(Card fromCard, Account toAccount, String typeOperation, float sum, char currencySymbol) {
-        super(fromCard, toAccount, typeOperation, sum, currencySymbol);
-    }
-
-    public PayBonusTransaction(Account fromAccount, Card toCard, String typeOperation, float sum, char currencySymbol) {
-        super(fromAccount, toCard, typeOperation, sum, currencySymbol);
+    public PayBonusTransaction(Card fromCard, String typeOperation, float sumPay, int payBonuses, String buyProductOrService) {
+        super(fromCard, typeOperation, sumPay,buyProductOrService);
+        this.payBonuses = payBonuses;
     }
 
     @Override
     public String getStringTransaction() {
+        String consumer = getNameCard(getFromCard());
 
-        String transaction = getLocalDateTime() + " " + getNameCard(getFromCard()) + " " + getTypeOperation() + " " + getBuyProductOrService() + ": " +
-                getPayBonuses() + " " + "бонусов" + " Статус: " + getStatusOperation() + " Доступно бонусов: " + getBalanceBonuses();
+        String transaction = getLocalDateTime() + " " + consumer + " " +
+                "\n" + getTypeOperation() + " " + getBuyProductOrService() + ": -" + payBonuses + " бонусов " +
+                "\nСтатус: " + getStatusOperation()+ "\nДоступно бонусов: " + balanceBonuses;
 
         return transaction;
+
     }
 
 }

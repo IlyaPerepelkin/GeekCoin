@@ -2,6 +2,8 @@ package ru.geekstar.Card;
 
 public interface ICashbackCard {
 
+    float getCashback();
+
     //накопления кэшбэка
     void accumulateCashback(float sumPay);
 
