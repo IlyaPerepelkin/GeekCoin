@@ -6,10 +6,7 @@ import ru.geekstar.Card.Card;
 import ru.geekstar.ClientProfile.PhysicalPersonProfile;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class FormTransfer {
@@ -19,6 +16,7 @@ public class FormTransfer {
     private JTextField textFieldSum;
     private JButton buttonTransfer;
     private JButton buttonCancel;
+    private JLabel labelCurrency;
 
     public JPanel getPanelTransfer() {
         return panelTransfer;
@@ -29,54 +27,39 @@ public class FormTransfer {
         buttonTransfer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // проверяем заполнены ли все обязательные поля
+                // если хоть одно поле не заполнено, то происходит return (выход из метода)
+                if (!checkFillFields()) return;
+
                 // извлекаем данные, которые указал пользователь
                 Object objFrom = comboBoxFrom.getSelectedItem();
                 Object objTo = comboBoxTo.getSelectedItem();
                 float sumTransfer = Float.valueOf(textFieldSum.getText());
 
-                // проверяем заполнены ли все обязательные поля
-                // если хоть одно поле не заполнено, то происходит return (выход из метода)
-                if (!checkFillFields()) return;
-
-                // если объектом списания является карта
                 if (objFrom instanceof Card) {
-                    // явно приводим Object к типу Card
                     Card cardFrom = (Card) objFrom;
-                    // проверяем баланс карты
                     if (!checkBalance(cardFrom, sumTransfer)) return;
 
-                    // если объектом зачисления является карта
                     if (objTo instanceof Card) {
                         Card cardTo = (Card) objTo;
-                        // то вызываем метод пополнения transferCard2Card()
                         FormMain.physicalPerson.transferCard2Card(cardFrom, cardTo, sumTransfer);
                     }
-
-                    // если объектом зачисления является счёт
                     if (objTo instanceof Account) {
                         Account accountTo = (Account) objTo;
-                        // вызываем метод transferCard2Account()
                         FormMain.physicalPerson.transferCard2Account(cardFrom, accountTo, sumTransfer);
                     }
                 }
 
-                // если объектом списания является счёт
                 if (objFrom instanceof Account) {
                     Account accountFrom = (Account) objFrom;
-                    // проверяем баланс счёта
                     if (!checkBalance(accountFrom, sumTransfer)) return;
 
-                    // если объектом зачисления является карта
                     if (objTo instanceof Card) {
                         Card cardTo = (Card) objTo;
-                        // то вызываем метод transferAccount2Card()
                         FormMain.physicalPerson.transferAccount2Card(accountFrom, cardTo, sumTransfer);
                     }
-
-                    // если объектом зачисления является счёт
                     if (objTo instanceof Account) {
                         Account accountTo = (Account) objTo;
-                        // то вызываем метод пополнения transferAccount2Account()
                         FormMain.physicalPerson.transferAccount2Account(accountFrom, accountTo, sumTransfer);
                     }
                 }
@@ -86,7 +69,6 @@ public class FormTransfer {
             }
         });
 
-        // слушатель срабатывает в момент показа панели panelDepositing
         panelTransfer.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {
@@ -101,6 +83,25 @@ public class FormTransfer {
                 FormMain.formMain.displayPanelMain();
             }
         });
+
+        comboBoxFrom.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                updateCurrencySymbolSum();
+            }
+        });
+    }
+
+    public void updateCurrencySymbolSum() {
+        Object objFrom = comboBoxFrom.getSelectedItem();
+        if (objFrom instanceof Card) {
+            Card cardFrom = (Card) objFrom;
+            labelCurrency.setText(cardFrom.getPayCardAccount().getCurrencySymbol());
+        }
+        if (objFrom instanceof Account) {
+            Account accountFrom = (Account) objFrom;
+            labelCurrency.setText(accountFrom.getCurrencySymbol());
+        }
     }
 
     public void updatePanelTransfer() {
@@ -123,7 +124,6 @@ public class FormTransfer {
                 comboBoxFrom.addItem(card);
                 comboBoxTo.addItem(card);
             }
-
             // запрашиваем счета профиля пользователя
             ArrayList<Account> accounts = profile.getAccounts();
             // перебираем счета
@@ -138,9 +138,26 @@ public class FormTransfer {
     }
 
     public boolean checkFillFields() {
-        // Регулярное выражение для проверки суммы на её корректность.
-        // Целая часть может быть от 1 до 7 символов {1,7}, то есть сумма не может быть больше 9999999.
-        // Дробная часть не обязательна (?), должна содержать символ точка "." и не может превышать 2 символов {2}, то есть не может быть больше 99.
+        if (comboBoxFrom.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(panelTransfer, "Выберите откуда перевести");
+            return false;
+        }
+        if (comboBoxTo.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(panelTransfer, "Выберите куда перевести");
+            return false;
+        }
+
+        if (comboBoxFrom.getSelectedItem().equals(comboBoxTo.getSelectedItem())) {
+            JOptionPane.showMessageDialog(panelTransfer, "Выберите разные карты или счета");
+            return false;
+        }
+
+        if (textFieldSum.getText().isBlank()) {
+            JOptionPane.showMessageDialog(panelTransfer, "Введите сумму перевода");
+            return false;
+        }
+
+        // регулярное выражение для проверки суммы на её корректность
         String regexSum = "[0-9]{1,7}(\\.[0-9]{2})?";
         if (!textFieldSum.getText().matches(regexSum)) {
             JOptionPane.showMessageDialog(panelTransfer, "Сумма может состоять из цифр и точки.\nСумма не может быть больше или равна 10 млн.");
