@@ -137,7 +137,7 @@ public abstract class Card implements IPaySystem {
     // Оплата картой за рубежом
     public void payByCard(final float sumPay, String buyProductOrService, final String pinCode, String country) {
         // по названию страны определяем валюту покупки
-        String currencyPayCode = bank.getCurrencyCode(country);
+        String currencyPayCode = Bank.getCurrencyCode(country);
         // по названию страны определяем валюту биллинга - это валюта платёжной системы
         String billingCurrencyCode = getCurrencyCodePaySystem(country);
 
@@ -152,6 +152,8 @@ public abstract class Card implements IPaySystem {
 
         // округлим дробную часть до двух знаков после запятой
         sumPayInCardCurrency = bank.round(sumPayInCardCurrency);
+
+        if (!currencyPayCode.equals(cardCurrencyCode)) buyProductOrService += " " + sumPay + " " + Bank.getCurrencySymbol(currencyPayCode);
 
         // приведя сумму покупки к валюте карты вызываем метод оплаты по умолчанию
         payByCard(sumPayInCardCurrency, buyProductOrService, pinCode);
@@ -187,11 +189,14 @@ public abstract class Card implements IPaySystem {
 
                 // определяем валюту карты зачисления
                 String toCurrencyCode = toCard.getPayCardAccount().getCurrencyCode();
+
+                String depositingTypeOperation = "Пополнение " + (!fromCurrencyCode.equals(toCurrencyCode) ? sumTransfer + " " + payCardAccount.getCurrencySymbol() : "") + " с карты";
+
                 // если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту карты зачисления по курсу банка
                 sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
 
                 // инициализировать транзакцию пополнения
-                DepositingTransaction depositingTransaction = new DepositingTransaction(this, toCard, "Пополнение с карты", sumTransfer, toCard.payCardAccount.getCurrencySymbol());
+                DepositingTransaction depositingTransaction = new DepositingTransaction(this, toCard, depositingTypeOperation, sumTransfer, toCard.payCardAccount.getCurrencySymbol());
                 depositingTransaction.setAuthorizationCode(authorizationCode);
 
                 // зачислить на карту
@@ -253,11 +258,14 @@ public abstract class Card implements IPaySystem {
 
                     // определяем валюту счёта зачисления
                     String toCurrencyCode = toAccount.getCurrencyCode();
+
+                    String depositingTypeOperation = "Пополнение " + (!fromCurrencyCode.equals(toCurrencyCode) ? sumTransfer + " " + payCardAccount.getCurrencySymbol() : "") + " с карты";
+
                     // если валюты списания и зачисления не совпадают, то конвертировать сумму перевода в валюту счёта зачисления по курсу банка
                     sumTransfer = bank.convertToCurrencyExchangeRateBank(sumTransfer, fromCurrencyCode, toCurrencyCode);
 
                     // инициализировать транзакцию пополнения
-                    DepositingTransaction depositingTransaction = new DepositingTransaction(this, toAccount, "Пополнение с карты", sumTransfer, toAccount.getCurrencySymbol());
+                    DepositingTransaction depositingTransaction = new DepositingTransaction(this, toAccount, depositingTypeOperation, sumTransfer, toAccount.getCurrencySymbol());
 
                     // и зачислить на счёт
                     boolean topUpStatus = toAccount.topUp(sumTransfer);
