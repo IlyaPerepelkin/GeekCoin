@@ -7,6 +7,7 @@ import ru.geekstar.Bank.IBankServicePhysicalPersons;
 import ru.geekstar.Card.*;
 import ru.geekstar.Card.IPaySystem.IPaySystem;
 import ru.geekstar.ClientProfile.PhysicalPersonProfile;
+import ru.geekstar.ThreadJobs.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -120,60 +121,82 @@ public class PhysicalPerson {
         return bank.openAccount(getPhysicalPersonProfile(bank), classAccount, currencyCode);
     }
 
-    public void depositingCash2Card(Card toCard, float sumDepositing) {
-        toCard.depositingCash2Card(sumDepositing);
+    public void payByCard(Card card, float sumPay, String buyProductOrService, String pinCode) {
+        Runnable payByCardJob = new PayByCardRunnable(card, sumPay, buyProductOrService, pinCode);
+        Thread threadPayByCard = new Thread(payByCardJob);
+        threadPayByCard.start();
     }
 
-    public void payByCard(Card card, float sumPay, String byProductOrService, String pinCode) {
-        card.payByCard(sumPay, byProductOrService, pinCode);
+    public void payByCard(Card card, float sumPay, String buyProductOrService, String country, String pinCode) {
+        Runnable payByCardJob = new PayByCardRunnable(card, sumPay, buyProductOrService, country, pinCode);
+        Thread threadPayByCard = new Thread(payByCardJob);
+        threadPayByCard.start();
     }
 
-    public void payByCard(Card card, float sumPay, String byProductOrService, String country, String pinCode) {
-        card.payByCard(sumPay, byProductOrService, pinCode, country);
-    }
-
-    public void payByCardMiles(IAirlinesCard airlinesCard, float sumPay, int milesPay, String byProductOrService, String pinCode) {
-        airlinesCard.payByCardMiles(sumPay, milesPay, byProductOrService, pinCode);
+    public void payByCardMiles(IAirlinesCard airlinesCard, float sumPay, int milesPay, String buyProductOrService, String pinCode) {
+        Runnable payByCardMiles = new PayByCardMilesRunnable(airlinesCard, sumPay, milesPay, buyProductOrService, pinCode);
+        Thread threadPayByCardMiles = new Thread(payByCardMiles);
+        threadPayByCardMiles.start();
     }
 
     public void payByCardBonuses(IBonusCard bonusCard, float sumPay, int bonusesPay, String buyProductOrService, String pinCode) {
-        bonusCard.payByCardBonuses(sumPay, bonusesPay, buyProductOrService, pinCode);
+        Runnable payByCardBonuses = new PayByCardBonusRunnable(bonusCard, sumPay, bonusesPay, buyProductOrService, pinCode);
+        Thread threadPayByCardBonuses = new Thread(payByCardBonuses);
+        threadPayByCardBonuses.start();
     }
 
     public void transferCard2Card(Card fromCard, Card toCard, float sumTransfer) {
-        fromCard.transferCard2Card(toCard, sumTransfer);
+        Runnable transferCard2Card = new TransferRunnable(fromCard, toCard, sumTransfer);
+        Thread threadTransferCard2Card = new Thread(transferCard2Card);
+        threadTransferCard2Card.start();
     }
 
     public void transferCard2Account(Card fromCard, Account toAccount, float sumTransfer) {
-        fromCard.transferCard2Account(toAccount, sumTransfer);
+        Runnable transferCard2Account = new TransferRunnable(fromCard, toAccount, sumTransfer);
+        Thread threadTransferCard2Account = new Thread(transferCard2Account);
+        threadTransferCard2Account.start();
     }
 
     public void transferAccount2Card(Account fromAccount, Card toCard, float sumTransfer) {
-        fromAccount.transferAccount2Card(toCard, sumTransfer);
+        Runnable transferAccount2Card = new TransferRunnable(fromAccount, toCard, sumTransfer);
+        Thread threadTransferAccount2Card = new Thread(transferAccount2Card);
+        threadTransferAccount2Card.start();
     }
 
     public void transferAccount2Account(Account fromAccount, Account toAccount, float sumTransfer) {
-        fromAccount.transferAccount2Account(toAccount, sumTransfer);
+        Runnable transferAccount2Account = new TransferRunnable(fromAccount, toAccount, sumTransfer);
+        Thread threadTransferAccount2Account = new Thread(transferAccount2Account);
+        threadTransferAccount2Account.start();
+    }
+
+    public void depositingCash2Card(Card toCard, float sumDepositing) {
+        Runnable depositingCash2Card = new DepositingRunnable(toCard, sumDepositing);
+        Thread threadDepositingCash2Card = new Thread(depositingCash2Card);
+        threadDepositingCash2Card.start();
     }
 
     public void depositingCardFromCard(Card toCard, Card fromCard, float sumDepositing) {
-        toCard.depositingCardFromCard(fromCard, sumDepositing);
+        Runnable depositingCardFromCard = new DepositingRunnable(toCard, fromCard, sumDepositing);
+        Thread threadDepositingCardFromCard = new Thread(depositingCardFromCard);
+        threadDepositingCardFromCard.start();
     }
 
     public void depositingCardFromAccount(Card toCard, Account fromAccount, float sumDepositing) {
-        toCard.depositingCardFromAccount(fromAccount, sumDepositing);
+        Runnable depositingCardFromAccount = new DepositingRunnable(toCard, fromAccount, sumDepositing);
+        Thread threadDepositingCardFromAccount = new Thread(depositingCardFromAccount);
+        threadDepositingCardFromAccount.start();
     }
 
     public void depositingAccountFromCard(Account toAccount, Card fromCard, float sumDepositing) {
-        toAccount.depositingAccountFromCard(fromCard, sumDepositing);
+        Runnable depositingAccountFromCard = new DepositingRunnable(toAccount, fromCard, sumDepositing);
+        Thread threadDepositingAccountFromCard = new Thread(depositingAccountFromCard);
+        threadDepositingAccountFromCard.start();
     }
 
     public void depositingAccountFromAccount(Account toAccount, Account fromAccount, float sumDepositing) {
-        toAccount.depositingAccountFromAccount(fromAccount, sumDepositing);
-    }
-
-    public void depositingCashback2Card(ICashbackCard toCard) {
-        toCard.depositingCashback2Card();
+        Runnable depositingAccountFromAccount = new DepositingRunnable(toAccount, fromAccount, sumDepositing);
+        Thread threadDepositingAccountFromAccount = new Thread(depositingAccountFromAccount);
+        threadDepositingAccountFromAccount.start();
     }
 
     public ArrayList<Float> getExchangeRatePaySystem(IPaySystem paySystemCard, String currency, String currencyExchangeRate) {

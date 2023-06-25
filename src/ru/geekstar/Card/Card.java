@@ -157,7 +157,6 @@ public abstract class Card implements IPaySystem {
 
         // приведя сумму покупки к валюте карты вызываем метод оплаты по умолчанию
         payByCard(sumPayInCardCurrency, buyProductOrService, pinCode);
-
     }
 
 
