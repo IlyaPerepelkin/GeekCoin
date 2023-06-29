@@ -135,7 +135,7 @@ public abstract class Card implements IPaySystem {
     }
 
     // Оплата картой за рубежом
-    public void payByCard(final float sumPay, String buyProductOrService, final String pinCode, String country) {
+    public void payByCard(final float sumPay, String buyProductOrService, String country, final String pinCode) {
         // по названию страны определяем валюту покупки
         String currencyPayCode = Bank.getCurrencyCode(country);
         // по названию страны определяем валюту биллинга - это валюта платёжной системы
