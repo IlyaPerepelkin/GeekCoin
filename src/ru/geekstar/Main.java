@@ -87,8 +87,6 @@ public class Main {
         I.depositingAccountFromCard(mySberSavingsAccount2, sberMastercardGold, 105.00f);
         I.depositingAccountFromAccount(mySberSavingsAccount1, mySberSavingsAccount2, 25.00f);
 
-        I.depositingCashback2Card(myTinkoffBlackMir1);
-
         I.displayAllProfileTransactions();
         friend.displayAllProfileTransactions();
 

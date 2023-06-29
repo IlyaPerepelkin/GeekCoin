@@ -74,7 +74,7 @@ public abstract class Account {
         return balance;
     }
 
-    public boolean setBalance(float balance) {
+    public synchronized boolean setBalance(float balance) {
         if (balance >= 0) {
             this.balance = balance;
             return true;
@@ -256,7 +256,7 @@ public abstract class Account {
     }
 
     // Пополнить баланс
-    public final boolean topUp(float sum) {
+    public synchronized final boolean topUp(float sum) {
         setBalance(balance + sum);
         return true;
     }
@@ -280,7 +280,7 @@ public abstract class Account {
     }
 
     // списать со счета
-    public final boolean writeOff(float sum) {
+    public synchronized final boolean writeOff(float sum) {
         return setBalance(balance - sum);
     }
 
