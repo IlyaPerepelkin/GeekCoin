@@ -121,16 +121,19 @@ public class PhysicalPerson {
         return bank.openAccount(getPhysicalPersonProfile(bank), classAccount, currencyCode);
     }
 
-    public void payByCard(Card card, float sumPay, String buyProductOrService, String pinCode) {
-        Runnable payByCardJob = new PayByCardRunnable(card, sumPay, buyProductOrService, pinCode);
+    public void threadPayByCard(Runnable payByCardJob) {
         Thread threadPayByCard = new Thread(payByCardJob);
         threadPayByCard.start();
     }
 
+    public void payByCard(Card card, float sumPay, String buyProductOrService, String pinCode) {
+        Runnable payByCardJob = new PayByCardRunnable(card, sumPay, buyProductOrService, pinCode);
+        threadPayByCard(payByCardJob);
+    }
+
     public void payByCard(Card card, float sumPay, String buyProductOrService, String country, String pinCode) {
         Runnable payByCardJob = new PayByCardRunnable(card, sumPay, buyProductOrService, country, pinCode);
-        Thread threadPayByCard = new Thread(payByCardJob);
-        threadPayByCard.start();
+        threadPayByCard(payByCardJob);
     }
 
     public void payByCardMiles(IAirlinesCard airlinesCard, float sumPay, int milesPay, String buyProductOrService, String pinCode) {
@@ -233,7 +236,7 @@ public class PhysicalPerson {
         }
     }
 
-
+    
     public void addAccountToMulticurrencyCard(IMulticurrencyCard multicurrencyCard, String currencyCodeAccount) {
         multicurrencyCard.addAccount(currencyCodeAccount);
     }

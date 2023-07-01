@@ -28,7 +28,7 @@ public abstract class SavingsAccount extends Account {
             percentOfBalanceDay += (getBalance() / 100) * percentOfBalance * 1 / 365;
     }
 
-    public void chargePercentOnBalanceEndMonth() {
+    public synchronized void chargePercentOnBalanceEndMonth() {
         // TODO: если 00:00 1-ого числа месяца, то
             setBalance(getBalance() + percentOfBalanceDay);
             percentOfBalance = 0;
