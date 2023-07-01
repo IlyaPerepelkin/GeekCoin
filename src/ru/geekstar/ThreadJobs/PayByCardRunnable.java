@@ -12,6 +12,8 @@ public class PayByCardRunnable extends Operations implements Runnable {
 
     private String pinCode;
 
+    private Card card;
+
 
     public PayByCardRunnable(Card card, float sumPay, String buyProductOrService, String pinCode) {
         this.card = card;

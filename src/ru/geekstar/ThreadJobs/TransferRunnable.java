@@ -9,27 +9,23 @@ public class TransferRunnable extends Operations implements Runnable {
 
 
     public TransferRunnable(Card fromCard, Card toCard, float sumTransfer) {
+        super(fromCard, toCard, sumTransfer);
         this.sumTransfer = sumTransfer;
-        this.fromCard = fromCard;
-        this.toCard = toCard;
     }
 
     public TransferRunnable(Card fromCard, Account toAccount, float sumTransfer) {
+        super(fromCard, toAccount, sumTransfer);
         this.sumTransfer = sumTransfer;
-        this.fromCard = fromCard;
-        this.toAccount = toAccount;
     }
 
     public TransferRunnable(Account fromAccount, Card toCard, float sumTransfer) {
+        super(fromAccount, toCard, sumTransfer);
         this.sumTransfer = sumTransfer;
-        this.fromAccount = fromAccount;
-        this.toCard = toCard;
     }
 
     public TransferRunnable(Account fromAccount, Account toAccount, float sumTransfer) {
+        super(fromAccount, toAccount, sumTransfer);
         this.sumTransfer = sumTransfer;
-        this.fromAccount = fromAccount;
-        this.toAccount = toAccount;
     }
 
     @Override

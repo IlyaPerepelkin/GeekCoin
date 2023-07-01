@@ -9,32 +9,28 @@ public class DepositingRunnable extends Operations implements Runnable {
 
 
     public DepositingRunnable(Card toCard, float sumDepositing) {
+        super(toCard, sumDepositing);
         this.sumDepositing = sumDepositing;
-        this.toCard = toCard;
     }
 
     public DepositingRunnable(Card toCard, Card fromCard, float sumDepositing) {
+        super(toCard, fromCard, sumDepositing);
         this.sumDepositing = sumDepositing;
-        this.toCard = toCard;
-        this.fromCard = fromCard;
     }
 
     public DepositingRunnable(Card toCard, Account fromAccount, float sumDepositing) {
+        super(toCard, fromAccount, sumDepositing);
         this.sumDepositing = sumDepositing;
-        this.toCard = toCard;
-        this.fromAccount = fromAccount;
     }
 
     public DepositingRunnable(Account toAccount, Card fromCard, float sumDepositing) {
+        super(toAccount, fromCard, sumDepositing);
         this.sumDepositing = sumDepositing;
-        this.toAccount = toAccount;
-        this.fromCard = fromCard;
     }
 
     public DepositingRunnable(Account toAccount, Account fromAccount, float sumDepositing) {
+        super(toAccount, fromAccount, sumDepositing);
         this.sumDepositing = sumDepositing;
-        this.toAccount = toAccount;
-        this.fromAccount = fromAccount;
     }
 
     @Override
