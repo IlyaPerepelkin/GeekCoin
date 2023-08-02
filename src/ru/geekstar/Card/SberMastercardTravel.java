@@ -4,6 +4,7 @@ import ru.geekstar.Account.PayCardAccount;
 import ru.geekstar.Account.SberPayCardAccount;
 import ru.geekstar.Bank.Sberbank;
 import ru.geekstar.ClientProfile.PhysicalPersonProfile;
+import ru.geekstar.Currency;
 
 import java.util.ArrayList;
 
@@ -25,8 +26,8 @@ public final class SberMastercardTravel extends CardMastercard implements IMulti
 
     public SberMastercardTravel(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
         super(cardHolder, payCardAccount, pinCode);
-        addAccount("USD");
-        addAccount("EUR");
+        addAccount(Currency.USD.toString());
+        addAccount(Currency.EUR.toString());
         countCards++;
     }
 

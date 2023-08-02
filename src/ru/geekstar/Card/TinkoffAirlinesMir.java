@@ -5,6 +5,7 @@ import ru.geekstar.Account.TinkoffPayCardAccount;
 import ru.geekstar.Bank.Tinkoff;
 import ru.geekstar.ClientProfile.PhysicalPersonProfile;
 import ru.geekstar.ClientProfile.TinkoffPhysicalPersonProfile;
+import ru.geekstar.Currency;
 import ru.geekstar.Transaction.PayMileTransaction;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public final class TinkoffAirlinesMir extends CardMir implements IMulticurrencyC
 
     public TinkoffAirlinesMir(PhysicalPersonProfile cardHolder, PayCardAccount payCardAccount, String pinCode) {
         super(cardHolder, payCardAccount, pinCode);
-        addAccount("EUR");
+        addAccount(Currency.EUR.toString());
         countCards++;
     }
 
@@ -47,9 +48,9 @@ public final class TinkoffAirlinesMir extends CardMir implements IMulticurrencyC
     public void accumulateMiles(float sumPay) {
         TinkoffPhysicalPersonProfile cardHolder = (TinkoffPhysicalPersonProfile) getCardHolder();
         int miles = 0;
-        if (getPayCardAccount().getCurrencyCode().equals("RUB")) miles = (int) (sumPay / cardHolder.getCostOf1MileRUB());
-        if (getPayCardAccount().getCurrencyCode().equals("USD")) miles = (int) (sumPay / cardHolder.getCostOf1MileUSD());
-        if (getPayCardAccount().getCurrencyCode().equals("EUR")) miles = (int) (sumPay / cardHolder.getCostOf1MileEUR());
+        if (getPayCardAccount().getCurrencyCode().equals(Currency.RUB.toString())) miles = (int) (sumPay / cardHolder.getCostOf1MileRUB());
+        if (getPayCardAccount().getCurrencyCode().equals(Currency.USD.toString())) miles = (int) (sumPay / cardHolder.getCostOf1MileUSD());
+        if (getPayCardAccount().getCurrencyCode().equals(Currency.EUR.toString())) miles = (int) (sumPay / cardHolder.getCostOf1MileEUR());
 
         cardHolder.setMiles(cardHolder.getMiles() + miles);
     }

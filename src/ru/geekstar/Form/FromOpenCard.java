@@ -8,6 +8,7 @@ import ru.geekstar.Bank.Sberbank;
 import ru.geekstar.Bank.Tinkoff;
 import ru.geekstar.Card.*;
 import ru.geekstar.ClientProfile.PhysicalPersonProfile;
+import ru.geekstar.Currency;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -130,7 +131,7 @@ public class FromOpenCard {
         } else bank = (IBankServicePhysicalPersons) profile.getBank();
 
         // Вызываем метод банка для создания объекта карты, то есть для открытия карты
-        FormMain.physicalPerson.openCard(bank, nameClassSelectedCard, classPayCardAccount,"RUB", Bank.generatePinCode());
+        FormMain.physicalPerson.openCard(bank, nameClassSelectedCard, classPayCardAccount, Currency.RUB.toString(), Bank.generatePinCode());
         // отображаем панель со статусом операции
         FormMain.formMain.displayPanelStatus("Карта открыта");
     }

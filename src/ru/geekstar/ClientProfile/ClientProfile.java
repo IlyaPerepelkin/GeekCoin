@@ -1,6 +1,7 @@
 package ru.geekstar.ClientProfile;
 
 import ru.geekstar.Bank.Bank;
+import ru.geekstar.Currency;
 
 public abstract class ClientProfile {
 
@@ -142,17 +143,17 @@ public abstract class ClientProfile {
 
     // Проверить не превышен ли лимит по оплатам и переводам в сутки
     public boolean exceededLimitPaymentsTransfersDay(float sum, String currencyCode) {
-        if (currencyCode.equals("RUB") && totalPaymentsTransfersDayInRUB + sum > limitPaymentsTransfersDayInRUB) return true;
-        if (currencyCode.equals("USD") && totalPaymentsTransfersDayInUSD + sum > limitPaymentsTransfersDayInUSD) return true;
-        if (currencyCode.equals("EUR") && totalPaymentsTransfersDayInEUR + sum > limitPaymentsTransfersDayInEUR) return true;
+        if (currencyCode.equals(Currency.RUB.toString()) && totalPaymentsTransfersDayInRUB + sum > limitPaymentsTransfersDayInRUB) return true;
+        if (currencyCode.equals(Currency.USD.toString()) && totalPaymentsTransfersDayInUSD + sum > limitPaymentsTransfersDayInUSD) return true;
+        if (currencyCode.equals(Currency.EUR.toString()) && totalPaymentsTransfersDayInEUR + sum > limitPaymentsTransfersDayInEUR) return true;
         return false;
     }
 
     // Прибавить сумму оплаты к общей сумме совершенных оплат и переводов в сутки
     public void updateTotalPaymentsTransfersDay(float sum, String currencyCode) {
-        if (currencyCode.equals("RUB")) totalPaymentsTransfersDayInRUB += sum;
-        if (currencyCode.equals("USD")) totalPaymentsTransfersDayInUSD += sum;
-        if (currencyCode.equals("EUR")) totalPaymentsTransfersDayInEUR += sum;
+        if (currencyCode.equals(Currency.RUB.toString())) totalPaymentsTransfersDayInRUB += sum;
+        if (currencyCode.equals(Currency.USD.toString())) totalPaymentsTransfersDayInUSD += sum;
+        if (currencyCode.equals(Currency.EUR.toString())) totalPaymentsTransfersDayInEUR += sum;
     }
 
     // Вывод всех операций по всем картам и счетам профиля клиента. Переопределим в дочерних классах
