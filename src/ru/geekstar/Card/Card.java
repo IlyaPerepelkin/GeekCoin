@@ -23,12 +23,13 @@ public abstract class Card implements IPaySystem {
 
     private String pinCode;
 
-    public static final String writeOffSuccessful = "Списание прошло успешно";
-    public static final String refillCompletedSuccessfully = "Пополнение прошло успешно";
-    public static final String transferFailed = "Перевод не прошёл";
-    public static final String writeOffFailed = "Списание не прошло";
-    public static final String insufficientFunds = "Недостаточно средств";
-    public static final String transferSuccessful = "Перевод прошёл успешно";
+    public static final String  WRITE_OFF_SUCCESSFUL = "Списание прошло успешно";
+    public static final String REFILL_COMPLETED_SUCCESSFULLY = "Пополнение прошло успешно";
+    public static final String TRANSFER_FAILED = "Перевод не прошёл";
+    public static final String WRITE_OFF_FAILED = "Списание не прошло";
+    public static final String INSUFFICIENT_FUNDS = "Недостаточно средств";
+    public static final String TRANSFER_SUCCESSFUL = "Перевод прошёл успешно";
+
 
 
     public Bank getBank() {
@@ -191,7 +192,7 @@ public abstract class Card implements IPaySystem {
             boolean writeOffReservedAmountStatus = payCardAccount.writeOffBlockedSum(sumTransfer + commission);
             if (writeOffReservedAmountStatus) {
                 // внести в транзакцию перевода статус списания
-                transferTransaction.setStatusOperation(writeOffSuccessful);
+                transferTransaction.setStatusOperation(WRITE_OFF_SUCCESSFUL);
 
                 // определяем валюту карты зачисления
                 String toCurrencyCode = toCard.getPayCardAccount().getCurrencyCode();
@@ -209,22 +210,22 @@ public abstract class Card implements IPaySystem {
                 boolean topUpStatus = toCard.getPayCardAccount().topUp(sumTransfer);
                 if (topUpStatus) {
                     // внести в транзакцию пополнения статус пополнения
-                    depositingTransaction.setStatusOperation(refillCompletedSuccessfully);
+                    depositingTransaction.setStatusOperation(REFILL_COMPLETED_SUCCESSFULLY);
                     // внести в транзакцию пополнения баланс карты после пополнения
                     depositingTransaction.setBalance(toCard.getPayCardAccount().getBalance());
                     // добавить и привязать транзакцию пополнения к счёту карты зачисления
                     toCard.getPayCardAccount().getDepositingTransactions().add(depositingTransaction);
 
                     // внести в транзакцию перевода статус перевода
-                    transferTransaction.setStatusOperation(transferSuccessful);
+                    transferTransaction.setStatusOperation(TRANSFER_SUCCESSFUL);
 
                     // прибавить сумму перевода к общей сумме совершенных оплат и переводов за сутки, чтобы контролировать лимиты
                     getCardHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toCard);
 
                     // TODO: и перевести комиссию на счёт банка
 
-                } else transferTransaction.setStatusOperation(transferFailed);
-            } else transferTransaction.setStatusOperation(writeOffFailed);
+                } else transferTransaction.setStatusOperation(TRANSFER_FAILED);
+            } else transferTransaction.setStatusOperation(WRITE_OFF_FAILED);
         } else {
             // иначе выводим сообщение о статусе авторизации, чтобы понимать что пошло не так
             String authorizationStatusMessage = authorizationMessage.substring(authorizationMessage.indexOf(":") + 2);
@@ -260,7 +261,7 @@ public abstract class Card implements IPaySystem {
                 boolean withdrawalStatus = payCardAccount.withdrawal(sumTransfer + commission);
                 if (withdrawalStatus) {
                     // внести в транзакцию статус списания
-                    transferTransaction.setStatusOperation(writeOffSuccessful);
+                    transferTransaction.setStatusOperation(WRITE_OFF_SUCCESSFUL);
 
                     // определяем валюту счёта зачисления
                     String toCurrencyCode = toAccount.getCurrencyCode();
@@ -277,23 +278,23 @@ public abstract class Card implements IPaySystem {
                     boolean topUpStatus = toAccount.topUp(sumTransfer);
                     if (topUpStatus) {
                         // внести в транзакцию пополнения статус зачисления
-                        depositingTransaction.setStatusOperation(refillCompletedSuccessfully);
+                        depositingTransaction.setStatusOperation(REFILL_COMPLETED_SUCCESSFULLY);
                         // внести в транзакцию пополнения баланс счёта после зачисления
                         depositingTransaction.setBalance(toAccount.getBalance());
                         // добавить и привязать транзакцию пополнения к счёту зачисления
                         toAccount.getDepositingTransactions().add(depositingTransaction);
 
                         // внести в транзакцию перевода статус перевода
-                        transferTransaction.setStatusOperation(transferSuccessful);
+                        transferTransaction.setStatusOperation(TRANSFER_SUCCESSFUL);
                         // прибавить сумму перевода к общей сумме совершённых оплат и переводов за сутки, чтобы контролировать лимиты
                         getCardHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toAccount);
 
                         // TODO: и перевести комиссию на счёт банка
 
-                    } else transferTransaction.setStatusOperation(transferFailed);
-                } else transferTransaction.setStatusOperation(writeOffFailed);
+                    } else transferTransaction.setStatusOperation(TRANSFER_FAILED);
+                } else transferTransaction.setStatusOperation(WRITE_OFF_FAILED);
             } else transferTransaction.setStatusOperation("Лимит по сумме операций в день превышен");
-        } else transferTransaction.setStatusOperation(insufficientFunds);
+        } else transferTransaction.setStatusOperation(INSUFFICIENT_FUNDS);
 
         // внести в транзакцию баланс карты после списания
         transferTransaction.setBalance(getPayCardAccount().getBalance());

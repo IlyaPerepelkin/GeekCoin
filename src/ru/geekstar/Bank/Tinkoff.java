@@ -11,18 +11,18 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPersons {
 
     public static final String TINKOFF;
 
-    public static final float limitPaymentsTransfersDayInRUB = 1000000.00f;
-    public static final float limitPaymentsTransfersDayInUSD = 50000.00f;
-    public static final float limitPaymentsTransfersDayInEUR = 3500.00f;
-    public static final float percentCashbackOfSumPay = 1.00f;
-    public static final float costOf1MileRUB = 60.00f;
-    public static final float costOf1MileUSD = 1.00f;
-    public static final float costOf1MileEUR = 1.00f;
-    public static final float percentOfCommissionForPayHousingCommunalServices = 1.8f;
-    public static final float percentOfCommissionForTransferInRUB = 1.1f;
-    public static final float percentOfCommissionForTransferInUsdOrOtherCurrency = 1.20f;
-    public static final float limitCommissionTransferInRUB = 3000.00f;
-    public static final float limitCommissionTransferInUsdOrEquivalentInOtherCurrency = 100.00f;
+    public static final float LIMIT_PAYMENTS_TRANSFERS_DAY_IN_RUB = 1000000.00f;
+    public static final float LIMIT_PAYMENTS_TRANSFERS_DAY_IN_USD = 50000.00f;
+    public static final float LIMIT_PAYMENTS_TRANSFERS_DAY_IN_EUR = 3500.00f;
+    public static final float PERCENT_CASHBACK_OF_SUM_PAY = 1.00f;
+    public static final float COST_OF_1_MILE_RUB = 60.00f;
+    public static final float COST_OF_1_MILE_USD = 1.00f;
+    public static final float COST_OF_1_MILE_EUR = 1.00f;
+    public static final float PERCENT_OF_COMMISSION_FOR_PAY_HOUSING_COMMUNAL_SERVICES = 1.8f;
+    public static final float PERCENT_OF_COMMISSION_FOR_TRANSFER_IN_RUB = 1.1f;
+    public static final float PERCENT_OF_COMMISSION_FOR_TRANSFER_IN_USD_OR_OTHER_CURRENCY = 1.20f;
+    public static final float LIMIT_COMMISSION_TRANSFER_IN_RUB = 3000.00f;
+    public static final float LIMIT_COMMISSION_TRANSFER_IN_USD_OR_EQUIVALENT_IN_OTHER_CURRENCY = 100.00f;
 
     static {
         TINKOFF = "Тинькофф";
@@ -42,24 +42,24 @@ public class Tinkoff extends Bank implements IBankServicePhysicalPersons {
         TinkoffPhysicalPersonProfile tinkoffPhysicalPersonProfile = new TinkoffPhysicalPersonProfile(this, physicalPerson);
 
         // установить лимиты
-        tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInRUB(limitPaymentsTransfersDayInRUB);
-        tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInUSD(limitPaymentsTransfersDayInUSD);
-        tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInEUR(limitPaymentsTransfersDayInEUR);
+        tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInRUB(LIMIT_PAYMENTS_TRANSFERS_DAY_IN_RUB);
+        tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInUSD(LIMIT_PAYMENTS_TRANSFERS_DAY_IN_USD);
+        tinkoffPhysicalPersonProfile.setLimitPaymentsTransfersDayInEUR(LIMIT_PAYMENTS_TRANSFERS_DAY_IN_EUR);
 
-        tinkoffPhysicalPersonProfile.setPercentCashbackOfSumPay(percentCashbackOfSumPay);
+        tinkoffPhysicalPersonProfile.setPercentCashbackOfSumPay(PERCENT_CASHBACK_OF_SUM_PAY);
 
-        tinkoffPhysicalPersonProfile.setCostOf1MileRUB(costOf1MileRUB);
-        tinkoffPhysicalPersonProfile.setCostOf1MileUSD(costOf1MileUSD);
-        tinkoffPhysicalPersonProfile.setCostOf1MileEUR(costOf1MileEUR);
+        tinkoffPhysicalPersonProfile.setCostOf1MileRUB(COST_OF_1_MILE_RUB);
+        tinkoffPhysicalPersonProfile.setCostOf1MileUSD(COST_OF_1_MILE_USD);
+        tinkoffPhysicalPersonProfile.setCostOf1MileEUR(COST_OF_1_MILE_EUR);
 
         // установить проценты комиссий
-        tinkoffPhysicalPersonProfile.setPercentOfCommissionForPayHousingCommunalServices(percentOfCommissionForPayHousingCommunalServices);
-        tinkoffPhysicalPersonProfile.setPercentOfCommissionForTransferInRUB(percentOfCommissionForTransferInRUB);
-        tinkoffPhysicalPersonProfile.setPercentOfCommissionForTransferInUsdOrOtherCurrency(percentOfCommissionForTransferInUsdOrOtherCurrency);
+        tinkoffPhysicalPersonProfile.setPercentOfCommissionForPayHousingCommunalServices(PERCENT_OF_COMMISSION_FOR_PAY_HOUSING_COMMUNAL_SERVICES);
+        tinkoffPhysicalPersonProfile.setPercentOfCommissionForTransferInRUB(PERCENT_OF_COMMISSION_FOR_TRANSFER_IN_RUB);
+        tinkoffPhysicalPersonProfile.setPercentOfCommissionForTransferInUsdOrOtherCurrency(PERCENT_OF_COMMISSION_FOR_TRANSFER_IN_USD_OR_OTHER_CURRENCY);
 
         // установить лимиты на суммы комиссий
-        tinkoffPhysicalPersonProfile.setLimitCommissionTransferInRUB(limitCommissionTransferInRUB);
-        tinkoffPhysicalPersonProfile.setLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(limitCommissionTransferInUsdOrEquivalentInOtherCurrency);
+        tinkoffPhysicalPersonProfile.setLimitCommissionTransferInRUB(LIMIT_COMMISSION_TRANSFER_IN_RUB);
+        tinkoffPhysicalPersonProfile.setLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(LIMIT_COMMISSION_TRANSFER_IN_USD_OR_EQUIVALENT_IN_OTHER_CURRENCY);
 
         // и привязать профиль клиента к банку
         getClientProfiles().add(tinkoffPhysicalPersonProfile);

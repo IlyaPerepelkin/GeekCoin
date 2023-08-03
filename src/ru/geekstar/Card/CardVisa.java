@@ -20,8 +20,8 @@ public abstract class CardVisa extends Card implements IVisa {
         // по умолчанию null, потому что не во всех странах может использоваться данная платежная система
         String billingCurrencyCode = null;
         // если покупка в Турции или Казахстане или Франции, то валюта биллинга в $
-        if (country.equalsIgnoreCase(Country.TURKEY.toString()) || country.equalsIgnoreCase(Country.KAZAKHSTAN.toString())
-                || country.equalsIgnoreCase(Country.FRANCE.toString())) billingCurrencyCode = CURRENCY_CODE_PAY_SYSTEM_USD;
+        if (country.equalsIgnoreCase(Country.TURKEY.getCountry()) || country.equalsIgnoreCase(Country.KAZAKHSTAN.getCountry())
+                || country.equalsIgnoreCase(Country.FRANCE.getCountry())) billingCurrencyCode = CURRENCY_CODE_PAY_SYSTEM_USD;
 
         return billingCurrencyCode;
     }

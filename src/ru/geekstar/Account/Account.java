@@ -28,13 +28,13 @@ public abstract class Account {
 
     private ArrayList<DepositingTransaction> depositingTransactions = new ArrayList<>();
 
-    public static final String writeOffSuccessful = "Списание прошло успешно";
-    public static final String refillCompletedSuccessfully = "Пополнение прошло успешно";
-    public static final String transferFailed = "Перевод не прошёл";
-    public static final String writeOffFailed = "Списание не прошло";
-    public static final String insufficientFunds = "Недостаточно средств";
-    public static final String transferSuccessful = "Перевод прошёл успешно";
-    public static final String limitAmountOfTransactionsPerDayExceeded = "Превышен лимит по сумме операций в сутки";
+    public static final String  WRITE_OFF_SUCCESSFUL = "Списание прошло успешно";
+    public static final String REFILL_COMPLETED_SUCCESSFULLY = "Пополнение прошло успешно";
+    public static final String TRANSFER_FAILED = "Перевод не прошёл";
+    public static final String WRITE_OFF_FAILED = "Списание не прошло";
+    public static final String INSUFFICIENT_FUNDS = "Недостаточно средств";
+    public static final String TRANSFER_SUCCESSFUL = "Перевод прошёл успешно";
+    public static final String LIMIT_AMOUNT_OF_TRANSACTIONS_PER_DAY_EXCEEDED = "Превышен лимит по сумме операций в сутки";
 
     public Bank getBank() {
         return bank;
@@ -141,7 +141,7 @@ public abstract class Account {
                 boolean withdrawalStatus = withdrawal(sumTransfer + commission);
                 if (withdrawalStatus) {
                     // внести в транзакцию перевода статус списания
-                    transferTransaction.setStatusOperation(writeOffSuccessful);
+                    transferTransaction.setStatusOperation(WRITE_OFF_SUCCESSFUL);
 
                     // определяем валюту карты зачисления
                     String toCurrencyCode = toCard.getPayCardAccount().getCurrencyCode();
@@ -158,7 +158,7 @@ public abstract class Account {
                     boolean topUpStatus = toCard.getPayCardAccount().topUp(sumTransfer);
                     if (topUpStatus) {
                         // внести в транзакцию пополнения статус пополнения
-                        depositingTransaction.setStatusOperation(refillCompletedSuccessfully);
+                        depositingTransaction.setStatusOperation(REFILL_COMPLETED_SUCCESSFULLY);
 
                         // внести в транзакцию баланс карты после пополнения
                         depositingTransaction.setBalance(toCard.getPayCardAccount().getBalance());
@@ -167,17 +167,17 @@ public abstract class Account {
                         toCard.getPayCardAccount().getDepositingTransactions().add(depositingTransaction);
 
                         // внести в транзакцию статус перевода
-                        transferTransaction.setStatusOperation(transferSuccessful);
+                        transferTransaction.setStatusOperation(TRANSFER_SUCCESSFUL);
 
                         // прибавить сумму перевода к общей сумме совершённых оплат и переводов за сутки, чтобы контролировать лимиты
                         getAccountHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toCard);
 
                         // TODO: и перевести комиссию на счёт банка
 
-                    } else transferTransaction.setStatusOperation(transferFailed);
-                } else transferTransaction.setStatusOperation(writeOffFailed);
-            } else transferTransaction.setStatusOperation(limitAmountOfTransactionsPerDayExceeded);
-        } else transferTransaction.setStatusOperation(insufficientFunds);
+                    } else transferTransaction.setStatusOperation(TRANSFER_FAILED);
+                } else transferTransaction.setStatusOperation(WRITE_OFF_FAILED);
+            } else transferTransaction.setStatusOperation(LIMIT_AMOUNT_OF_TRANSACTIONS_PER_DAY_EXCEEDED);
+        } else transferTransaction.setStatusOperation(INSUFFICIENT_FUNDS);
 
         // внести в транзакцию перевода баланс карты после списания
         transferTransaction.setBalance(getBalance());
@@ -208,7 +208,7 @@ public abstract class Account {
                 boolean withdrawalStatus = withdrawal(sumTransfer + commission);
                 if (withdrawalStatus) {
                     // внести в транзакцию статус списания
-                    transferTransaction.setStatusOperation(writeOffSuccessful);
+                    transferTransaction.setStatusOperation(WRITE_OFF_SUCCESSFUL);
 
                     // определяем валюту счёта зачисления
                     String toCurrencyCode = toAccount.getCurrencyCode();
@@ -225,7 +225,7 @@ public abstract class Account {
                     boolean topUpStatus = toAccount.topUp(sumTransfer);
                     if (topUpStatus) {
                         // внести в транзакцию статус пополнения
-                        depositingTransaction.setStatusOperation(refillCompletedSuccessfully);
+                        depositingTransaction.setStatusOperation(REFILL_COMPLETED_SUCCESSFULLY);
 
                         // внести в транзакцию баланс счёта после пополнения
                         depositingTransaction.setBalance(toAccount.getBalance());
@@ -234,17 +234,17 @@ public abstract class Account {
                         toAccount.getDepositingTransactions().add(depositingTransaction);
 
                         // внести в транзакцию статус перевода
-                        transferTransaction.setStatusOperation(transferSuccessful);
+                        transferTransaction.setStatusOperation(TRANSFER_SUCCESSFUL);
 
                         // прибавить сумму перевода к общей сумме совершённых оплат и переводов за сутки, чтобы контролировать лимиты
                         getAccountHolder().updateTotalPaymentsTransfersDay(sumTransfer, fromCurrencyCode, toAccount);
 
                         // TODO: и перевести комиссию на счёт банка
 
-                    } else transferTransaction.setStatusOperation(transferFailed);
-                } else transferTransaction.setStatusOperation(writeOffFailed);
-            } else transferTransaction.setStatusOperation(limitAmountOfTransactionsPerDayExceeded);
-        } else transferTransaction.setStatusOperation(insufficientFunds);
+                    } else transferTransaction.setStatusOperation(TRANSFER_FAILED);
+                } else transferTransaction.setStatusOperation(WRITE_OFF_FAILED);
+            } else transferTransaction.setStatusOperation(LIMIT_AMOUNT_OF_TRANSACTIONS_PER_DAY_EXCEEDED);
+        } else transferTransaction.setStatusOperation(INSUFFICIENT_FUNDS);
 
         // внести в транзакцию баланс карты после списания
         transferTransaction.setBalance(getBalance());

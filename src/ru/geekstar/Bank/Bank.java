@@ -214,9 +214,9 @@ public abstract class Bank {
     // Запросить код валюты по названию страны
     public static String getCurrencyCode(String country) {
         String currencyPayCode = null;
-        if (country.equalsIgnoreCase(Country.KAZAKHSTAN.toString())) currencyPayCode = Currency.KZT.toString();
-        if (country.equalsIgnoreCase(Country.TURKEY.toString())) currencyPayCode = Currency.TRY.toString();
-        if (country.equalsIgnoreCase(Country.FRANCE.toString())) currencyPayCode = Currency.EUR.toString();
+        if (country.equalsIgnoreCase(Country.KAZAKHSTAN.getCountry())) currencyPayCode = Currency.KZT.toString();
+        if (country.equalsIgnoreCase(Country.TURKEY.getCountry())) currencyPayCode = Currency.TRY.toString();
+        if (country.equalsIgnoreCase(Country.FRANCE.getCountry())) currencyPayCode = Currency.EUR.toString();
         return currencyPayCode;
     }
 

@@ -10,16 +10,16 @@ import java.util.ArrayList;
 public class Sberbank extends Bank implements IBankServicePhysicalPersons {
 
     public static final String SBER;
-    public static final float percentBonusOfSumPay = 0.5f;
-    public static final float limitPaymentsTransfersDayInRUB = 1000000.00f;
-    public static final float limitPaymentsTransfersDayInUSD = 50000.00f;
-    public static final float limitPaymentsTransfersDayInEUR = 3800.00f;
-    public static final float limitTransfersToClientSberWithoutCommissionMonthInRUB = 50000.00f;
-    public static final float percentOfCommissionForPayHousingCommunalServices = 2.0f;
-    public static final float percentOfCommissionForTransferInRUB = 1.0f;
-    public static final float percentOfCommissionForTransferInUsdOrOtherCurrency = 1.25f;
-    public static final float limitCommissionTransferInRUB = 3000.00f;
-    public static final float limitCommissionTransferInUsdOrEquivalentInOtherCurrency = 100.00f;
+    public static final float PERCENT_BONUS_OF_SUM_PAY = 0.5f;
+    public static final float LIMIT_PAYMENTS_TRANSFERS_DAY_IN_RUB = 1000000.00f;
+    public static final float LIMIT_PAYMENTS_TRANSFERS_DAY_IN_USD = 50000.00f;
+    public static final float LIMIT_PAYMENTS_TRANSFERS_DAY_IN_EUR = 3800.00f;
+    public static final float LIMIT_TRANSFERS_TO_CLIENT_SBER_WITHOUT_COMMISSION_MONTH_IN_RUB = 50000.00f;
+    public static final float PERCENT_OF_COMMISSION_FOR_PAY_HOUSING_COMMUNAL_SERVICES = 2.0f;
+    public static final float PERCENT_OF_COMMISSION_FOR_TRANSFER_IN_RUB = 1.0f;
+    public static final float PERCENT_OF_COMMISSION_FOR_TRANSFER_IN_USD_OR_OTHER_CURRENCY = 1.25f;
+    public static final float LIMIT_COMMISSION_TRANSFER_IN_RUB = 3000.00f;
+    public static final float LIMIT_COMMISSION_TRANSFER_IN_USD_OR_EQUIVALENT_IN_OTHER_CURRENCY  = 100.00f;
 
     static {
         SBER = "Сбер";
@@ -40,22 +40,22 @@ public class Sberbank extends Bank implements IBankServicePhysicalPersons {
         // создать профиль клиента
         SberPhysicalPersonProfile sberPhysicalPersonProfile = new SberPhysicalPersonProfile(this, physicalPerson);
 
-        sberPhysicalPersonProfile.setPercentBonusOfSumPay(percentBonusOfSumPay);
+        sberPhysicalPersonProfile.setPercentBonusOfSumPay(PERCENT_BONUS_OF_SUM_PAY);
 
         // установить лимиты
-        sberPhysicalPersonProfile.setLimitPaymentsTransfersDayInRUB(limitPaymentsTransfersDayInRUB);
-        sberPhysicalPersonProfile.setLimitPaymentsTransfersDayInUSD(limitPaymentsTransfersDayInUSD);
-        sberPhysicalPersonProfile.setLimitPaymentsTransfersDayInEUR(limitPaymentsTransfersDayInEUR);
-        sberPhysicalPersonProfile.setLimitTransfersToClientSberWithoutCommissionMonthInRUB(limitTransfersToClientSberWithoutCommissionMonthInRUB);
+        sberPhysicalPersonProfile.setLimitPaymentsTransfersDayInRUB(LIMIT_PAYMENTS_TRANSFERS_DAY_IN_RUB);
+        sberPhysicalPersonProfile.setLimitPaymentsTransfersDayInUSD(LIMIT_PAYMENTS_TRANSFERS_DAY_IN_USD);
+        sberPhysicalPersonProfile.setLimitPaymentsTransfersDayInEUR(LIMIT_PAYMENTS_TRANSFERS_DAY_IN_EUR);
+        sberPhysicalPersonProfile.setLimitTransfersToClientSberWithoutCommissionMonthInRUB(LIMIT_TRANSFERS_TO_CLIENT_SBER_WITHOUT_COMMISSION_MONTH_IN_RUB);
 
         // установить проценты комиссий
-        sberPhysicalPersonProfile.setPercentOfCommissionForPayHousingCommunalServices(percentOfCommissionForPayHousingCommunalServices);
-        sberPhysicalPersonProfile.setPercentOfCommissionForTransferInRUB(percentOfCommissionForTransferInRUB);
-        sberPhysicalPersonProfile.setPercentOfCommissionForTransferInUsdOrOtherCurrency(percentOfCommissionForTransferInUsdOrOtherCurrency);
+        sberPhysicalPersonProfile.setPercentOfCommissionForPayHousingCommunalServices(PERCENT_OF_COMMISSION_FOR_PAY_HOUSING_COMMUNAL_SERVICES);
+        sberPhysicalPersonProfile.setPercentOfCommissionForTransferInRUB(PERCENT_OF_COMMISSION_FOR_TRANSFER_IN_RUB);
+        sberPhysicalPersonProfile.setPercentOfCommissionForTransferInUsdOrOtherCurrency(PERCENT_OF_COMMISSION_FOR_TRANSFER_IN_USD_OR_OTHER_CURRENCY);
 
         // установить лимиты на суммы комиссий
-        sberPhysicalPersonProfile.setLimitCommissionTransferInRUB(limitCommissionTransferInRUB);
-        sberPhysicalPersonProfile.setLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(limitCommissionTransferInUsdOrEquivalentInOtherCurrency);
+        sberPhysicalPersonProfile.setLimitCommissionTransferInRUB(LIMIT_COMMISSION_TRANSFER_IN_RUB);
+        sberPhysicalPersonProfile.setLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(LIMIT_COMMISSION_TRANSFER_IN_USD_OR_EQUIVALENT_IN_OTHER_CURRENCY);
 
         // и привязать профиль клиента к банку
         getClientProfiles().add(sberPhysicalPersonProfile);

@@ -8,7 +8,7 @@ public enum Currency {
     KZT ("₸"),
     TRY ("₺");
 
-    private String symbol;
+    private final String symbol;
 
     Currency(String symbol) {
         this.symbol = symbol;
