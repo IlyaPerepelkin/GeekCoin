@@ -6,6 +6,7 @@ import ru.geekstar.Bank.IBankServicePhysicalPersons;
 import ru.geekstar.Bank.Sberbank;
 import ru.geekstar.Bank.Tinkoff;
 import ru.geekstar.ClientProfile.PhysicalPersonProfile;
+import ru.geekstar.Currency;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -27,7 +28,7 @@ public class FormOpenAccount {
         String[] classBanks = {Sberbank.class.getSimpleName(), Tinkoff.class.getSimpleName()};
         comboBoxBank.setModel(new DefaultComboBoxModel(classBanks));
 
-        String[] currencies = {"RUB", "USD", "EUR"};
+        String[] currencies = {Currency.RUB.toString(), Currency.USD.toString(), Currency.EUR.toString()};
         comboBoxCurrency.setModel(new DefaultComboBoxModel(currencies));
 
         buttonOpenAccount.addActionListener(new ActionListener() {

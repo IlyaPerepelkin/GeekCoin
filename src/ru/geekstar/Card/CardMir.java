@@ -3,6 +3,8 @@ package ru.geekstar.Card;
 import ru.geekstar.Account.PayCardAccount;
 import ru.geekstar.Card.IPaySystem.IMir;
 import ru.geekstar.ClientProfile.PhysicalPersonProfile;
+import ru.geekstar.Country;
+import ru.geekstar.Currency;
 
 import java.util.ArrayList;
 
@@ -19,7 +21,7 @@ public abstract class CardMir extends Card implements IMir {
         // по умолчанию null, потому что не во всех странах может использоваться данная платежная система
         String billingCurrencyCode = null;
         // если покупка в Казахстане или в Турции, то валюта биллинга в ₽
-        if (country.equalsIgnoreCase("Казахстан") || country.equalsIgnoreCase("Турция")) billingCurrencyCode = CURRENCY_CODE_PAY_SYSTEM_RUB;
+        if (country.equalsIgnoreCase(Country.KAZAKHSTAN.getCountry()) || country.equalsIgnoreCase(Country.TURKEY.getCountry())) billingCurrencyCode = CURRENCY_CODE_PAY_SYSTEM_RUB;
 
         return billingCurrencyCode;
     }
@@ -31,13 +33,13 @@ public abstract class CardMir extends Card implements IMir {
         ArrayList<Float> exchangeRatePaySystem = new ArrayList<>();
 
         // курс лиры к рублю
-        if (currency.equals("TRY") && currencyExchangeRate.equals("RUB")) {
+        if (currency.equals(Currency.TRY.toString()) && currencyExchangeRate.equals(Currency.RUB.toString())) {
             exchangeRatePaySystem.add(3.64f);
             exchangeRatePaySystem.add(4.028f);
         }
 
         // курс тенге к рублю
-        if (currency.equals("KZT") && currencyExchangeRate.equals("RUB")) {
+        if (currency.equals(Currency.KZT.toString()) && currencyExchangeRate.equals(Currency.RUB.toString())) {
             exchangeRatePaySystem.add(0.1728f); // курс покупки
             exchangeRatePaySystem.add(0.1914f); // курс продажи
         }

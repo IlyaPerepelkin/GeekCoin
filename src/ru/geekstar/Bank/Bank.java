@@ -4,6 +4,8 @@ import ru.geekstar.Account.Account;
 import ru.geekstar.Card.Card;
 import ru.geekstar.ClientProfile.ClientProfile;
 import ru.geekstar.ClientProfile.PhysicalPersonProfile;
+import ru.geekstar.Country;
+import ru.geekstar.Currency;
 
 import java.util.ArrayList;
 
@@ -162,16 +164,16 @@ public abstract class Bank {
     // Проверить превышен ли лимит на сумму комиссии?
     private float exceededLimitCommission(PhysicalPersonProfile clientProfile, String fromCurrencyCode, float commission) {
         // если комиссия превышает лимит за перевод в рублях, то ограничим комиссию лимитом в рублях, то есть максимально возможной суммой комиссии установленной банком
-        if (fromCurrencyCode.equals("RUB") && commission > clientProfile.getLimitCommissionTransferInRUB()) commission = clientProfile.getLimitCommissionTransferInRUB();
+        if (fromCurrencyCode.equals(Currency.RUB.toString()) && commission > clientProfile.getLimitCommissionTransferInRUB()) commission = clientProfile.getLimitCommissionTransferInRUB();
         // иначе если комиссия превышает лимит за перевод в $, то ограничим комиссию лимитом в $
-        if (fromCurrencyCode.equals("USD") && commission > clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency())
+        if (fromCurrencyCode.equals(Currency.USD.toString()) && commission > clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency())
             commission = clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency();
         // иначе если другая валюта, то по аналогии
-        if (!fromCurrencyCode.equals("RUB") && !fromCurrencyCode.equals("USD")) {
+        if (!fromCurrencyCode.equals(Currency.RUB.toString()) && !fromCurrencyCode.equals(Currency.USD.toString())) {
             // рассчитать лимит комиссии в другой валюте путём конвертации лимита в $ в эквивалентную сумму в другой валюте
             float limitCommissionTransferInCurrency = convertToCurrencyExchangeRateBank(
                     clientProfile.getLimitCommissionTransferInUsdOrEquivalentInOtherCurrency(),
-                    "USD",
+                    Currency.USD.toString(),
                     fromCurrencyCode
             );
             // если комиссия превышает лимит за перевод в другой валюте, то ограничим комиссию лимитом в этой валюте
@@ -189,7 +191,7 @@ public abstract class Bank {
         // можно не инициализировать, так как в любом случае будет результат благодаря ветке else
         float commission;
         // рассчитаем комиссию за перевод в рублях
-        if (fromCurrencyCode.equals("RUB")) commission = (sum / 100) * clientProfile.getPercentOfCommissionForTransferInRUB();
+        if (fromCurrencyCode.equals(Currency.RUB.toString())) commission = (sum / 100) * clientProfile.getPercentOfCommissionForTransferInRUB();
         // рассчитаем комиссию за перевод в $ или другой валюте
         else commission = (sum / 100) * clientProfile.getPercentOfCommissionForTransferInUsdOrOtherCurrency();
 
@@ -212,19 +214,19 @@ public abstract class Bank {
     // Запросить код валюты по названию страны
     public static String getCurrencyCode(String country) {
         String currencyPayCode = null;
-        if (country.equalsIgnoreCase("Казахстан")) currencyPayCode = "KZT";
-        if (country.equalsIgnoreCase("Турция")) currencyPayCode = "TRY";
-        if (country.equalsIgnoreCase("Франция")) currencyPayCode = "EUR";
+        if (country.equalsIgnoreCase(Country.KAZAKHSTAN.getCountry())) currencyPayCode = Currency.KZT.toString();
+        if (country.equalsIgnoreCase(Country.TURKEY.getCountry())) currencyPayCode = Currency.TRY.toString();
+        if (country.equalsIgnoreCase(Country.FRANCE.getCountry())) currencyPayCode = Currency.EUR.toString();
         return currencyPayCode;
     }
 
     // Запросить символ валюты по коду валюты
     public static String getCurrencySymbol(String currencyCode) {
-        if (currencyCode.equalsIgnoreCase("RUB")) return "₽";
-        if (currencyCode.equalsIgnoreCase("USD")) return "$";
-        if (currencyCode.equalsIgnoreCase("KZT")) return "₸";
-        if (currencyCode.equalsIgnoreCase("TRY")) return "₺";
-        if (currencyCode.equalsIgnoreCase("EUR")) return "€";
+        if (currencyCode.equalsIgnoreCase(Currency.RUB.toString())) return Currency.RUB.getSymbol();
+        if (currencyCode.equalsIgnoreCase(Currency.USD.toString())) return Currency.USD.getSymbol();
+        if (currencyCode.equalsIgnoreCase(Currency.KZT.toString())) return Currency.KZT.getSymbol();
+        if (currencyCode.equalsIgnoreCase(Currency.TRY.toString())) return Currency.TRY.getSymbol();
+        if (currencyCode.equalsIgnoreCase(Currency.EUR.toString())) return Currency.EUR.getSymbol();
         return "?";
     }
 

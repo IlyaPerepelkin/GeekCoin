@@ -6,6 +6,7 @@ import ru.geekstar.Card.CardMir;
 import ru.geekstar.Card.IAirlinesCard;
 import ru.geekstar.Card.IBonusCard;
 import ru.geekstar.ClientProfile.PhysicalPersonProfile;
+import ru.geekstar.Currency;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -162,10 +163,10 @@ public class FormPay {
     }
 
     public void updateCurrencySymbolSum() {
-        if (comboBoxCountry.getSelectedItem().equals("Россия")) labelCurrency.setText(Bank.getCurrencySymbol("RUB"));
-        if (comboBoxCountry.getSelectedItem().equals("Турция")) labelCurrency.setText(Bank.getCurrencySymbol("TRY"));
-        if (comboBoxCountry.getSelectedItem().equals("Казахстан")) labelCurrency.setText(Bank.getCurrencySymbol("KZT"));
-        if (comboBoxCountry.getSelectedItem().equals("Франция")) labelCurrency.setText(Bank.getCurrencySymbol("EUR"));
+        if (comboBoxCountry.getSelectedItem().equals("Россия")) labelCurrency.setText(Bank.getCurrencySymbol(Currency.RUB.toString()));
+        if (comboBoxCountry.getSelectedItem().equals("Турция")) labelCurrency.setText(Bank.getCurrencySymbol(Currency.TRY.toString()));
+        if (comboBoxCountry.getSelectedItem().equals("Казахстан")) labelCurrency.setText(Bank.getCurrencySymbol(Currency.KZT.toString()));
+        if (comboBoxCountry.getSelectedItem().equals("Франция")) labelCurrency.setText(Bank.getCurrencySymbol(Currency.EUR.toString()));
     }
 
     public void updateSliders() {

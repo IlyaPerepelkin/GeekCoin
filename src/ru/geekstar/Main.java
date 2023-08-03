@@ -46,18 +46,18 @@ public class Main {
 
         SberVisaGold friendSberVisaGold1 = (SberVisaGold) friend.openCard(sberbank, SberVisaGold.class, SberPayCardAccount.class, "RUB", "1818");
 
-        I.depositingCash2Card(sberMastercardTravel, 8300.00f);
+        I.depositingCash2Card(sberMastercardTravel, 18300.00f);
+        I.depositingCash2Card(tinkoffAirlinesMir, 17500.00f);
+        I.depositingCash2Card(mySberVisaGold1, 17600.50f);
+        I.depositingCash2Card(sberMastercardGold, 12000.00f);
+        I.depositingCash2Card(myTinkoffBlackMir1, 130000.00f);
 
-        I.depositingCash2Card(tinkoffAirlinesMir, 7500.00f);
-
-        I.depositingCash2Card(mySberVisaGold1, 7600.50f);
-        I.depositingCash2Card(sberMastercardGold, 2000.00f);
-        I.depositingCash2Card(myTinkoffBlackMir1, 30000.00f);
+        sleep();
 
         I.payByCard(sberMastercardTravel, 3700.00f, "Bike", "Турция", "7895");
         I.payByCard(mySberVisaGold1, 100.50f, "ЖКХ", "1515");
         I.payByCard(sberMastercardGold, 700.00f, "Пятерочка", "2535");
-        I.payByCard(myTinkoffBlackMir1, 12500.00f, "iPhone", "0011");
+        I.payByCard(myTinkoffBlackMir1, 1250.00f, "iPhone", "0011");
 
         I.payByCard(tinkoffAirlinesMir, 3500.00f, "Ноутбук", "0022");
         I.payByCardMiles(tinkoffAirlinesMir, 2000, 30, "Билет в Турцию", "0022");
@@ -119,6 +119,14 @@ public class Main {
         // I.clearTransactionHistory(tinkoff);
 
 
+    }
+
+    public static void sleep() {
+        try {
+            Thread.sleep(5000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
